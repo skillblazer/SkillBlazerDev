@@ -15,7 +15,7 @@ public class Main extends Application {
 
         // instantiate and setup a button
         Button btn = new Button();
-        btn.setText("Click So Nothing Happens!");
+        btn.setText("Click So Nothing Happens!!");
 
         // set up layout pane (BorderPane)
         BorderPane pane = new BorderPane();
