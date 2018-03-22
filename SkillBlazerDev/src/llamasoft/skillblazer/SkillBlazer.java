@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+// uncomment for Macintosh style
+//import com.aquafx_project.*;
 
 
 public class SkillBlazer extends Application {
@@ -13,8 +15,12 @@ public class SkillBlazer extends Application {
     public void start(Stage primaryStage) {
         // setup the main Stage, Scenes and such
 
+        // uncomment for Macintosh style
+        //AquaFx.style();
         // instantiate and setup a button
         Button btn = new Button();
+        // uncomment for Macintosh style
+        //AquaFx.createButtonStyler().setType(ButtonType.ROUND_RECT).style(btn);
         btn.setText("Click So Nothing Happens!!");
 
         // set up layout pane (BorderPane)
@@ -29,6 +35,8 @@ public class SkillBlazer extends Application {
         // add scene to stage
         primaryStage.setScene(scene);
 
+        
+        
         // show the stage
         primaryStage.show();  // actually display the scene
     }
