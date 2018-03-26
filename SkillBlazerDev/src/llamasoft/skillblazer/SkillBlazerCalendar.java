@@ -9,8 +9,11 @@ public class SkillBlazerCalendar {
     private int thisMonth;
     private int thisYear;
 
-    private static final String[] dayNamesOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-    private static final String[] shortDayNamesOfWeek = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN" };
+    private static final String[] dayNamesOfWeek = { "Monday", "Tuesday", "Wednesday",
+                                                     "Thursday", "Friday", "Saturday", "Sunday" };
+
+    private static final String[] shortDayNamesOfWeek = { "MON", "TUE", "WED", "THU",
+                                                          "FRI", "SAT", "SUN" };
 
     // NEVER use this directly outside of this class,
     // as IT DOES NOT ACCOUNT FOR LEAP YEARS!
@@ -29,7 +32,7 @@ public class SkillBlazerCalendar {
     }
 
     /**
-    *   Provide the calendar month as a primitive integer value 0-11 (Normal Java Convention)
+    *   Provide the (integer) year, and month as a primitive integer value 0-11 (Normal Java Convention)
     *   This method rigorously checks for leap years. (To include 100 & 400 modulus divisors)
     *   ----Months are counted from 0, e.g. 0 = January, 11 = December
     */
@@ -39,8 +42,18 @@ public class SkillBlazerCalendar {
         }
         else
             return daysOfMonth[month];
-
     } // end method getDaysInThisCalendarMonth()
+
+    // Overloaded version - just pass in a Calendar object!
+    protected int getDaysInThisCalendarMonth(Calendar calendar) {
+        int month = calendar.get(Calendar.MONTH);
+        if ((month == 1) && (isLeapYear( calendar.get(Calendar.YEAR)))) {
+            return 29;  // February AND a Leap year
+        }
+        else
+            return daysOfMonth[month];
+    } // end method getDaysInThisCalendarMonth()
+
 
     // Determine leap year so February is correctly created!
     protected static boolean isLeapYear(int currentYear) {
