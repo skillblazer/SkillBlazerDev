@@ -32,7 +32,7 @@ public class SkillBlazerCalendar {
     }
 
     /**
-    *   Provide the (integer) year, and month as a primitive integer value 0-11 (Normal Java Convention)
+    *   Provide the 4-digit YYYY (integer) year, and month as a primitive integer value 0-11 (Normal Java Convention)
     *   This method rigorously checks for leap years. (To include 100 & 400 modulus divisors)
     *   ----Months are counted from 0, e.g. 0 = January, 11 = December
     */
@@ -45,7 +45,7 @@ public class SkillBlazerCalendar {
     } // end method getDaysInThisCalendarMonth()
 
     // Overloaded version - just pass in a Calendar object!
-    protected int getDaysInThisCalendarMonth(Calendar calendar) {
+    protected int getDaysInThisCalendarMonth(GregorianCalendar calendar) {
         int month = calendar.get(Calendar.MONTH);
         if ((month == 1) && (isLeapYear( calendar.get(Calendar.YEAR)))) {
             return 29;  // February AND a Leap year
@@ -56,11 +56,11 @@ public class SkillBlazerCalendar {
 
 
     // Determine leap year so February is correctly created!
-    protected static boolean isLeapYear(int currentYear) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, currentYear);
+    private boolean isLeapYear(int currentYear) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, currentYear);
 
-        return calendar.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
+        return cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
     }
 
 } // end class SkillBlazerCalendar
