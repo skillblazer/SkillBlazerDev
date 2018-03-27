@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class SkillBlazerCalendar {
-
     private Calendar currentMonth;
     private int thisMonth;
     private int thisYear;
@@ -12,8 +11,10 @@ public class SkillBlazerCalendar {
     private static final String[] dayNamesOfWeek = { "Monday", "Tuesday", "Wednesday",
                                                      "Thursday", "Friday", "Saturday", "Sunday" };
 
+
     private static final String[] shortDayNamesOfWeek = { "MON", "TUE", "WED", "THU",
                                                           "FRI", "SAT", "SUN" };
+
 
     // NEVER use this directly outside of this class,
     // as IT DOES NOT ACCOUNT FOR LEAP YEARS!
@@ -21,15 +22,18 @@ public class SkillBlazerCalendar {
                                         31, 30, 31, 31,
                                         30, 31, 30, 31 };
 
+
     public SkillBlazerCalendar() {
         this.currentMonth = new GregorianCalendar();
         this.thisMonth = currentMonth.get(Calendar.MONTH);
         this.thisYear = currentMonth.get(Calendar.YEAR);
     }
 
+
     public int getCurrentMonthInt() {
         return thisMonth;
     }
+
 
     /**
     *   Provide the 4-digit YYYY (integer) year, and month as a primitive integer value 0-11 (Normal Java Convention)
@@ -43,6 +47,7 @@ public class SkillBlazerCalendar {
         else
             return daysOfMonth[month];
     } // end method getDaysInThisCalendarMonth()
+
 
     // Overloaded version - just pass in a Calendar object!
     protected int getDaysInThisCalendarMonth(GregorianCalendar calendar) {
