@@ -1,17 +1,18 @@
 package llamasoft.skillblazer;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class WeeklyTask implements Task {
 
     private long taskId;
-    private final Date startDate = new Date();
+    private final Calendar startDate = new GregorianCalendar();
 
     public long getTaskId() {
         return this.taskId;
     }
 
-    public Date getStartDate() {
+    public Calendar getStartDate() {
         return this.startDate;
     }
 }
