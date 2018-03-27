@@ -1,10 +1,10 @@
 package llamasoft.skillblazer;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public interface Task {
 
     long getTaskId();
-    Date getStartDate();
+    Calendar getStartDate();
 
 }
