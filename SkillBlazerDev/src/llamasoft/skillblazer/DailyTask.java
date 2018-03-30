@@ -1,6 +1,6 @@
 package llamasoft.skillblazer;
 
-public class DailyTask {
+public class DailyTask extends Task {
 
     private boolean isCompleted = false;
     private String taskName;
