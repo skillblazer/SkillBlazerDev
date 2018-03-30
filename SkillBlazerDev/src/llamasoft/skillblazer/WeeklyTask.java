@@ -3,7 +3,7 @@ package llamasoft.skillblazer;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class WeeklyTask implements Task {
+public class WeeklyTask extends Task {
 
     private long taskId;
     private final Calendar startDate = new GregorianCalendar();
