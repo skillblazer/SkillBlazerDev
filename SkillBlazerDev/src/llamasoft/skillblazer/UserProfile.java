@@ -1,16 +1,14 @@
 package llamasoft.skillblazer;
 
+import java.util.Calendar;
+
 /**
  * Class which will contain information about the user.
  */
 
 public class UserProfile {
 
-    String taskName; // is this needed/best way to store this info?
-
-    int currentStreak;
-    private int startDate;
-    boolean isCompleted;
+    private Calendar userStartDate;
     private String userName;
 
     public UserProfile() {}
@@ -19,12 +17,17 @@ public class UserProfile {
         this.userName = userName;
     }
 
+    public UserProfile(String userName, Calendar userStartDate) {
+        this.userName = userName;
+        this.userStartDate = userStartDate;
+    }
+
     public void getCurrentDay() {
         // display the current date in the top left of the application
     }
 
-    public int getStartDate() {
-        return startDate;
+    public Calendar getUserStartDate() {
+        return userStartDate;
     }
 
     public String getUserName() {
