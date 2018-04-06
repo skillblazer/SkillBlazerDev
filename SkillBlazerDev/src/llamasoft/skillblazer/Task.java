@@ -11,6 +11,11 @@ import java.util.Calendar;
 
 public class Task {
 
+    long taskId;
+    Calendar startDate;
+    boolean isCompleted;
+    String taskName;
+
     long getTaskId() {
         return 0;  // placeholder return statement -> needs real code!
     }
@@ -18,4 +23,44 @@ public class Task {
     Calendar getStartDate() {
         return null;  // placeholder return statement -> needs real code!
     }
+
+    public Task() {}
+
+    public Task(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public Task(String taskName, Calendar startDate) {
+        this.taskName = taskName;
+        this.startDate = startDate;  // startDate is a Calendar object -> this may not work!!!!
+    }
+
+    public String getTaskName() {
+        return this.taskName;
+    }
+
+    public void startTask() {
+        // initialize task after user input
+    }
+
+    public boolean getIsComleted() {
+        return this.isCompleted;
+    }
+
+    protected void setCompleted() {
+        this.isCompleted = true;
+    }
+
+    public void editTask() {
+        // make changes to an existing task
+    }
+
+    protected void deleteTask(Task task) {
+        // kill the task specified by the caller
+    }
+
+    protected void deleteRecord() {
+        // delete a record
+    }
+
 }

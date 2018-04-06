@@ -18,14 +18,31 @@ import java.util.GregorianCalendar;
 
 public class WeeklyTask extends Task {
 
-    private long taskId;
+
+    /* REMEMBER ALL YOUR SUPERCLASS MEMBERS!!! */
+
+    private int currentStreak;
+    private int bestStreak;
+
     private final Calendar startDate = new GregorianCalendar();
 
-    public long getTaskId() {
-        return this.taskId;
-    }
+    public WeeklyTask() {}
+
+    public WeeklyTask(String taskName, Calendar startDate) {}
+
 
     public Calendar getStartDate() {
         return this.startDate;
     }
+
+    public int getCurrentStreak() {
+        return this.currentStreak;
+    }
+
+    public int getBestStreak() {
+        return this.bestStreak;
+    }
+
+    /* DO YOU NEED TO OVERRIDE the Task.getCurrentStreak() or
+    Task.getBestStreak() methods? */
 }

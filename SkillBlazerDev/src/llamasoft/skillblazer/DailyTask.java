@@ -1,5 +1,7 @@
 package llamasoft.skillblazer;
 
+import java.util.Calendar;
+
 /**
  * The child classes listed above represent the different types of goals that
  * define these habits/skills.
@@ -15,6 +17,8 @@ package llamasoft.skillblazer;
  */
 
 public class DailyTask extends Task {
+
+    /* REMEMBER ALL YOUR SUPERCLASS MEMBERS!!! */
 
     private boolean isCompleted = false;
     private String taskName;
@@ -33,7 +37,13 @@ public class DailyTask extends Task {
 
     public DailyTask(String taskName) {
         this.taskName = taskName;
+    }
+
+    public DailyTask(String taskName, Calendar startDate) {
+        this.taskName = taskName;
         this.isCompleted = false;
     }
 
+    /* DO YOU NEED TO OVERRIDE the Task.getCurrentStreak() or
+     * Task.getBestStreak() methods?  */
 }

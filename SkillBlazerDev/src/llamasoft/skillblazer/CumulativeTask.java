@@ -1,5 +1,7 @@
 package llamasoft.skillblazer;
 
+import java.util.Calendar;
+
 /**
  * The child classes listed above represent the different types of goals that
  * define these habits/skills.
@@ -14,4 +16,36 @@ package llamasoft.skillblazer;
  */
 
 public class CumulativeTask extends Task {
+
+    /* REMEMBER YOUR SUPERCLASS Members and Methods! */
+
+    Calendar endDate;
+
+    public CumulativeTask() {}
+
+    public CumulativeTask(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public CumulativeTask(String taskName, Calendar startDate, Calendar endDate) {
+        this.taskName = taskName;
+        // TODO: startDate and endDate are Calendar objects
+        // TODO: make sure that assignment like this makes sense!
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    private void setEndDate() {}
+
+    private Calendar getEndDate() {
+        return this.endDate;
+    }
+
+    //method to return the percentage the user’s goal has been completed
+    // (e.g. 50% of books read of overall goal)
+    private double checkStatus() {
+        int fakeNumber = 20;
+        return fakeNumber * 0.10;  // make it a percentage
+    }
+
 }

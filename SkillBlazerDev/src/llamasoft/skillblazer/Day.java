@@ -30,6 +30,12 @@ public class Day {
         hasTranspired = true;  // can only do this once!
     }
 
+    void createDay() {
+        // instantiate a Day object, populate the Day object with tasks
+    }
+
+
+
     // Constructor that will accept a date from the calling method
     // This is important for creating FUTURE dates that will go
     // into a monthly calendar
