@@ -24,5 +24,4 @@ public class JSONLoader {
         return jsonDatabase; // May not be complete
     }
 
-
 }
