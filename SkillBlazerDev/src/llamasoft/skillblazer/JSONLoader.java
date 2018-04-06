@@ -16,7 +16,7 @@ public class JSONLoader {
 
     public JSONLoader() {}
 
-    public void jsonLoad() {
+    public void loadFromJSON() {
         // loads the JSON file from the disk, populates the ArrayList
     }
 

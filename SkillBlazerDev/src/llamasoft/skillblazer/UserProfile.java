@@ -22,7 +22,7 @@ public class UserProfile {
         this.userStartDate = userStartDate;
     }
 
-    public void getCurrentDay() {
+    public void getCurrentDate() {
         // display the current date in the top left of the application
     }
 

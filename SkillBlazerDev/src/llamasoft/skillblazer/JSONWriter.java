@@ -13,7 +13,7 @@ public class JSONWriter {
         // converts ArrayList to JSONArray of associated values
     }
 
-    public void save() {
+    public void saveToFile() {
         // writes the database to disk as a JSON file
     }
 
