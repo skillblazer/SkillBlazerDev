@@ -1,12 +1,18 @@
 package llamasoft.skillblazer;
 
+import javafx.scene.Scene;
+import javafx.scene.layout.TilePane;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class SkillBlazerCalendar {
+public class CalendarCalculator {
     private Calendar currentMonth;
     private int thisMonth;
     private int thisYear;
+
+    protected ArrayList<Day> thisMonthsDayObjects = new ArrayList<>();
 
     private static final String[] dayNamesOfWeek = { "Monday", "Tuesday", "Wednesday",
                                                      "Thursday", "Friday", "Saturday", "Sunday" };
@@ -23,7 +29,7 @@ public class SkillBlazerCalendar {
                                         30, 31, 30, 31 };
 
 
-    public SkillBlazerCalendar() {
+    public CalendarCalculator() {
         this.currentMonth = new GregorianCalendar();
         this.thisMonth = currentMonth.get(Calendar.MONTH);
         this.thisYear = currentMonth.get(Calendar.YEAR);
@@ -34,6 +40,31 @@ public class SkillBlazerCalendar {
         return thisMonth;
     }
 
+    /**
+     * This section of the code will deal with creating the GUI elements for
+     * the JavaFX calendar scene
+     */
+
+    public void instantiateCalendar() {
+        Scene calendarScene;
+        int daysThisMonth = getDaysInThisCalendarMonth(thisYear, thisMonth);
+
+        TilePane calendarPane = new TilePane();  // shall we do this in FXML???
+
+        for(int dates : daysOfMonth) {
+
+            Day newDay = new Day();  // TODO: finish this constructor call
+            // create a Day object
+            // add tasks to the day object
+            // generate GUI element for the Day object
+            addDayToCalendarTile(newDay);
+        }
+    }
+
+
+    private void addDayToCalendarTile(Day day) {
+        // add the Day object to the GUI TilePane object
+    }
 
     /**
     *   Provide the 4-digit YYYY (integer) year, and month as a primitive integer value 0-11 (Normal Java Convention)
