@@ -12,6 +12,8 @@ public class CalendarCalculator {
     private int thisMonth;
     private int thisYear;
 
+    protected TilePane calendarPane = new TilePane();  // shall we do this in FXML???
+
     protected ArrayList<Day> thisMonthsDayObjects = new ArrayList<>();
 
     private static final String[] dayNamesOfWeek = { "Monday", "Tuesday", "Wednesday",
@@ -49,7 +51,6 @@ public class CalendarCalculator {
         Scene calendarScene;
         int daysThisMonth = getDaysInThisCalendarMonth(thisYear, thisMonth);
 
-        TilePane calendarPane = new TilePane();  // shall we do this in FXML???
 
         for(int dates : daysOfMonth) {
 
