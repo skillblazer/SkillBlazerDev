@@ -21,17 +21,17 @@ public class CumulativeTask extends Task {
 
     Calendar endDate;
 
-    public CumulativeTask() {}
+    public CumulativeTask() {
+        super();
+    }
 
     public CumulativeTask(String taskName) {
+        super();
         this.taskName = taskName;
     }
 
     public CumulativeTask(String taskName, Calendar startDate, Calendar endDate) {
-        this.taskName = taskName;
-        // TODO: startDate and endDate are Calendar objects
-        // TODO: make sure that assignment like this makes sense!
-        this.startDate = startDate;
+        super();
         this.endDate = endDate;
     }
 

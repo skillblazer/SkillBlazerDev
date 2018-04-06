@@ -19,11 +19,9 @@ public class CustomTask extends Task {
 
     /* REMEMBER YOUR SUPERCLASS Members & Methods! */
 
-    boolean[] daysOfWeek;
-
-    int currentStreak;
-    
-    int bestStreak;
+    private boolean[] daysOfWeek;
+    private int currentStreak;
+    private int bestStreak;
 
     public void setDaysOfWeek() {}
 
@@ -39,15 +37,16 @@ public class CustomTask extends Task {
         return this.bestStreak;
     }
 
-    public CustomTask() {}
+    public CustomTask() {
+        super();
+    }
 
     public CustomTask(String taskName) {
-        this.taskName = taskName;
+        super();
     }
 
     public CustomTask(String taskName, Calendar startDate) {
-        this.taskName = taskName;
-        this.startDate = startDate;
+        super();
     }
 
 }

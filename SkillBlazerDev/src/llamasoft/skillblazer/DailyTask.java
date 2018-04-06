@@ -35,11 +35,17 @@ public class DailyTask extends Task {
         return this.taskName;
     }
 
+    public DailyTask() {
+        super();
+    }
+
     public DailyTask(String taskName) {
+        super();
         this.taskName = taskName;
     }
 
     public DailyTask(String taskName, Calendar startDate) {
+        super();
         this.taskName = taskName;
         this.isCompleted = false;
     }

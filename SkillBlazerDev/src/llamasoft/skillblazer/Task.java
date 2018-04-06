@@ -11,9 +11,9 @@ import java.util.Calendar;
 
 public class Task {
 
-    long taskId;
-    Calendar startDate;
-    boolean isCompleted;
+    protected long taskId;
+    private Calendar startDate;
+    private boolean isCompleted;
     String taskName;
 
     long getTaskId() {
@@ -43,7 +43,7 @@ public class Task {
         // initialize task after user input
     }
 
-    public boolean getIsComleted() {
+    public boolean getIsCompleted() {
         return this.isCompleted;
     }
 
