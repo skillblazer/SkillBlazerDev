@@ -1,5 +1,8 @@
 package llamasoft.skillblazer;
 
+import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -9,6 +12,10 @@ public class Day {
     // user task schedule for that day
     private boolean hasTranspired = false;
     private Calendar taskDate = new GregorianCalendar();
+
+    VBox currentDayView;
+
+    ArrayList<Task> tasksThisDay = new ArrayList<>();
 
     public boolean getHasTranspired() {
         return hasTranspired;
