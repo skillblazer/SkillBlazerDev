@@ -40,14 +40,11 @@ public class DailyTask extends Task {
     }
 
     public DailyTask(String taskName) {
-        super();
-        this.taskName = taskName;
+        super(taskName);
     }
 
     public DailyTask(String taskName, Calendar startDate) {
-        super();
-        this.taskName = taskName;
-        this.isCompleted = false;
+        super(taskName, startDate);
     }
 
     /* DO YOU NEED TO OVERRIDE the Task.getCurrentStreak() or

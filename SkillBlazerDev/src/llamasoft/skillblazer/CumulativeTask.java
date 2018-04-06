@@ -26,12 +26,16 @@ public class CumulativeTask extends Task {
     }
 
     public CumulativeTask(String taskName) {
-        super();
+        super(taskName);
         this.taskName = taskName;
     }
 
+    public CumulativeTask(String taskName, Calendar startDate) {
+        super(taskName, startDate);
+    }
+
     public CumulativeTask(String taskName, Calendar startDate, Calendar endDate) {
-        super();
+        super(taskName, startDate);
         this.endDate = endDate;
     }
 

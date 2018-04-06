@@ -37,7 +37,6 @@ public class WeeklyTask extends Task {
         super(taskName, startDate);
     }
 
-
     public Calendar getStartDate() {
         return this.startDate;
     }

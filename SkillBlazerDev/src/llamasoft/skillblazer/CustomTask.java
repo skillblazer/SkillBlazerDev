@@ -42,11 +42,11 @@ public class CustomTask extends Task {
     }
 
     public CustomTask(String taskName) {
-        super();
+        super(taskName);
     }
 
     public CustomTask(String taskName, Calendar startDate) {
-        super();
+        super(taskName, startDate);
     }
 
 }
