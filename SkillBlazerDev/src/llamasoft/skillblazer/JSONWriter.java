@@ -9,7 +9,7 @@ public class JSONWriter {
 
     public JSONWriter() {}
 
-    public void convertArrListToJSONArr() {
+    public void convertArrayListToJSONArray() {
         // converts ArrayList to JSONArray of associated values
     }
 
