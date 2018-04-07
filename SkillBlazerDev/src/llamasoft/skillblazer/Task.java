@@ -1,14 +1,66 @@
 package llamasoft.skillblazer;
 
+/**
+ * The Task class contains the methods and fields that will apply to all of
+ * the types of tasks. Included in the Task class will be methods to initialize
+ * the task, edit the task, delete the task, get task ID, get start date, and
+ * get task name.
+ */
+
 import java.util.Calendar;
 
 public class Task {
 
+    protected long taskId;
+    private Calendar startDate;
+    private boolean isCompleted;
+    String taskName;
+
     long getTaskId() {
-        return 0;
+        return 0;  // placeholder return statement -> needs real code!
     }
 
     Calendar getStartDate() {
-        return null;
+        return null;  // placeholder return statement -> needs real code!
     }
+
+    public Task() {}
+
+    public Task(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public Task(String taskName, Calendar startDate) {
+        this.taskName = taskName;
+        this.startDate = startDate;  // startDate is a Calendar object -> this may not work!!!!
+    }
+
+    public String getTaskName() {
+        return this.taskName;
+    }
+
+    public void startTask() {
+        // initialize task after user input
+    }
+
+    public boolean getIsCompleted() {
+        return this.isCompleted;
+    }
+
+    protected void setCompleted() {
+        this.isCompleted = true;
+    }
+
+    public void editTask() {
+        // make changes to an existing task
+    }
+
+    protected void deleteTask(Task task) {
+        // kill the task specified by the caller
+    }
+
+    protected void deleteRecord() {
+        // delete a record
+    }
+
 }

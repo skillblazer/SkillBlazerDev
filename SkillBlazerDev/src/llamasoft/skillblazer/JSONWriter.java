@@ -6,4 +6,15 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class JSONWriter {
+
+    public JSONWriter() {}
+
+    public void convertArrayListToJSONArray() {
+        // converts ArrayList to JSONArray of associated values
+    }
+
+    public void saveToFile() {
+        // writes the database to disk as a JSON file
+    }
+
 }

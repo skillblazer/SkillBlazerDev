@@ -1,14 +1,21 @@
 package llamasoft.skillblazer;
 
+import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class UserDay {
+public class Day {
 
     // this class will contain a Calendar date
     // user task schedule for that day
     private boolean hasTranspired = false;
     private Calendar taskDate = new GregorianCalendar();
+
+    VBox currentDayView;
+
+    ArrayList<Task> tasksThisDay = new ArrayList<>();
 
     public boolean getHasTranspired() {
         return hasTranspired;
@@ -23,17 +30,23 @@ public class UserDay {
         hasTranspired = true;  // can only do this once!
     }
 
+    void createDay() {
+        // instantiate a Day object, populate the Day object with tasks
+    }
+
+
+
     // Constructor that will accept a date from the calling method
     // This is important for creating FUTURE dates that will go
     // into a monthly calendar
-    public UserDay(Calendar taskDate) {
+    public Day(Calendar taskDate) {
         this.taskDate = taskDate;
     }
 
     // Constructor that will create its own date upon creation
     // not sure if a use case exists for 'today's date'
     // since we should be looking at a month at a time
-    public UserDay() {
+    public Day() {
         this.taskDate = new GregorianCalendar();
     }
 

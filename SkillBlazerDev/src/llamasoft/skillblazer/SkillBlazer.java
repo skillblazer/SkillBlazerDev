@@ -17,29 +17,21 @@ public class SkillBlazer extends Application {
 
         // uncomment for Macintosh style
         //AquaFx.style();
-        // instantiate and setup a button
-        Button btn = new Button();
-        // uncomment for Macintosh style
-        //AquaFx.createButtonStyler().setType(ButtonType.ROUND_RECT).style(btn);
-        btn.setText("Click So Nothing Happens!!");
 
         // set up layout pane (BorderPane)
         BorderPane pane = new BorderPane();
 
-        // set placement/alignment for the btn in the pane
-        pane.setCenter(btn);
-
         // add this pane/layout to the scene
-        Scene scene = new Scene(pane, 300, 200);
+        Scene scene = new Scene(pane, 900, 600);
 
         // add scene to stage
         primaryStage.setScene(scene);
 
         
-        
         // show the stage
         primaryStage.show();  // actually display the scene
     }
+
 
     public static void main(String[] args) {
         launch(args);  // open the JavaFX Stage
