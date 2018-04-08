@@ -1,37 +1,28 @@
 package llamasoft.skillblazer;
 
-import java.awt.Color;
-import static java.awt.Color.green;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import javafx.application.Application;
+import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import javafx.application.*;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import static javafx.scene.text.FontWeight.BOLD;
-import static javafx.scene.text.FontWeight.NORMAL;
+import javafx.event.*;
+import javafx.geometry.*;
+import javafx.scene.effect.*;
+import javafx.scene.text.*;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
 
 public class SkillBlazer extends Application {
 
-    // GUI interface fields
+    // Primary GUI interface fields
     Button optionsButton;           // options button
     Label appTitle;                 // application title
     Button lifetimeMetricsButton;   // lifetime metrics button
 
-    // setup the main Stage, Scenes and such
+    // sets up the main stage, scenes and such
     @Override
     public void start(Stage primaryStage) throws Exception {
+        
         // sets title of main window (primaryStage)
         primaryStage.setTitle("Skillblazer Habit Tracker");
 
@@ -77,7 +68,7 @@ public class SkillBlazer extends Application {
                 // instantiates LifetimeMetrics
                 LifetimeMetrics lifetimemetrics = new LifetimeMetrics();
             }
-        });
+        }); // end event handler
 
         // sets up layout pane (BorderPane)
         BorderPane borderPane = new BorderPane();
@@ -116,7 +107,8 @@ public class SkillBlazer extends Application {
 
         // uncomment for Macintosh style
         //AquaFx.style();
-    }
+        
+    } // end start() method
 
     // inner class for 'Options' menu
     class Options {
@@ -128,6 +120,7 @@ public class SkillBlazer extends Application {
         TextField numTextField;
         ComboBox goalComboBox;
         Label freqLabel;
+        ToggleGroup rbGroup = new ToggleGroup();
         RadioButton dailyRB;
         RadioButton weeklyRB;
         RadioButton customRB;
@@ -140,17 +133,17 @@ public class SkillBlazer extends Application {
         RadioButton sunRB;
         RadioButton cumulativeRB;
         Label goalDateLabel;
-        TextField dateTextField;
-        DatePicker datepicker;
+        DatePicker datePicker;
         Label notesLabel;
-        TextField notesTextField;
+        TextArea notesTextArea;
         Button submitButton;
 
         // constructor
         public Options() {
+            
             // creates new stage
             Stage optionsStage = new Stage();
-            // sets title
+            // sets title for optionsStage
             optionsStage.setTitle("Options");
 
             // hbox for 1st vbox row
@@ -208,6 +201,10 @@ public class SkillBlazer extends Application {
             dailyRB = new RadioButton();
             // sets text of dailyRB
             dailyRB.setText("Daily");
+            // adds dailyRB to toggle group
+            dailyRB.setToggleGroup(rbGroup);
+            // sets 'Daily' option as selected by default
+            dailyRB.setSelected(true);
             // adds GUI components to hbox4
             hbox4.getChildren().add(dailyRB);
 
@@ -219,6 +216,8 @@ public class SkillBlazer extends Application {
             weeklyRB = new RadioButton();
             // sets text of weeklyRB
             weeklyRB.setText("Weekly");
+            // adds weeklyRB to toggle group
+            weeklyRB.setToggleGroup(rbGroup);
             // adds GUI components to hbox5
             hbox5.getChildren().add(weeklyRB);
 
@@ -228,35 +227,53 @@ public class SkillBlazer extends Application {
             hbox6.getStyleClass().add("options");
             // initializes customRB
             customRB = new RadioButton();
+            // sets text for customRB
             customRB.setText("Custom");
+            // adds customRB to toggle group
+            customRB.setToggleGroup(rbGroup);
             // adds GUI components to hbox6
             hbox6.getChildren().add(customRB);
 
             // hbox for 7th vbox row
             HBox hbox7 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox7.getStyleClass().add("hbox7");         
+            hbox7.getStyleClass().add("hbox7");
             // initializes monRB
             monRB = new RadioButton();
+            // sets text of monRB
             monRB.setText("Monday");
             // initializes tuesRB
             tuesRB = new RadioButton();
+            // sets text of tuesRB
             tuesRB.setText("Tuesday");
             // initializes wedRB
             wedRB = new RadioButton();
+            // sets text of wedRB
             wedRB.setText("Wednesday");
             // initializes thursRB
             thursRB = new RadioButton();
+            // sets text of thursRB
             thursRB.setText("Thursday");
             // initializes friRB
             friRB = new RadioButton();
+            // sets text of friRB
             friRB.setText("Friday");
             // initializes satRB
             satRB = new RadioButton();
+            // sets text of satRB
             satRB.setText("Saturday");
             // initializes sunRB
             sunRB = new RadioButton();
+            // sets text of sunRB
             sunRB.setText("Sunday");
+            // sets these radio buttons as disabled by default
+            monRB.setDisable(true);
+            tuesRB.setDisable(true);
+            wedRB.setDisable(true);
+            thursRB.setDisable(true);
+            friRB.setDisable(true);
+            satRB.setDisable(true);
+            sunRB.setDisable(true);
             // adds GUI components to hbox7
             hbox7.getChildren().add(monRB);
             hbox7.getChildren().add(tuesRB);
@@ -265,8 +282,111 @@ public class SkillBlazer extends Application {
             hbox7.getChildren().add(friRB);
             hbox7.getChildren().add(satRB);
             hbox7.getChildren().add(sunRB);
+
+            // hbox for 8th vbox row
+            HBox hbox8 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox8.getStyleClass().add("options");
+            // initializes cumulativeRB
+            cumulativeRB = new RadioButton();
+            // sets text for cumulativeRB
+            cumulativeRB.setText("Cumulative");
+            // adds cumulativeRB to toggle group
+            cumulativeRB.setToggleGroup(rbGroup);
+            // adds GUI components to hbox8
+            hbox8.getChildren().add(cumulativeRB);
+
+            // hbox for 9th vbox row
+            HBox hbox9 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox9.getStyleClass().add("options");
+            // initializes goalDateLabel
+            goalDateLabel = new Label();
+            // sets text for goalDateLabel
+            goalDateLabel.setText("Date to Complete Goal:");  
+            // initializes datePicker
+            datePicker = new DatePicker();
+            // adds GUI components to hbox9
+            hbox9.getChildren().add(goalDateLabel);
+            hbox9.getChildren().add(datePicker);
+            // sets datePicker as disabled
+            datePicker.setDisable(true);
+                   
+            // event handler for customRB
+            customRB.setOnAction(e -> {
+                monRB.setDisable(false);
+                tuesRB.setDisable(false);
+                wedRB.setDisable(false);
+                thursRB.setDisable(false);
+                friRB.setDisable(false);
+                satRB.setDisable(false);
+                sunRB.setDisable(false);
+                datePicker.setDisable(true);
+            }); // end event handler
             
+            // event handler for weeklyRB
+            weeklyRB.setOnAction(e -> {
+                monRB.setDisable(true);
+                tuesRB.setDisable(true);
+                wedRB.setDisable(true);
+                thursRB.setDisable(true);
+                friRB.setDisable(true);
+                satRB.setDisable(true);
+                sunRB.setDisable(true);
+                datePicker.setDisable(true);
+            }); // end event handler
             
+            // event handler for dailyRB
+            dailyRB.setOnAction(e -> {
+                monRB.setDisable(true);
+                tuesRB.setDisable(true);
+                wedRB.setDisable(true);
+                thursRB.setDisable(true);
+                friRB.setDisable(true);
+                satRB.setDisable(true);
+                sunRB.setDisable(true);
+                datePicker.setDisable(true);
+            }); // end event handler
+            
+            // event handler for cumulativeRB
+            cumulativeRB.setOnAction(e -> {
+                    monRB.setDisable(true);
+                   tuesRB.setDisable(true);
+                    wedRB.setDisable(true);
+                    thursRB.setDisable(true);
+                   friRB.setDisable(true);
+                   satRB.setDisable(true);
+                   sunRB.setDisable(true);
+                   datePicker.setDisable(false);
+                }); // end event handler
+            
+            // hbox for 10th vbox row
+            HBox hbox10 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox10.getStyleClass().add("options");
+            // initializes notesLabel
+            notesLabel = new Label();
+            // sets text for notesLabel
+            notesLabel.setText("Notes:");
+            // initializes notesTextArea
+            notesTextArea = new TextArea();
+            notesTextArea.setPrefSize(350, 350);
+            // adds GUI components to hbox9
+            hbox10.getChildren().add(notesLabel);
+            hbox10.getChildren().add(notesTextArea);
+
+            // hbox for 11th vbox row
+            HBox hbox11 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox11.getStyleClass().add("options");
+            // initializes submitButton
+            submitButton = new Button();
+            // sets text for submitButton
+            submitButton.setText("Submit");
+            // centers hbox that submitButton is placed in
+            hbox11.setAlignment(Pos.CENTER);
+            // adds GUI components to hbox11
+            hbox11.getChildren().add(submitButton);
 
             // new vbox layout
             VBox optionsVbox = new VBox();
@@ -280,6 +400,10 @@ public class SkillBlazer extends Application {
             optionsVbox.getChildren().add(hbox5);
             optionsVbox.getChildren().add(hbox6);
             optionsVbox.getChildren().add(hbox7);
+            optionsVbox.getChildren().add(hbox8);
+            optionsVbox.getChildren().add(hbox9);
+            optionsVbox.getChildren().add(hbox10);
+            optionsVbox.getChildren().add(hbox11);
 
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVbox, 700, 700);
@@ -290,7 +414,7 @@ public class SkillBlazer extends Application {
             // shows the stage
             optionsStage.show();    // actually displays the scene
         }
-    }
+    } // end Options class
 
     // inner class for 'Lifetime Metrics' menu
     class LifetimeMetrics {
@@ -314,9 +438,11 @@ public class SkillBlazer extends Application {
             // shows the stage
             lifeMetricsStage.show();    // actually displays the scene
         }
-    }
-
+    } // end LifetimeMetrics class
+    
+    // main method
     public static void main(String[] args) {
         launch(args);  // opens the JavaFX Stage
-    }
-}
+    } // end main method
+    
+} // end Skillblazer class
