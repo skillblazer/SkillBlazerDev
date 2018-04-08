@@ -22,7 +22,7 @@ public class JSONLoader {
     public JSONLoader() {}
 
 
-    private JSONObject loadFromJSON() {
+    private JSONObject loadFromJSON(String filename) {
         // loads the JSON file from the disk, populates the ArrayList
         try {
             FileReader fileReader = new FileReader( getJSONFileLocation() );
@@ -30,13 +30,13 @@ public class JSONLoader {
 
         } catch (FileNotFoundException e) {
             // TODO: Pop a JavaFX prompt to find the File!
-            System.out.println("\nnothing at this location\n");
+            System.out.println("\nNothing at this location\n");
             e.printStackTrace();
         } catch (ParseException e) {
             // TODO: Pop a JavaFX prompt to find the File!
             System.out.println("\nParsing exception thrown\n");
             e.printStackTrace();
-        } catch (IOException e ) {
+        } catch (IOException e) {
             // TODO: Pop a JavaFX prompt to find the File!
             System.out.println("\nIOException error thrown\n");
             e.printStackTrace();
@@ -48,34 +48,61 @@ public class JSONLoader {
     // Call the current file contents on disk and return an ArrayList<Task>
     // This method only returns the file contents that were last saved to disk
     public ArrayList<Task> getTaskListFromJSON(JSONObject jsonObject) {
+
+        while (jsonObject.)
         parseTask(jsonObject);
+
+        jsonObject.con
+
 
         return jsonTaskList;
     }
 
-    private void parseTask(JSONObject jsonObject) {
+    private ArrayList<Task> parseCommonTaskFields(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
+        boolean isCompleted;
 
+        int taskId = (int) jsonObject.get("taskId");
+        String startDate = (String) jsonObject.get("startDate");
+
+        String isCompletedString = (String) jsonObject.get("isCompleted");
+        if((isCompletedString.equals("false")) ||
+           (isCompletedString.equals("FALSE")) ||
+           (isCompletedString.equals("False")) ) {
+            isCompleted = false;
+        } else {
+            isCompleted = true;
+        }
+
+        String taskName = (String) jsonObject.get("taskName");
+
+        // selection statements to determine if this is a subclass of Task.java
+
+        // instantiate the correct type of Task/DailyTask/WeeklyTask
+        return taskArrayList;
     }
 
     // parse JSONObject fields specific to a Daily Task Object
-    private void parseDailyTask(JSONObject jasonObject) {
+    private void parseDailyTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
+        parseCommonTaskFields(jsonObject, taskArrayList);
 
     }
 
     // parse JSONObject fields specific to a Weekly Task Object
-    private void parseWeeklyTask(JSONObject jsonObject) {
-
+    private void parseWeeklyTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
+        parseCommonTaskFields(jsonObject, taskArrayList);
     }
 
     // parse JSONObject fields specific to a Cumulative Task object
-    private void parseCumulativeTask(JSONObject jsonObject) {
-
+    private void parseCumulativeTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
+        parseCommonTaskFields(jsonObject, taskArrayList);
     }
 
     // parse JSONObject fields specific to a Custom Task object
-    private void parseCustomTask(JSONObject jsonObject) {
-
+    private void parseCustomTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
+        parseCommonTaskFields(jsonObject, taskArrayList);
     }
+
+
 
 
     public ArrayList<Task> getJsonDatabase() {
@@ -84,7 +111,7 @@ public class JSONLoader {
 
 
     private String getJSONFileLocation() {
-        return skillBlazerInit.getLastJSONFileLocation();
+        return skillBlazerInit.getLastJSONFilePath();
     }
 
 }
