@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 
 
 public class SkillBlazer extends Application {
+    JSONLoader jsonLoader = new JSONLoader();
+    JSONWriter jsonWriter = new JSONWriter();
 
     @Override
     public void start(Stage primaryStage) {

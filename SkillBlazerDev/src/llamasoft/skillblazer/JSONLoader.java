@@ -17,47 +17,74 @@ public class JSONLoader {
     private JSONParser jsonParser = new JSONParser();
     private ArrayList<Task> jsonTaskList = new ArrayList<>();
     protected JSONArray calendarOfTasks;
-
-
-    // TODO: remove this hard coded location
-    // using a manually coded location for testing purpose only
-    // private final String jsonFilePath = "C:\\$USER\\JSONTestFiles\\AddingFirstGoalTestFile.json";
-
-
+    private JSONObject jsonUserObject;
 
     public JSONLoader() {}
 
-    public void loadFromJSON() {
+
+    private JSONObject loadFromJSON() {
         // loads the JSON file from the disk, populates the ArrayList
         try {
             FileReader fileReader = new FileReader( getJSONFileLocation() );
+            jsonUserObject = (JSONObject)(jsonParser.parse(fileReader));
 
-            JSONObject jsonUserObject = new JSONObject();
-
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             // TODO: Pop a JavaFX prompt to find the File!
             System.out.println("\nnothing at this location\n");
             e.printStackTrace();
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             // TODO: Pop a JavaFX prompt to find the File!
             System.out.println("\nParsing exception thrown\n");
             e.printStackTrace();
+        } catch (IOException e ) {
+            // TODO: Pop a JavaFX prompt to find the File!
+            System.out.println("\nIOException error thrown\n");
+            e.printStackTrace();
         }
-//        catch (IOException e ) {
-//            // TODO: Pop a JavaFX prompt to find the File!
-//            System.out.println("\nIOException error thrown\n");
-//            e.printStackTrace();
-//        }
+
+        return jsonUserObject;
     }
+
+    // Call the current file contents on disk and return an ArrayList<Task>
+    // This method only returns the file contents that were last saved to disk
+    public ArrayList<Task> getTaskListFromJSON(JSONObject jsonObject) {
+        parseTask(jsonObject);
+
+        return jsonTaskList;
+    }
+
+    private void parseTask(JSONObject jsonObject) {
+
+    }
+
+    // parse JSONObject fields specific to a Daily Task Object
+    private void parseDailyTask(JSONObject jasonObject) {
+
+    }
+
+    // parse JSONObject fields specific to a Weekly Task Object
+    private void parseWeeklyTask(JSONObject jsonObject) {
+
+    }
+
+    // parse JSONObject fields specific to a Cumulative Task object
+    private void parseCumulativeTask(JSONObject jsonObject) {
+
+    }
+
+    // parse JSONObject fields specific to a Custom Task object
+    private void parseCustomTask(JSONObject jsonObject) {
+
+    }
+
 
     public ArrayList<Task> getJsonDatabase() {
         return jsonTaskList; // May not be complete
     }
 
+
     private String getJSONFileLocation() {
-        return skillBlazerInit.getLastFileLocation();
+        return skillBlazerInit.getLastJSONFileLocation();
     }
 
 }
