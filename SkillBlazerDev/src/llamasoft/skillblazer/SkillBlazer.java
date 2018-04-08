@@ -16,6 +16,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import static javafx.scene.text.FontWeight.BOLD;
+import static javafx.scene.text.FontWeight.NORMAL;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
 
@@ -117,6 +120,7 @@ public class SkillBlazer extends Application {
 
     // inner class for 'Options' menu
     class Options {
+
         // member fields - GUI elements
         Label habitLabel;
         TextField habitTextField;
@@ -141,63 +145,129 @@ public class SkillBlazer extends Application {
         Label notesLabel;
         TextField notesTextField;
         Button submitButton;
-        
+
         // constructor
         public Options() {
             // creates new stage
             Stage optionsStage = new Stage();
             // sets title
             optionsStage.setTitle("Options");
-            
-            // hbox for first vbox row
+
+            // hbox for 1st vbox row
             HBox hbox1 = new HBox();
             // necessary to pull css specs from style sheet
             hbox1.getStyleClass().add("options");
-                    
             // initializes habitLabel
             habitLabel = new Label();
             // sets text of habitLabel
             habitLabel.setText("Habit/Skill:");
-            
             // initializes habitTextField
             habitTextField = new TextField();
-            
             // adds GUI components to hbox1
             hbox1.getChildren().add(habitLabel);
             hbox1.getChildren().add(habitTextField);
-            
-            // hbox for second vbox row
+
+            // hbox for 2nd vbox row
             HBox hbox2 = new HBox();
             // necessary to pull css specs from style sheet
             hbox2.getStyleClass().add("options");
-   
             // initializes goalLabel
             goalLabel = new Label();
             // sets text of goalLabel
             goalLabel.setText("Goal to Reach:");
-            
             // initializes numTextField
             numTextField = new TextField();
             // sets max size of numTextField
             numTextField.setMaxSize(80, 80);
-            
             // initializes goalComboBox
             goalComboBox = new ComboBox();
             goalComboBox.getItems().add("minutes");
             goalComboBox.getItems().add("hours");
             goalComboBox.getItems().add("miles");
-            
             // adds GUI components to hbox2
             hbox2.getChildren().add(goalLabel);
             hbox2.getChildren().add(numTextField);
             hbox2.getChildren().add(goalComboBox);
-            
-            // hbox for third vbox row
-            HBox hbox3 = new HBox();
 
+            // hbox for 3rd vbox row
+            HBox hbox3 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox3.getStyleClass().add("options");
+            // initializes freqLabel
+            freqLabel = new Label();
+            // sets text of freqLabel
+            freqLabel.setText("Frequency:");
+            // adds GUI components to hbox3
+            hbox3.getChildren().add(freqLabel);
+
+            // hbox for 4th vbox row
+            HBox hbox4 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox4.getStyleClass().add("options");
+            // initializes dailyRB
+            dailyRB = new RadioButton();
+            // sets text of dailyRB
+            dailyRB.setText("Daily");
+            // adds GUI components to hbox4
+            hbox4.getChildren().add(dailyRB);
+
+            // hbox for 5th vbox row
+            HBox hbox5 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox5.getStyleClass().add("options");
+            // initializes weeklyRB
+            weeklyRB = new RadioButton();
+            // sets text of weeklyRB
+            weeklyRB.setText("Weekly");
+            // adds GUI components to hbox5
+            hbox5.getChildren().add(weeklyRB);
+
+            // hbox for 6th vbox row
+            HBox hbox6 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox6.getStyleClass().add("options");
+            // initializes customRB
+            customRB = new RadioButton();
+            customRB.setText("Custom");
+            // adds GUI components to hbox6
+            hbox6.getChildren().add(customRB);
+
+            // hbox for 7th vbox row
+            HBox hbox7 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox7.getStyleClass().add("hbox7");         
+            // initializes monRB
+            monRB = new RadioButton();
+            monRB.setText("Monday");
+            // initializes tuesRB
+            tuesRB = new RadioButton();
+            tuesRB.setText("Tuesday");
+            // initializes wedRB
+            wedRB = new RadioButton();
+            wedRB.setText("Wednesday");
+            // initializes thursRB
+            thursRB = new RadioButton();
+            thursRB.setText("Thursday");
+            // initializes friRB
+            friRB = new RadioButton();
+            friRB.setText("Friday");
+            // initializes satRB
+            satRB = new RadioButton();
+            satRB.setText("Saturday");
+            // initializes sunRB
+            sunRB = new RadioButton();
+            sunRB.setText("Sunday");
+            // adds GUI components to hbox7
+            hbox7.getChildren().add(monRB);
+            hbox7.getChildren().add(tuesRB);
+            hbox7.getChildren().add(wedRB);
+            hbox7.getChildren().add(thursRB);
+            hbox7.getChildren().add(friRB);
+            hbox7.getChildren().add(satRB);
+            hbox7.getChildren().add(sunRB);
             
             
-            
+
             // new vbox layout
             VBox optionsVbox = new VBox();
             // necessary to pull css specs from style sheet
@@ -205,11 +275,14 @@ public class SkillBlazer extends Application {
             // adds hboxes to vbox layout
             optionsVbox.getChildren().add(hbox1);
             optionsVbox.getChildren().add(hbox2);
-            
+            optionsVbox.getChildren().add(hbox3);
+            optionsVbox.getChildren().add(hbox4);
+            optionsVbox.getChildren().add(hbox5);
+            optionsVbox.getChildren().add(hbox6);
+            optionsVbox.getChildren().add(hbox7);
 
-            
             // adds this pane/layout to the scene
-            Scene optionsScene = new Scene(optionsVbox, 600, 600);
+            Scene optionsScene = new Scene(optionsVbox, 700, 700);
             // adds scene to stage 
             optionsStage.setScene(optionsScene);
             // gets css style sheet
