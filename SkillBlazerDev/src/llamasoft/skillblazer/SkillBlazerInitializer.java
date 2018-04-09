@@ -82,7 +82,8 @@ class SkillBlazerInitializer {
                 }
                 output.close();
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.out.println("IOException thrown! ");
             e.printStackTrace();
         }
