@@ -10,6 +10,15 @@ public class UserProfile {
 
     private Calendar userStartDate;
     private String userName;
+    private String preferredSaveLocation;
+
+    public void setPreferredSaveLocation(String preferredSaveLocation) {
+        this.preferredSaveLocation = preferredSaveLocation;
+    }
+
+    public String getPreferredSaveLocation(UserProfile userProfile) {
+        return this.preferredSaveLocation;
+    }
 
     public UserProfile() {}
 

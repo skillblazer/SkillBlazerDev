@@ -49,10 +49,10 @@ public class JSONLoader {
     // This method only returns the file contents that were last saved to disk
     public ArrayList<Task> getTaskListFromJSON(JSONObject jsonObject) {
 
-        while (jsonObject.)
-        parseTask(jsonObject);
-
-        jsonObject.con
+//        while (jsonObject.)
+//        parseTask(jsonObject);
+//
+//        jsonObject.con
 
 
         return jsonTaskList;

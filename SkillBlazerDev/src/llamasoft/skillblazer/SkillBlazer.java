@@ -10,8 +10,10 @@ import javafx.stage.Stage;
 
 
 public class SkillBlazer extends Application {
+    SkillBlazerInitializer intializer = new SkillBlazerInitializer();
     JSONLoader jsonLoader = new JSONLoader();
     JSONWriter jsonWriter = new JSONWriter();
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -29,13 +31,16 @@ public class SkillBlazer extends Application {
         // add scene to stage
         primaryStage.setScene(scene);
 
-        
         // show the stage
         primaryStage.show();  // actually display the scene
     }
 
 
     public static void main(String[] args) {
+        // probably need to call something from SkillBlazerInitializer
+        // to instantiate the Tasks and UserProfile objects and make them
+        // available to the GUI
+
         launch(args);  // open the JavaFX Stage
     }
 }

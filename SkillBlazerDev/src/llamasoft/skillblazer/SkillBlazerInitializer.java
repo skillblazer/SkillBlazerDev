@@ -16,7 +16,7 @@ class SkillBlazerInitializer {
     // used to store the UserProfile and all tasks.
     // Can easily be extended if we want to store more stuff in different
     // json files later on
-    private ArrayList<String> listOfJSONFiles = new ArrayList<>();
+    private ArrayList<String> listOfJSONFiles = getFileList();
 
     // TODO: remove this hard coded location
     // using a manually coded location for testing purpose only
@@ -24,11 +24,12 @@ class SkillBlazerInitializer {
 
     protected SkillBlazerInitializer() {}
 
+
     protected static ArrayList<String> getFileList() {
         ArrayList<String> listOfJsonFiles = new ArrayList<>();
 
         // create a File object in the local directory relevant to the current path
-        java.io.File file = new java.io.File("SBinit.txt");
+        java.io.File file = new java.io.File("\\SBinit.txt");
 
         try {
             if (!file.exists()) {
@@ -41,10 +42,6 @@ class SkillBlazerInitializer {
                     listOfJsonFiles.add(input.nextLine());
                 }
             }
-//            // TODO: remove this loop after a couple sucessful tests!
-//            for (String string : listOfJsonFiles) {
-//                System.out.println(string);
-//            }
         }
         catch (IOException e) {
             System.out.println("IOException thrown! ");
@@ -74,8 +71,11 @@ class SkillBlazerInitializer {
                 }
                 output.close(); // close the file
             } else {
+                // open the file on the disk
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
 
+                // (Overwriting previous contents) add filenames to disk
+                // one per line
                 while (fileNamesIterator.hasNext()) {
                     // add contents of the ArrayList of fileNames to SBinit.txt
                     output.println(fileNamesIterator.next());
@@ -90,10 +90,11 @@ class SkillBlazerInitializer {
 
 
     protected String getLastJSONFilePath() {
-        // TODO: This should not be a hard coded reference - the init.txt file should hold the last used location
-        // TODO: that location should be ready to be passed to any part of the program that wants to write to disk!
+        // TODO: The preferredUserPath is now a field in UserProfile.java
+        // The UserProfile has to be instantiated before this works!
+
+        //bogus return statement, never use absolute paths
         return "C:\\$USER\\Desktop\\JSONTestFiles\\";
     }
-
 
 }
