@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
 
 
 class SkillBlazerInitializer {
@@ -22,24 +24,68 @@ class SkillBlazerInitializer {
 
     protected SkillBlazerInitializer() {}
 
-    protected ArrayList<String> createListOfFiles() {
-        try {
-            java.io.File file = new File(getLastJSONFilePath());
-            FileReader fileReader = new FileReader( "SBinit.txt" );
-            while ()
-            listOfJSONFiles.add(fileReader.);
+    protected static ArrayList<String> getFileList() {
+        ArrayList<String> listOfJsonFiles = new ArrayList<>();
 
-        } catch (FileNotFoundException e) {
-            // TODO: Pop a JavaFX prompt to find the File!
-            System.out.println("\nNothing at this location\n");
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO: Pop a JavaFX prompt to find the File!
-            System.out.println("\nIOException error thrown\n");
+        // create a File object in the local directory relevant to the current path
+        java.io.File file = new java.io.File("SBinit.txt");
+
+        try {
+            if (!file.exists()) {
+                java.io.PrintWriter output = new java.io.PrintWriter(file);
+                output.close();  // close the file
+            }
+            else {
+                Scanner input = new Scanner(file);
+                while (input.hasNext()) {
+                    listOfJsonFiles.add(input.nextLine());
+                }
+            }
+//            // TODO: remove this loop after a couple sucessful tests!
+//            for (String string : listOfJsonFiles) {
+//                System.out.println(string);
+//            }
+        }
+        catch (IOException e) {
+            System.out.println("IOException thrown! ");
             e.printStackTrace();
         }
+        // pass the ArrayList<String> listOfJsonFiles to the caller
+        return listOfJsonFiles;
+    }
 
-        return listOfJSONFiles;
+
+    public static void writeJsonFileListToInit(ArrayList<String> fileList) {
+        // a method will need to be written to handle taking the Task
+        // objects and creating a corresponding list of Strings for the
+        // filename e.g. d0005.json or userProfile.json
+
+        Iterator<String> fileNamesIterator = fileList.iterator();
+        // create a file object to reference SBinit.txt
+        java.io.File file = new java.io.File("SBinit.txt");
+
+        try {
+            if (!file.exists()) {
+                // create the file on disk
+                java.io.PrintWriter output = new java.io.PrintWriter(file);
+                while (fileNamesIterator.hasNext()) {
+                    // add contents of the ArrayList of fileNames to SBinit.txt
+                    output.println(fileNamesIterator.next());
+                }
+                output.close(); // close the file
+            } else {
+                java.io.PrintWriter output = new java.io.PrintWriter(file);
+
+                while (fileNamesIterator.hasNext()) {
+                    // add contents of the ArrayList of fileNames to SBinit.txt
+                    output.println(fileNamesIterator.next());
+                }
+                output.close();
+            }
+        } catch (IOException e) {
+            System.out.println("IOException thrown! ");
+            e.printStackTrace();
+        }
     }
 
 
