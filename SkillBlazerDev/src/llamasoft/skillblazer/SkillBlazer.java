@@ -18,6 +18,12 @@ public class SkillBlazer extends Application {
     Button optionsButton;           // options button
     Label appTitle;                 // application title
     Button lifetimeMetricsButton;   // lifetime metrics button
+    Label currentMonthLabel;         // label for current month
+    Button forwardMonthButton;       // button to move month forward
+    Button backMonthButton;          // button to move month back
+    CalendarCalculator calCalc;      // CalendarCalculator object
+    
+    // TO DO:  Add Calendar GUI features - TilePane (smaller for days of the week, larger for eeach day block)
 
     // sets up the main stage, scenes and such
     @Override
@@ -32,7 +38,8 @@ public class SkillBlazer extends Application {
         dropShadow.setOffsetX(3.0);
         dropShadow.setOffsetY(3.0);
         //dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-
+        calCalc = new CalendarCalculator();
+//        System.out.println(calCalc.getCurrentMonthString());      // Used for testing display of month
         // initializes optionsButton
         optionsButton = new Button();
         // sets text of optionsButton
@@ -54,6 +61,30 @@ public class SkillBlazer extends Application {
         appTitle.setFont(Font.font("Impact", 30));
         // sets alignment of appTitle to center
         appTitle.setAlignment(Pos.CENTER);
+        
+        
+        currentMonthLabel = new Label();
+        currentMonthLabel.setText(calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt());
+        forwardMonthButton = new Button();       // button to move month forward
+        forwardMonthButton.setText(">>");
+        forwardMonthButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                calCalc.changeMonthForward();
+                
+                currentMonthLabel.setText(calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt());
+            }
+        }); // end event handler
+        backMonthButton = new Button();          // button to move month back
+        backMonthButton.setText("<<");
+        backMonthButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                calCalc.changeMonthBackward();
+                
+                currentMonthLabel.setText(calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt());
+            }
+        }); // end event handler
 
         // initializes lifetimeMetricsButton
         lifetimeMetricsButton = new Button();
@@ -83,15 +114,31 @@ public class SkillBlazer extends Application {
         hbox.getChildren().add(optionsButton);
         // adds appTitle to hbox
         hbox.getChildren().add(appTitle);
+ 
         // adds lifetimeMetricsButton to hbox
         hbox.getChildren().add(lifetimeMetricsButton);
+        
+        HBox hbox2 = new HBox();
 
+        
+        // necessary to pull css specs from style sheet
+        hbox2.getStyleClass().add("hbox");
+        // sets layout of top of borderPane to hbox 
+        borderPane.setCenter(hbox2);
+        // adds backMonthButton to hbox
+        hbox2.getChildren().add(backMonthButton);
+        // adds currentMonthLabel to hbox
+        hbox2.getChildren().add(currentMonthLabel);
+        // adds forwardMonthButton to hbox
+        hbox2.getChildren().add(forwardMonthButton);
+        
+        
         // vbox layout for center of BorderPane
         VBox vbox = new VBox();
         // necessary to pull css specs from style sheet
         vbox.getStyleClass().add("vbox");
         // sets layout of center of borderPane to vbox
-        borderPane.setCenter(vbox);
+        borderPane.setBottom(vbox);
 
         // adds this pane/layout to the scene
         Scene scene = new Scene(borderPane, 900, 600);

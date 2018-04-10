@@ -1,1 +1,71 @@
-/* this is where Luke lives */
+/* properties for hbox */
+.hbox {
+    /* sets padding */
+    -fx-padding: 15;
+    /* sets spacing */
+    -fx-spacing: 200;
+    /* sets background color */
+    -fx-background-color: #6495ed;   
+}
+
+/* properties for vbox */
+.vbox {
+    /* sets background color */
+    -fx-background-color: #6495ed;
+}
+
+.secondaryWindow {
+    /* sets padding */
+    -fx-padding: 15;  
+    /* sets background color */
+    -fx-background-color:  #b0c4de;
+    /* sets font */
+    -fx-font-family: "cambria";
+    /* sets font size */
+    -fx-font-size: 16px;
+    /* sets font weight */
+    -fx-font-weight: bold;
+}
+
+.options {
+    /* sets padding */
+    -fx-padding: 15;
+    /* sets font size */
+    -fx-font-size: 13;
+}
+
+.hbox7 {
+    /* sets padding */
+    -fx-padding: 15;
+    /* sets font size */
+    -fx-font-size: 13;
+    /* sets spacing */
+    -fx-spacing: 15;
+     /* sets font weight */
+    -fx-font-weight: normal;
+}
+
+/* style specification for buttons */
+.button {
+    /* sets background color */
+    -fx-background-color: #ffd700;
+    /* sets dropshadow effect */
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 );
+    /* sets font */
+    -fx-font-family: "cambria";
+    /* -fx-hgrow: PriorityALWAYS; */
+}
+
+/* properties when button is pressed */
+.button:pressed {
+    /* sets background color */
+    -fx-background-color: #b0c4de;
+}
+
+/* properties when hovering over button */
+.button:hover {
+    /* sets background color */
+    -fx-background-color: #b0c4de;
+}
+
+

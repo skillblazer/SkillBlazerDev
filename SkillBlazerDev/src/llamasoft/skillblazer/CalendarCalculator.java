@@ -6,6 +6,7 @@ import javafx.scene.layout.TilePane;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class CalendarCalculator {
     private Calendar currentMonth;
@@ -33,15 +34,35 @@ public class CalendarCalculator {
 
     public CalendarCalculator() {
         this.currentMonth = new GregorianCalendar();
-        this.thisMonth = currentMonth.get(Calendar.MONTH);
-        this.thisYear = currentMonth.get(Calendar.YEAR);
     }
 
 
     public int getCurrentMonthInt() {
-        return thisMonth;
+        return currentMonth.get(Calendar.MONTH);
     }
-
+    
+    public String getCurrentMonthString() {
+        return currentMonth.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
+        
+    }
+    public int getCurrentYearInt() {
+        return currentMonth.get(Calendar.YEAR);
+    }
+    
+    
+    public void changeMonthForward() {
+        if (currentMonth.get(Calendar.MONTH) == 11) {
+            currentMonth.roll(Calendar.YEAR, true);
+        }
+        currentMonth.roll(Calendar.MONTH, true);
+    }
+    
+    public void changeMonthBackward() {
+        if (currentMonth.get(Calendar.MONTH) == 0) {
+            currentMonth.roll(Calendar.YEAR, false);
+        }
+        currentMonth.roll(Calendar.MONTH, false);
+    }
     /**
      * This section of the code will deal with creating the GUI elements for
      * the JavaFX calendar scene
@@ -49,10 +70,10 @@ public class CalendarCalculator {
 
     public void instantiateCalendar() {
         Scene calendarScene;
-        int daysThisMonth = getDaysInThisCalendarMonth(thisYear, thisMonth);
+        int daysThisMonth = getDaysInThisCalendarMonth(getCurrentYearInt(), getCurrentMonthInt());
 
 
-        for(int dates : daysOfMonth) {
+        for(int dates = 0; dates<daysThisMonth; dates++) {
 
             Day newDay = new Day();  // TODO: finish this constructor call
             // create a Day object
@@ -62,9 +83,11 @@ public class CalendarCalculator {
         }
     }
 
-
+    // add the Day object to the GUI TilePane object
     private void addDayToCalendarTile(Day day) {
-        // add the Day object to the GUI TilePane object
+       
+       
+        
     }
 
     /**
