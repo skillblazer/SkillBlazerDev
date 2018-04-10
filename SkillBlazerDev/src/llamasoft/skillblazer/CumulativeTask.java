@@ -3,7 +3,7 @@
  * File Name: CumulativeTask.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/8/2018
+ * Date: 4/9/2018
  * 
  * Description:
  * 
@@ -27,60 +27,71 @@ import java.util.Calendar;
 
 public class CumulativeTask extends Task {
 
-    Calendar endDate; //
+    Calendar endDate; //end date for cumulative task
 
     /*
-     * 
+     * Default Class Constructor - calls parent constructor
      */
     public CumulativeTask() {
         super();
-    }
+    } //end CumulativeTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
      */
     public CumulativeTask(String taskName) {
         super(taskName);
         this.taskName = taskName;
-    }
+    } //end CumulativeTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
+     * and startDate
      */
     public CumulativeTask(String taskName, Calendar startDate) {
         super(taskName, startDate);
-    }
+    } //end CumulativeTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName, 
+     * startDate, and instantiates endDate
      */
     public CumulativeTask(String taskName, Calendar startDate, Calendar endDate) {
         super(taskName, startDate);
         this.endDate = endDate;
-    }
+    } //end CumulativeTask constructor
     
     /*
-     * 
+     * Mutator method - endDate
      */
     private void setEndDate(Calendar endDate) {
     	this.endDate = endDate;
-    }
+    } //end setEndDate method
 
     /*
-     * 
+     * Accessor method - endDate
      */
     private Calendar getEndDate() {
         return endDate;
-    }
+    } //end getEndDate method
 
     /*
-     * 
+     * This method will return the percentage of the user's goal
+     * that has been completed (e.g. 50% of books read for
+     * overall goal). 
      */
-    //method to return the percentage the user's goal has been completed
-    // (e.g. 50% of books read of overall goal)
-    private double checkStatus() {
-        int fakeNumber = 20;
-        return fakeNumber * 0.10;  // make it a percentage
-    }
-
-}
+    private double checkStatus(double numCompleted, double goalToReach) {
+    	
+    	double tempCompleted = numCompleted; //number completed toward goal
+    	double tempGoal = goalToReach; //goal to reach for task
+    	double percentageDone = 0.0; //percentage completed
+    	
+    	//if number completed > 0, then calculate percentage
+    	if (tempCompleted > 0) {
+    		percentageDone = tempCompleted / tempGoal;
+    		percentageDone = percentageDone * 100;
+    	}
+        
+        return percentageDone;
+    } //end checkStatus method
+}//end CumulativeTask class

@@ -3,7 +3,7 @@
  * File Name: CumulativeTask.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/8/2018
+ * Date: 4/9/2018
  * 
  * Description:
  * 
@@ -28,8 +28,8 @@ import java.util.Calendar;
 public class CustomTask extends Task {
 
     private boolean[] daysOfWeek; //WILL CHANGE THIS TO STRING
-    private int currentStreak; //
-    private int bestStreak; //
+    private int currentStreak; //current streak of completions
+    private int bestStreak; //best streak of completions
     
     /*
      * 

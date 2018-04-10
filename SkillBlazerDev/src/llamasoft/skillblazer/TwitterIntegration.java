@@ -46,9 +46,9 @@ public class TwitterIntegration {
 	 */
 	
 	//
-	private final static String CONSUMER_KEY = "34d1J2WyuSLYbvu4zeGLVmGRv";
+	private final static String CONSUMER_KEY = "";
 	//
-	private final static String CONSUMER_KEY_SECRET = "rmHY2LIUzvMVjGn2AGMx54rAGPx9zKSzlNpY0DSNl05mmqPjzW";
+	private final static String CONSUMER_KEY_SECRET = "";
 	
 	//private Stage window;
 	//private Button button;
