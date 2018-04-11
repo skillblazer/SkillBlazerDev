@@ -1,46 +1,46 @@
 package llamasoft.skillblazer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 
 class SkillBlazerInitializer {
-    private final String initFileLocation = "\\SBinit.txt";
+    private static final String userHome = System.getProperty("user.home");
+    private static final String userFileLocation = userHome + "\\SkillBlazer\\";
+    private static final String initFile = "SBinit.txt";
 
-    // ArrayList that will contain the last-known paths of the files
-    // used to store the UserProfile and all tasks.
-    // Can easily be extended if we want to store more stuff in different
-    // json files later on
-    private ArrayList<String> listOfJSONFiles = getFileList();
-
-    // TODO: remove this hard coded location
-    // using a manually coded location for testing purpose only
-    // private final String jsonFilePath = "C:\\$USER\\JSONTestFiles\\AddingFirstGoalTestFile.json";
 
     protected SkillBlazerInitializer() {}
 
+    protected static void createSkillBlazerDirectory() {
+        boolean newDirectory = new File(userFileLocation).mkdirs();
+    }
 
     protected static ArrayList<String> getFileList() {
         ArrayList<String> listOfJsonFiles = new ArrayList<>();
 
         // create a File object in the local directory relevant to the current path
-        java.io.File file = new java.io.File("\\SBinit.txt");
+        java.io.File directory = new java.io.File(userFileLocation);
+        java.io.File file = new java.io.File(userFileLocation + initFile);
 
         try {
+            if (!directory.exists()) {
+                createSkillBlazerDirectory();
+            }
             if (!file.exists()) {
+                // if the file doesn't exist, go ahead and create it for later
+                // (usually occurs when the user runs the program for the very
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
                 output.close();  // close the file
             }
             else {
                 Scanner input = new Scanner(file);
                 while (input.hasNext()) {
+                    // take the contents of SBinit.txt and ADD them to the ArrayList
                     listOfJsonFiles.add(input.nextLine());
                 }
+                input.close();
             }
         }
         catch (IOException e) {
@@ -59,9 +59,13 @@ class SkillBlazerInitializer {
 
         Iterator<String> fileNamesIterator = fileList.iterator();
         // create a file object to reference SBinit.txt
-        java.io.File file = new java.io.File("SBinit.txt");
+        java.io.File directory = new java.io.File(userFileLocation);
+        java.io.File file = new java.io.File(userFileLocation + initFile);
 
         try {
+            if (!directory.exists()) {
+                createSkillBlazerDirectory();
+            }
             if (!file.exists()) {
                 // create the file on disk
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
@@ -89,13 +93,16 @@ class SkillBlazerInitializer {
         }
     }
 
-
+    /**
+     * TODO: This should use the user-set (custom) value set in UserProfile.java
+     * This method will eventually find a CUSTOM location set by the user.
+     * Likely this method will not be implemented until Phase 2 or Phase 3
+     */
     protected String getLastJSONFilePath() {
-        // TODO: The preferredUserPath is now a field in UserProfile.java
-        // The UserProfile has to be instantiated before this works!
 
+        String userHome = System.getProperty("user.home");
         //bogus return statement, never use absolute paths
-        return "C:\\$USER\\Desktop\\JSONTestFiles\\";
+        return userHome;
     }
 
 }

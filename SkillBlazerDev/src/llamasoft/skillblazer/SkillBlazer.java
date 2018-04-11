@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
 
@@ -18,6 +21,7 @@ public class SkillBlazer extends Application {
     @Override
     public void start(Stage primaryStage) {
         // setup the main Stage, Scenes and such
+
 
         // uncomment for Macintosh style
         //AquaFx.style();
@@ -41,6 +45,32 @@ public class SkillBlazer extends Application {
         // to instantiate the Tasks and UserProfile objects and make them
         // available to the GUI
 
+        sbInitTester();
+
         launch(args);  // open the JavaFX Stage
     }
+
+
+    public static void sbInitTester() {
+        ArrayList<String> fileListTest = SkillBlazerInitializer.getFileList();
+        //fileListTest = SkillBlazerInitializer.getFileList();
+
+        if (fileListTest.isEmpty()) {
+            fileListTest.add("d0005.json");
+            fileListTest.add("userProfile.json");
+            fileListTest.add("w0002.json");
+            fileListTest.add("c0003.json");
+        }
+
+        SkillBlazerInitializer.writeJsonFileListToInit(fileListTest);
+
+        ArrayList<String> notEmptyTest = SkillBlazerInitializer.getFileList();
+
+        Iterator<String> iterator = notEmptyTest.iterator();
+
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    } // end method sbinitTester()
+
 }
