@@ -10,9 +10,13 @@ import java.util.*;
  * starts up or when other parts of the application need to save additions to or
  * changes to the overall set of Tasks created by the user.
  *
- * Note on design philosophy -> This class is responsible for handling the
- * location of all user files, and should be handling any direct references to
- * the filesystem!
+ * Note on design philosophy -> This class is responsible for providing info on
+ * the location of all user files, and should be handling any direct references
+ *  or changes to SBinit.txt file!
+ *
+ *  It will handle accessing SBinit.txt as required by JSONLoader and JSONWriter
+ *  and provide location data for the files these classes need to read/write
+ *  to JSON files
  *
  * */
 
