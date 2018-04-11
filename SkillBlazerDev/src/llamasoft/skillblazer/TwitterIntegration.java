@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/8/2018
+ * Date: 4/10/2018
  * 
  * Description:
  * 
@@ -17,13 +17,13 @@
 
 package llamasoft.skillblazer;
 
-import javafx.scene.Scene;
+/*import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
+import javafx.scene.control.Label;*/
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,14 +45,15 @@ public class TwitterIntegration {
 	 * Confirm with GUI design first!!!!!
 	 */
 	
-	//
+	//Consumer key for allowing application to access Twitter
 	private final static String CONSUMER_KEY = "";
-	//
+	//Consumer secret for allowing application to access Twitter
 	private final static String CONSUMER_KEY_SECRET = "";
 	
 	//private Stage window;
 	//private Button button;
-	private boolean isEnabled; //
+	@SuppressWarnings("unused")
+	private boolean isEnabled; //determines if Twitter option was selected
 
 	/*
 	 * @Override public void start(Stage primaryStage) throws Exception {

@@ -3,7 +3,7 @@
  * File Name: UserProfile.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/9/2018
+ * Date: 4/10/2018
  * 
  * Description:
  * 
@@ -14,6 +14,7 @@
 
 package llamasoft.skillblazer;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,7 +51,7 @@ public class UserProfile {
      * Calculates the current date and places in a mm/dd/yyyy format
      * for the user to read at the top left of the primary GUI window
      */
-    public String getCurrentDate() {
+    public String calculateCurrentDate() {
     	DateFormat currentDateFormat = new SimpleDateFormat("MM/dd/yyyy");
     	Calendar currentCalDate = Calendar.getInstance();
     	
@@ -60,24 +61,51 @@ public class UserProfile {
     } //end getCurrentDate method
     
     /*
+     * Determines if the folder for the skillblazer app has been created
+     * and records the folder path for where to create new JSON files
+     * for persistence of data.
+     */
+    public String determineOSFilePath() {
+    	
+    	String storageFolderPath = "";
+    	File file = new File("");
+    	
+    	String osName = System.getProperty("os.name");
+    	String homePath = System.getProperty("user.home");
+    	
+    	if (osName.contains("Windows") || osName.contains("Mac") || osName.contains("Linux") || 
+    			osName.contains("Unix")) {
+    		
+    		file = new File(homePath + "\\Documents\\skillblazerApp");
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            
+    		storageFolderPath = (homePath + "\\Documents\\skillblazerApp");
+    	}
+    	
+    	return storageFolderPath;
+    }
+    
+    /*
      * Accessor Method - userName
      */
     public String getUserName() {
-        return userName;
+        return this.userName;
     } //end getUserName method
 
     /*
      * Accessor Method - userStartDate
      */
     public Calendar getUserStartDate() {
-        return userStartDate;
+        return this.userStartDate;
     } //end getUserStartDate method
     
     /*
      * Accessor Method - taskNumber
      */
     public long getTaskNumber() {
-    	return taskNumber;
+    	return this.taskNumber;
     } //end getTaskNumber method
     
     /*

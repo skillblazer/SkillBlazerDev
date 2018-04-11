@@ -3,7 +3,7 @@
  * File Name: CumulativeTask.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/9/2018
+ * Date: 4/10/2018
  * 
  * Description:
  * 
@@ -23,6 +23,7 @@
 
 package llamasoft.skillblazer;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class CumulativeTask extends Task {
@@ -64,15 +65,15 @@ public class CumulativeTask extends Task {
     /*
      * Mutator method - endDate
      */
-    private void setEndDate(Calendar endDate) {
+    public void setEndDate(Calendar endDate) {
     	this.endDate = endDate;
     } //end setEndDate method
 
     /*
      * Accessor method - endDate
      */
-    private Calendar getEndDate() {
-        return endDate;
+    public Calendar getEndDate() {
+        return this.endDate;
     } //end getEndDate method
 
     /*
@@ -80,7 +81,7 @@ public class CumulativeTask extends Task {
      * that has been completed (e.g. 50% of books read for
      * overall goal). 
      */
-    private double checkStatus(double numCompleted, double goalToReach) {
+    public String checkStatus(double numCompleted, double goalToReach) {
     	
     	double tempCompleted = numCompleted; //number completed toward goal
     	double tempGoal = goalToReach; //goal to reach for task
@@ -91,7 +92,8 @@ public class CumulativeTask extends Task {
     		percentageDone = tempCompleted / tempGoal;
     		percentageDone = percentageDone * 100;
     	}
-        
-        return percentageDone;
+    	
+    	DecimalFormat dFormat = new DecimalFormat(".00");
+        return dFormat.format(percentageDone);
     } //end checkStatus method
 }//end CumulativeTask class
