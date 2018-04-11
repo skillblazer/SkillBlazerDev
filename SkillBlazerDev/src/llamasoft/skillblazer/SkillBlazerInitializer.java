@@ -59,8 +59,12 @@ class SkillBlazerInitializer {
             }
         }
         catch (IOException e) {
-            System.out.println("IOException thrown! ");
-            e.printStackTrace();
+            System.out.println("Input/Output Exception Error." +
+                    " It's quite possible that " +
+                    "the file has been set to read only, or the program cannot " +
+                    "access the folder specified!  " +
+                    "\n1.  Check permissions for folder: " + userFileLocation +
+                    "\n2.  Check Permissions for file: " + userFileLocation + initFile);
         }
         // pass the ArrayList<String> listOfJsonFiles to the caller
         return listOfJsonFiles;
@@ -86,7 +90,7 @@ class SkillBlazerInitializer {
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
                 while (fileNamesIterator.hasNext()) {
                     // add contents of the ArrayList of fileNames to SBinit.txt
-                    output.println(fileNamesIterator.next());
+                    output.println(userFileLocation + fileNamesIterator.next());
                 }
                 output.close(); // close the file
             } else {
@@ -97,14 +101,19 @@ class SkillBlazerInitializer {
                 // one per line
                 while (fileNamesIterator.hasNext()) {
                     // add contents of the ArrayList of fileNames to SBinit.txt
-                    output.println(fileNamesIterator.next());
+                    output.println(userFileLocation + fileNamesIterator.next());
                 }
                 output.close();
             }
         }
         catch (IOException e) {
-            System.out.println("IOException thrown! ");
             e.printStackTrace();
+            System.out.println("Input/Output Exception Error." +
+                    " It's quite possible that " +
+                    "the file has been set to read only, or the program cannot " +
+                    "access the folder specified!  " +
+                    "\n1.  Check permissions for folder: " + userFileLocation +
+                    "\n2.  Check Permissions for file: " + userFileLocation + initFile);
         }
     }
 
