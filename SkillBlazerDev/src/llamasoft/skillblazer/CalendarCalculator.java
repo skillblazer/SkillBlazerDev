@@ -35,7 +35,16 @@ public class CalendarCalculator {
     public CalendarCalculator() {
         this.currentMonth = new GregorianCalendar();
     }
-
+    
+    public int getFirstDayOfWeekCurrentMonth() {
+        Calendar tempMonth = new GregorianCalendar();
+        tempMonth.set(currentMonth.get(Calendar.YEAR), currentMonth.get(Calendar.MONTH), 0);
+        return (tempMonth.get(Calendar.DAY_OF_WEEK)%7);
+    }
+    public int getDaysInCurrentMonth() {
+        
+        return getDaysInThisCalendarMonth((GregorianCalendar)currentMonth);
+    }
 
     public int getCurrentMonthInt() {
         return currentMonth.get(Calendar.MONTH);
@@ -85,7 +94,6 @@ public class CalendarCalculator {
 
     // add the Day object to the GUI TilePane object
     private void addDayToCalendarTile(Day day) {
-       
        
         
     }

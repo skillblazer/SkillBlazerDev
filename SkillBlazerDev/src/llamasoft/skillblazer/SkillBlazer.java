@@ -8,7 +8,6 @@ import javafx.stage.*;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
-import javafx.scene.text.*;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
 
@@ -18,17 +17,25 @@ public class SkillBlazer extends Application {
     Button optionsButton;           // options button
     Label appTitle;                 // application title
     Button lifetimeMetricsButton;   // lifetime metrics button
-    Label currentMonthLabel;         // label for current month
+    Label currentMonthYearLabel;     // label for current month and year
     Button forwardMonthButton;       // button to move month forward
     Button backMonthButton;          // button to move month back
     CalendarCalculator calCalc;      // CalendarCalculator object
-    
-    // TO DO:  Add Calendar GUI features - TilePane (smaller for days of the week, larger for eeach day block)
+    TilePane calendarPane;           // tilepane object for calendar
+    Label monLabel;
+    Label tuesLabel;
+    Label wedLabel;
+    Label thursLabel;
+    Label friLabel;
+    Label satLabel;
+    Label sunLabel;
+    VBox[] vboxArray = new VBox[49];
 
+    // TO DO:  Add Calendar GUI features - TilePane (smaller for days of the week, larger for eeach day block)
     // sets up the main stage, scenes and such
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
+
         // sets title of main window (primaryStage)
         primaryStage.setTitle("Skillblazer Habit Tracker");
 
@@ -44,6 +51,7 @@ public class SkillBlazer extends Application {
         optionsButton = new Button();
         // sets text of optionsButton
         optionsButton.setText("Options");
+        optionsButton.setPrefWidth(120);
         // event handler for 'Options' button
         optionsButton.setOnAction(new EventHandler() {
             @Override
@@ -55,34 +63,52 @@ public class SkillBlazer extends Application {
 
         // initializes appTitle
         appTitle = new Label();
+        // pulls css specs from style sheet
+        appTitle.getStyleClass().add("appTitle");
         // sets text of appTitle
         appTitle.setText("Skillblazer Habit Tracker");
-        // sets font of appTitle
-        appTitle.setFont(Font.font("Impact", 30));
+        Region region1 = new Region();
+        //            vboxLabel.setAlignment(Pos.CENTER);
+        //            vboxLabel.setTextAlignment(Pos.TOP_RIGHT);
+        HBox.setHgrow(region1, Priority.ALWAYS);
         // sets alignment of appTitle to center
-        appTitle.setAlignment(Pos.CENTER);
-        
-        
-        currentMonthLabel = new Label();
-        currentMonthLabel.setText(calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt());
-        forwardMonthButton = new Button();       // button to move month forward
+        //appTitle.setAlignment(Pos.CENTER);
+        Region region2 = new Region();
+        HBox.setHgrow(region2, Priority.ALWAYS);
+
+        // initializes currentMonthYearLabel
+        currentMonthYearLabel = new Label();
+        // pulls css specs from style sheet
+        currentMonthYearLabel.getStyleClass().add("currentMonthYearLabel");
+        // sets text of currentMonthYearLabel by calling two methods in CalendarCalculator class
+        currentMonthYearLabel.setText(" " + calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt() + " ");
+        // initializes forwardMonthButton
+        forwardMonthButton = new Button();
+        // sets text of forwardMonthButton
         forwardMonthButton.setText(">>");
+        // event handler for forwardMonthButton
         forwardMonthButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 calCalc.changeMonthForward();
-                
-                currentMonthLabel.setText(calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt());
+                // sets text of currentMonthYearLabel by calling two methods in CalendarCalculator class
+                currentMonthYearLabel.setText(" " + calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt() + " ");
+                drawCalendar();
+
             }
         }); // end event handler
-        backMonthButton = new Button();          // button to move month back
+        // initializes backMonthButton
+        backMonthButton = new Button();
+        // sets text of backMonthButton
         backMonthButton.setText("<<");
+        // event handler for backMonthButton
         backMonthButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 calCalc.changeMonthBackward();
-                
-                currentMonthLabel.setText(calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt());
+                // sets text of currentMonthYearLabel by calling two methods in CalendarCalculator class
+                currentMonthYearLabel.setText(" " + calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt() + " ");
+                drawCalendar();
             }
         }); // end event handler
 
@@ -90,8 +116,9 @@ public class SkillBlazer extends Application {
         lifetimeMetricsButton = new Button();
         // sets text of lifetimeMetricsButton
         lifetimeMetricsButton.setText("Lifetime Metrics");
+        lifetimeMetricsButton.setPrefWidth(120);
         // lambda expression - event handler
-        lifetimeMetricsButton.setOnAction(e -> System.out.println("Hello!"));
+        //lifetimeMetricsButton.setOnAction(e -> System.out.println("Hello!"));
         // event handler for 'Lifetime Metrics' button
         lifetimeMetricsButton.setOnAction(new EventHandler() {
             @Override
@@ -101,48 +128,84 @@ public class SkillBlazer extends Application {
             }
         }); // end event handler
 
-        // sets up layout pane (BorderPane)
-        BorderPane borderPane = new BorderPane();
+        BorderPane borderPaneMain = new BorderPane();
+        // sets up layout pane (VBox)
+        VBox vboxMain = new VBox();
 
-        // hbox layout for top of BorderPane
-        HBox hbox = new HBox();
-        // necessary to pull css specs from style sheet
-        hbox.getStyleClass().add("hbox");
-        // sets layout of top of borderPane to hbox 
-        borderPane.setTop(hbox);
+        // hbox layout for top of screen
+        HBox hboxTop = new HBox();
+        // pulls css specs from style sheet
+        hboxTop.getStyleClass().add("vboxMain");
+        // adds hbox to vboxMain
+        vboxMain.getChildren().add(hboxTop);
         // adds optionsButton to hbox
-        hbox.getChildren().add(optionsButton);
+        hboxTop.getChildren().add(optionsButton);
+        hboxTop.getChildren().add(region1);
         // adds appTitle to hbox
-        hbox.getChildren().add(appTitle);
- 
-        // adds lifetimeMetricsButton to hbox
-        hbox.getChildren().add(lifetimeMetricsButton);
-        
-        HBox hbox2 = new HBox();
+        hboxTop.getChildren().add(appTitle);
+        hboxTop.getChildren().add(region2);
 
-        
-        // necessary to pull css specs from style sheet
-        hbox2.getStyleClass().add("hbox");
-        // sets layout of top of borderPane to hbox 
-        borderPane.setCenter(hbox2);
+        // adds lifetimeMetricsButton to hbox
+        hboxTop.getChildren().add(lifetimeMetricsButton);
+
+        // hbox layout for current month/year and back/forward buttons
+        HBox hboxMonthYear = new HBox();
+        // pulls css specs from style sheet
+        hboxMonthYear.getStyleClass().add("vboxMain");
+        // sets layout of center of borderPane to hbox 
+        vboxMain.getChildren().add(hboxMonthYear);
+        // sets alignment for hbox2
+        hboxMonthYear.setAlignment(Pos.TOP_CENTER);
         // adds backMonthButton to hbox
-        hbox2.getChildren().add(backMonthButton);
+        hboxMonthYear.getChildren().add(backMonthButton);
         // adds currentMonthLabel to hbox
-        hbox2.getChildren().add(currentMonthLabel);
+        hboxMonthYear.getChildren().add(currentMonthYearLabel);
         // adds forwardMonthButton to hbox
-        hbox2.getChildren().add(forwardMonthButton);
-        
-        
-        // vbox layout for center of BorderPane
-        VBox vbox = new VBox();
+        hboxMonthYear.getChildren().add(forwardMonthButton);
+
+//        HBox hboxDays = new HBox();
+//        vboxMain.getChildren().add(hboxDays);
+//        monLabel = new Label("Monday");
+//        tuesLabel = new Label("Tuesday");
+//        wedLabel = new Label("Wednesday");
+//        thursLabel = new Label("Thursday");
+//        friLabel = new Label("Friday");
+//        satLabel = new Label("Saturday");
+//        sunLabel = new Label("Sunday");
+//        hboxDays.getStylesheets().add("days");
+//        hboxDays.getChildren().add(sunLabel);
+//        hboxDays.getChildren().add(monLabel);
+//        hboxDays.getChildren().add(tuesLabel);
+//        hboxDays.getChildren().add(wedLabel);
+//        hboxDays.getChildren().add(thursLabel);
+//        hboxDays.getChildren().add(friLabel);
+//        hboxDays.getChildren().add(satLabel);
+//        hboxDays.getStyleClass().add("hbox3");
+        // initializes calendarPane
+        calendarPane = new TilePane();
+        calendarPane.getStyleClass().add("calendarPane");
+        calendarPane.setLayoutX(140);
+        calendarPane.setLayoutY(50);
+        //calendarPane.setTileAlignment(Pos.CENTER);
+        //calendarPane.setAlignment(Pos.CENTER);
+        calendarPane.setPrefRows(7);
+        calendarPane.setPrefColumns(7);
+
+        drawCalendar();
+
+        HBox hboxCalendar = new HBox();
         // necessary to pull css specs from style sheet
-        vbox.getStyleClass().add("vbox");
-        // sets layout of center of borderPane to vbox
-        borderPane.setBottom(vbox);
+        hboxCalendar.getStyleClass().add("vboxMain");
+        hboxCalendar.setPrefHeight(500);
+        hboxCalendar.getChildren().add(calendarPane);
+        hboxCalendar.setAlignment(Pos.CENTER);
+        vboxMain.getChildren().add(hboxCalendar);
 
         // adds this pane/layout to the scene
-        Scene scene = new Scene(borderPane, 900, 600);
-
+//        Scene scene = new Scene(vboxMain, 900, 800);
+        borderPaneMain.setCenter(vboxMain);
+        borderPaneMain.getStyleClass().add("vboxMain");
+        Scene scene = new Scene(borderPaneMain, 1000, 800);
         // adds scene to stage
         primaryStage.setScene(scene);
 
@@ -154,8 +217,72 @@ public class SkillBlazer extends Application {
 
         // uncomment for Macintosh style
         //AquaFx.style();
-        
     } // end start() method
+
+    private void drawCalendar() {
+        int firstWeekdayMonth = calCalc.getFirstDayOfWeekCurrentMonth();
+        int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();
+        int j = 0;
+        calendarPane.getChildren().clear();
+
+        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday", "Sunday"};
+        for (int i = 0; i < 7; i++) {
+            vboxArray[i] = new VBox();
+            HBox hboxCal = new HBox();
+            Label vboxLabel = new Label(daysOfWeek[i]);
+            vboxLabel.getStyleClass().add("dayOfWeekLabels");
+
+            Region emptyRegion1 = new Region();
+            Region emptyRegion2 = new Region();
+            Region emptyRegion3 = new Region();
+            HBox.setHgrow(emptyRegion3, Priority.ALWAYS);
+            HBox.setHgrow(emptyRegion2, Priority.ALWAYS);
+            VBox.setVgrow(emptyRegion1, Priority.ALWAYS);
+            hboxCal.getChildren().add(emptyRegion3);
+            hboxCal.getChildren().add(vboxLabel);
+            hboxCal.getChildren().add(emptyRegion2);
+            vboxArray[i].getChildren().add(emptyRegion1);
+            vboxArray[i].getChildren().add(hboxCal);
+            calendarPane.getChildren().add(vboxArray[i]);
+        }
+    
+        for (int i = 7; i < vboxArray.length; i++) {
+
+            vboxArray[i] = new VBox();
+            vboxArray[i].setPrefSize(120, 85);
+            if (((i - 7) >= firstWeekdayMonth) && j < numberDaysCurrentMonth) {
+                vboxArray[i].getStyleClass().add("vboxCalendar");
+                HBox hboxCal = new HBox();
+                j++;
+                Label vboxLabel = new Label("" + j);
+                Region emptyRegion = new Region();
+                Button vboxButton = new Button("+");
+                vboxButton.setPrefSize(20, 20);
+                //            vboxLabel.setAlignment(Pos.CENTER);
+                //            vboxLabel.setTextAlignment(Pos.TOP_RIGHT);
+                HBox.setHgrow(emptyRegion, Priority.ALWAYS);
+                //            HBox.setHgrow(vboxLabel, Priority.ALWAYS);
+                //            vboxLabel.getStyleClass().add("vboxLabel");
+
+                vboxButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        // instantiates Options
+                        CalendarButton calButton = new CalendarButton();
+                    }
+
+                }); // end event handler
+                hboxCal.getChildren().add(vboxButton);
+                hboxCal.getChildren().add(emptyRegion);
+                hboxCal.getChildren().add(vboxLabel);
+
+                vboxArray[i].getChildren().add(hboxCal);
+            }
+            calendarPane.getChildren().add(vboxArray[i]);
+        }
+
+    }
 
     // inner class for 'Options' menu
     class Options {
@@ -187,11 +314,86 @@ public class SkillBlazer extends Application {
 
         // constructor
         public Options() {
-            
+
+            // creates new stage
+            Stage habitEntryStage = new Stage();
+            // sets title
+            habitEntryStage.setTitle("Options");
+            // new vbox layout
+            VBox habitEntryVBox = new VBox();
+            // necessary to pull css specs from style sheet
+            habitEntryVBox.getStyleClass().add("secondaryWindow");
+            // adds this pane/layout to the scene
+            Scene habitEntryScene = new Scene(habitEntryVBox, 600, 680);
+            // adds scene to stage 
+            habitEntryStage.setScene(habitEntryScene);
+            // gets css style sheet
+            habitEntryScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            // shows the stage
+            habitEntryStage.show();    // actually displays the scene
+        }
+
+    } // end Options class
+
+    // inner class for 'Lifetime Metrics' menu
+    class LifetimeMetrics {
+
+        // constructor
+        public LifetimeMetrics() {
+            // creates new stage
+            Stage lifeMetricsStage = new Stage();
+            // sets title
+            lifeMetricsStage.setTitle("Lifetime Metrics");
+            // new vbox layout
+            VBox lifeMetricsVbox = new VBox();
+            // necessary to pull css specs from style sheet
+            lifeMetricsVbox.getStyleClass().add("secondaryWindow");
+            // adds this pane/layout to the scene
+            Scene lifeMetricsScene = new Scene(lifeMetricsVbox, 600, 600);
+            // adds scene to stage 
+            lifeMetricsStage.setScene(lifeMetricsScene);
+            // gets css style sheet
+            lifeMetricsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            // shows the stage
+            lifeMetricsStage.show();    // actually displays the scene
+        }
+    } // end LifetimeMetrics class
+
+    // inner class for handling when user clicks on a calendar button
+    class CalendarButton {
+
+        // member fields - GUI elements
+        Label habitLabel;
+        TextField habitTextField;
+        Label goalLabel;
+        TextField numTextField;
+        ComboBox goalComboBox;
+        Label freqLabel;
+        ToggleGroup rbGroup = new ToggleGroup();
+        RadioButton dailyRB;
+        RadioButton weeklyRB;
+        RadioButton customRB;
+        RadioButton monRB;
+        RadioButton tuesRB;
+        RadioButton wedRB;
+        RadioButton thursRB;
+        RadioButton friRB;
+        RadioButton satRB;
+        RadioButton sunRB;
+        RadioButton cumulativeRB;
+        Label goalDateLabel;
+        DatePicker datePicker;
+        Label notesLabel;
+        TextArea notesTextArea;
+        Button submitButton;
+
+        // constructor
+        public CalendarButton() {
+
             // creates new stage
             Stage optionsStage = new Stage();
             // sets title for optionsStage
-            optionsStage.setTitle("Options");
+            optionsStage.setTitle("Habit Entry");
 
             // hbox for 1st vbox row
             HBox hbox1 = new HBox();
@@ -350,7 +552,7 @@ public class SkillBlazer extends Application {
             // initializes goalDateLabel
             goalDateLabel = new Label();
             // sets text for goalDateLabel
-            goalDateLabel.setText("Date to Complete Goal:");  
+            goalDateLabel.setText("Date to Complete Goal:");
             // initializes datePicker
             datePicker = new DatePicker();
             // adds GUI components to hbox9
@@ -358,7 +560,7 @@ public class SkillBlazer extends Application {
             hbox9.getChildren().add(datePicker);
             // sets datePicker as disabled
             datePicker.setDisable(true);
-                   
+
             // event handler for customRB
             customRB.setOnAction(e -> {
                 monRB.setDisable(false);
@@ -370,7 +572,7 @@ public class SkillBlazer extends Application {
                 sunRB.setDisable(false);
                 datePicker.setDisable(true);
             }); // end event handler
-            
+
             // event handler for weeklyRB
             weeklyRB.setOnAction(e -> {
                 monRB.setDisable(true);
@@ -382,7 +584,7 @@ public class SkillBlazer extends Application {
                 sunRB.setDisable(true);
                 datePicker.setDisable(true);
             }); // end event handler
-            
+
             // event handler for dailyRB
             dailyRB.setOnAction(e -> {
                 monRB.setDisable(true);
@@ -394,19 +596,19 @@ public class SkillBlazer extends Application {
                 sunRB.setDisable(true);
                 datePicker.setDisable(true);
             }); // end event handler
-            
+
             // event handler for cumulativeRB
             cumulativeRB.setOnAction(e -> {
-                    monRB.setDisable(true);
-                   tuesRB.setDisable(true);
-                    wedRB.setDisable(true);
-                    thursRB.setDisable(true);
-                   friRB.setDisable(true);
-                   satRB.setDisable(true);
-                   sunRB.setDisable(true);
-                   datePicker.setDisable(false);
-                }); // end event handler
-            
+                monRB.setDisable(true);
+                tuesRB.setDisable(true);
+                wedRB.setDisable(true);
+                thursRB.setDisable(true);
+                friRB.setDisable(true);
+                satRB.setDisable(true);
+                sunRB.setDisable(true);
+                datePicker.setDisable(false);
+            }); // end event handler
+
             // hbox for 10th vbox row
             HBox hbox10 = new HBox();
             // necessary to pull css specs from style sheet
@@ -461,35 +663,12 @@ public class SkillBlazer extends Application {
             // shows the stage
             optionsStage.show();    // actually displays the scene
         }
-    } // end Options class
 
-    // inner class for 'Lifetime Metrics' menu
-    class LifetimeMetrics {
+    }
 
-        // constructor
-        public LifetimeMetrics() {
-            // creates new stage
-            Stage lifeMetricsStage = new Stage();
-            // sets title
-            lifeMetricsStage.setTitle("Lifetime Metrics");
-            // new vbox layout
-            VBox lifeMetricsVbox = new VBox();
-            // necessary to pull css specs from style sheet
-            lifeMetricsVbox.getStyleClass().add("secondaryWindow");
-            // adds this pane/layout to the scene
-            Scene lifeMetricsScene = new Scene(lifeMetricsVbox, 600, 600);
-            // adds scene to stage 
-            lifeMetricsStage.setScene(lifeMetricsScene);
-            // gets css style sheet
-            lifeMetricsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            // shows the stage
-            lifeMetricsStage.show();    // actually displays the scene
-        }
-    } // end LifetimeMetrics class
-    
     // main method
     public static void main(String[] args) {
         launch(args);  // opens the JavaFX Stage
     } // end main method
-    
+
 } // end Skillblazer class
