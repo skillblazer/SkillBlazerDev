@@ -4,6 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * This class is responsible for managing the user's home directory files so
+ * that they are available for JSONWriter and JSONLoader when the application
+ * starts up or when other parts of the application need to save additions to or
+ * changes to the overall set of Tasks created by the user.
+ *
+ * Note on design philosophy -> This class is responsible for handling the
+ * location of all user files, and should be handling any direct references to
+ * the filesystem!
+ *
+ * */
 
 class SkillBlazerInitializer {
     private static final String userHome = System.getProperty("user.home");
