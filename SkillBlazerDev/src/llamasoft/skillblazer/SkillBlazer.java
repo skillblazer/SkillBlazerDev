@@ -67,9 +67,9 @@ public class SkillBlazer extends Application {
         ArrayList<String> notEmptyTest = SkillBlazerInitializer.getFileList();
 
         Iterator<String> iterator = notEmptyTest.iterator();
-
+        String path = SkillBlazerInitializer.getUserDataLocation();
         while (iterator.hasNext()) {
-            System.out.println(iterator.next());
+            System.out.println(path + "\\" + iterator.next());
         }
     } // end method sbinitTester()
 

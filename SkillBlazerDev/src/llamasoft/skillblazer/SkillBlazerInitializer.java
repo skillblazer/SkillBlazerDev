@@ -21,9 +21,13 @@ import java.util.*;
  * */
 
 class SkillBlazerInitializer {
-    private static final String userHome = System.getProperty("user.home");
-    private static final String userFileLocation = userHome + "\\SkillBlazer\\";
+    protected static final String userHome = System.getProperty("user.home");
+    protected static final String userFileLocation = userHome + "\\SkillBlazer\\";
     private static final String initFile = "SBinit.txt";
+
+    protected static String getUserDataLocation() {
+        return userHome;
+    }
 
 
     protected SkillBlazerInitializer() {}
@@ -59,10 +63,11 @@ class SkillBlazerInitializer {
             }
         }
         catch (IOException e) {
-            System.out.println("Input/Output Exception Error." +
-                    " It's quite possible that " +
-                    "the file has been set to read only, or the program cannot " +
-                    "access the folder specified!  " +
+            e.printStackTrace();
+            System.out.println("\n\n");
+            System.out.println("Error while READING data from: " + initFile +
+                    "  It's quite possible that the file has been set to read " +
+                    "only, or the program cannot access the folder specified!" +
                     "\n1.  Check permissions for folder: " + userFileLocation +
                     "\n2.  Check Permissions for file: " + userFileLocation + initFile);
         }
@@ -90,7 +95,7 @@ class SkillBlazerInitializer {
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
                 while (fileNamesIterator.hasNext()) {
                     // add contents of the ArrayList of fileNames to SBinit.txt
-                    output.println(userFileLocation + fileNamesIterator.next());
+                    output.println(fileNamesIterator.next());
                 }
                 output.close(); // close the file
             } else {
@@ -101,19 +106,19 @@ class SkillBlazerInitializer {
                 // one per line
                 while (fileNamesIterator.hasNext()) {
                     // add contents of the ArrayList of fileNames to SBinit.txt
-                    output.println(userFileLocation + fileNamesIterator.next());
+                    output.println(fileNamesIterator.next());
                 }
                 output.close();
             }
         }
         catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Input/Output Exception Error." +
-                    " It's quite possible that " +
-                    "the file has been set to read only, or the program cannot " +
-                    "access the folder specified!  " +
-                    "\n1.  Check permissions for folder: " + userFileLocation +
-                    "\n2.  Check Permissions for file: " + userFileLocation + initFile);
+            System.out.println("\n\n");
+            System.out.println(" Error while WRITING data to " + initFile +
+                "  It's quite possible that the file has been set to read " +
+                "only, or the program cannot access the folder specified!" +
+                "\n1.  Check permissions for folder: " + userFileLocation +
+                "\n2.  Check Permissions for file: " + userFileLocation + initFile);
         }
     }
 
