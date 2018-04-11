@@ -21,9 +21,22 @@ import java.util.Calendar;
 
 public class UserProfile {
 
+    private String preferredSaveLocation;
+
+    public void setPreferredSaveLocation(String preferredSaveLocation) {
+        this.preferredSaveLocation = preferredSaveLocation;
+    }
+
+    public String getPreferredSaveLocation(UserProfile userProfile) {
+        return this.preferredSaveLocation;
+    }
+
+
+
 	private String userName = ""; //username for user
     private Calendar userStartDate; //start date that user began using skillblazer
     public long taskNumber = 0; //increment number for task ID available
+
 
     /*
      * Default Class Constructor
