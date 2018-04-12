@@ -77,7 +77,7 @@ public class JSONLoader {
         String userName = (String) jsonObject.get("userName");
         long taskNumber = (long) jsonObject.get("taskNumber");
 
-        return new UserProfile(userName, userStartDate, taskNumber);;
+        return new UserProfile(userName, userStartDate, taskNumber);
     }
 
 
