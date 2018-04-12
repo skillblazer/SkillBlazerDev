@@ -58,9 +58,10 @@ public class JSONLoader {
         return userTaskList;
     }
 
-    /**
-     *
-     * @param jsonObject
+
+    /*
+     * Given a JSONObject created from a json file: parse, instantiate and return
+     * a UserProfile object
      * @return UserProfile object
      */
     private UserProfile parseAndReturnUserProfile(JSONObject jsonObject) {
@@ -80,7 +81,7 @@ public class JSONLoader {
     }
 
 
-    /**
+    /*
      * Given a jsonObject <Task> and an ArrayList<Task> this method
      * will instantiate the appropriate Task subclass, and add it to the
      * class member ArrayList that is passed as a parameter
