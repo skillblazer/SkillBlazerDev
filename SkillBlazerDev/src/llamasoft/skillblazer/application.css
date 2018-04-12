@@ -27,6 +27,10 @@
     -fx-font-weight: bold;
 }
 
+.habitCreationButton {
+    -fx-background-color: #ff7f50;
+}
+
 /* properties for vbox */
 .vbox {
     /* sets background color */
@@ -66,7 +70,7 @@
 }
     
 
-.hbox7 {
+.hbox8 {
     /* sets padding */
     -fx-padding: 15;
     /* sets font size */

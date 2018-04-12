@@ -1,5 +1,6 @@
 package llamasoft.skillblazer;
 
+import java.time.LocalDate;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -30,6 +31,7 @@ public class SkillBlazer extends Application {
     Label satLabel;
     Label sunLabel;
     VBox[] vboxArray = new VBox[49];
+    Button habitCreationButton;
 
     // TO DO:  Add Calendar GUI features - TilePane (smaller for days of the week, larger for eeach day block)
     // sets up the main stage, scenes and such
@@ -259,12 +261,7 @@ public class SkillBlazer extends Application {
                 Region emptyRegion = new Region();
                 Button vboxButton = new Button("+");
                 vboxButton.setPrefSize(20, 20);
-                //            vboxLabel.setAlignment(Pos.CENTER);
-                //            vboxLabel.setTextAlignment(Pos.TOP_RIGHT);
-                HBox.setHgrow(emptyRegion, Priority.ALWAYS);
-                //            HBox.setHgrow(vboxLabel, Priority.ALWAYS);
-                //            vboxLabel.getStyleClass().add("vboxLabel");
-
+                HBox.setHgrow(emptyRegion, Priority.ALWAYS);    
                 vboxButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
@@ -279,6 +276,28 @@ public class SkillBlazer extends Application {
 
                 vboxArray[i].getChildren().add(hboxCal);
             }
+            // "Habit Creation Button"
+            if(i==47) {
+                habitCreationButton = new Button("Create Habit");
+                habitCreationButton.getStyleClass().add("habitCreationButton");
+                Region emptyRegion1 = new Region();
+                Region emptyRegion2 = new Region();
+                VBox.setVgrow(emptyRegion1, Priority.ALWAYS);
+                VBox.setVgrow(emptyRegion2, Priority.ALWAYS);
+                vboxArray[i].getChildren().add(emptyRegion1);
+                vboxArray[i].getChildren().add(habitCreationButton);
+                vboxArray[i].getChildren().add(emptyRegion2);
+                habitCreationButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        // instantiates Options
+                        CalendarButton calButton = new CalendarButton();
+                    }
+
+                }); // end event handler
+            }
+            
+            
             calendarPane.getChildren().add(vboxArray[i]);
         }
 
@@ -308,6 +327,7 @@ public class SkillBlazer extends Application {
         RadioButton cumulativeRB;
         Label goalDateLabel;
         DatePicker datePicker;
+        
         Label notesLabel;
         TextArea notesTextArea;
         Button submitButton;
@@ -383,6 +403,8 @@ public class SkillBlazer extends Application {
         RadioButton cumulativeRB;
         Label goalDateLabel;
         DatePicker datePicker;
+        Label startDateLabel;
+        DatePicker startDatePicker;
         Label notesLabel;
         TextArea notesTextArea;
         Button submitButton;
@@ -395,10 +417,23 @@ public class SkillBlazer extends Application {
             // sets title for optionsStage
             optionsStage.setTitle("Habit Entry");
 
-            // hbox for 1st vbox row
+             // hbox for 1st vbox row
             HBox hbox1 = new HBox();
-            // necessary to pull css specs from style sheet
             hbox1.getStyleClass().add("options");
+            // initializes startDateLabel
+            startDateLabel = new Label();
+            // sets text for goalDateLabel
+            startDateLabel.setText("Date to Start Goal:");
+            startDatePicker = new DatePicker();
+            startDatePicker.setValue(LocalDate.now());
+            hbox1.getChildren().add(startDateLabel);
+            hbox1.getChildren().add(startDatePicker);
+            
+            
+            // hbox for 2nd vbox row
+            HBox hbox2 = new HBox();
+            // necessary to pull css specs from style sheet
+            hbox2.getStyleClass().add("options");
             // initializes habitLabel
             habitLabel = new Label();
             // sets text of habitLabel
@@ -406,13 +441,16 @@ public class SkillBlazer extends Application {
             // initializes habitTextField
             habitTextField = new TextField();
             // adds GUI components to hbox1
-            hbox1.getChildren().add(habitLabel);
-            hbox1.getChildren().add(habitTextField);
+            hbox2.getChildren().add(habitLabel);
+            hbox2.getChildren().add(habitTextField);
+            
+            
+            
 
             // hbox for 2nd vbox row
-            HBox hbox2 = new HBox();
+            HBox hbox3 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox2.getStyleClass().add("options");
+            hbox3.getStyleClass().add("options");
             // initializes goalLabel
             goalLabel = new Label();
             // sets text of goalLabel
@@ -427,25 +465,28 @@ public class SkillBlazer extends Application {
             goalComboBox.getItems().add("hours");
             goalComboBox.getItems().add("miles");
             // adds GUI components to hbox2
-            hbox2.getChildren().add(goalLabel);
-            hbox2.getChildren().add(numTextField);
-            hbox2.getChildren().add(goalComboBox);
+            hbox3.getChildren().add(goalLabel);
+            hbox3.getChildren().add(numTextField);
+            hbox3.getChildren().add(goalComboBox);
 
+           
+            
+            
             // hbox for 3rd vbox row
-            HBox hbox3 = new HBox();
+            HBox hbox4 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox3.getStyleClass().add("options");
+            hbox4.getStyleClass().add("options");
             // initializes freqLabel
             freqLabel = new Label();
             // sets text of freqLabel
             freqLabel.setText("Frequency:");
             // adds GUI components to hbox3
-            hbox3.getChildren().add(freqLabel);
+            hbox4.getChildren().add(freqLabel);
 
             // hbox for 4th vbox row
-            HBox hbox4 = new HBox();
+            HBox hbox5 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox4.getStyleClass().add("options");
+            hbox5.getStyleClass().add("options");
             // initializes dailyRB
             dailyRB = new RadioButton();
             // sets text of dailyRB
@@ -455,12 +496,12 @@ public class SkillBlazer extends Application {
             // sets 'Daily' option as selected by default
             dailyRB.setSelected(true);
             // adds GUI components to hbox4
-            hbox4.getChildren().add(dailyRB);
+            hbox5.getChildren().add(dailyRB);
 
             // hbox for 5th vbox row
-            HBox hbox5 = new HBox();
+            HBox hbox6 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox5.getStyleClass().add("options");
+            hbox6.getStyleClass().add("options");
             // initializes weeklyRB
             weeklyRB = new RadioButton();
             // sets text of weeklyRB
@@ -468,12 +509,12 @@ public class SkillBlazer extends Application {
             // adds weeklyRB to toggle group
             weeklyRB.setToggleGroup(rbGroup);
             // adds GUI components to hbox5
-            hbox5.getChildren().add(weeklyRB);
+            hbox6.getChildren().add(weeklyRB);
 
             // hbox for 6th vbox row
-            HBox hbox6 = new HBox();
+            HBox hbox7 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox6.getStyleClass().add("options");
+            hbox7.getStyleClass().add("options");
             // initializes customRB
             customRB = new RadioButton();
             // sets text for customRB
@@ -481,12 +522,12 @@ public class SkillBlazer extends Application {
             // adds customRB to toggle group
             customRB.setToggleGroup(rbGroup);
             // adds GUI components to hbox6
-            hbox6.getChildren().add(customRB);
+            hbox7.getChildren().add(customRB);
 
             // hbox for 7th vbox row
-            HBox hbox7 = new HBox();
+            HBox hbox8 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox7.getStyleClass().add("hbox7");
+            hbox8.getStyleClass().add("hbox8");
             // initializes monRB
             monRB = new RadioButton();
             // sets text of monRB
@@ -524,18 +565,18 @@ public class SkillBlazer extends Application {
             satRB.setDisable(true);
             sunRB.setDisable(true);
             // adds GUI components to hbox7
-            hbox7.getChildren().add(monRB);
-            hbox7.getChildren().add(tuesRB);
-            hbox7.getChildren().add(wedRB);
-            hbox7.getChildren().add(thursRB);
-            hbox7.getChildren().add(friRB);
-            hbox7.getChildren().add(satRB);
-            hbox7.getChildren().add(sunRB);
+            hbox8.getChildren().add(monRB);
+            hbox8.getChildren().add(tuesRB);
+            hbox8.getChildren().add(wedRB);
+            hbox8.getChildren().add(thursRB);
+            hbox8.getChildren().add(friRB);
+            hbox8.getChildren().add(satRB);
+            hbox8.getChildren().add(sunRB);
 
             // hbox for 8th vbox row
-            HBox hbox8 = new HBox();
+            HBox hbox9 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox8.getStyleClass().add("options");
+            hbox9.getStyleClass().add("options");
             // initializes cumulativeRB
             cumulativeRB = new RadioButton();
             // sets text for cumulativeRB
@@ -543,21 +584,23 @@ public class SkillBlazer extends Application {
             // adds cumulativeRB to toggle group
             cumulativeRB.setToggleGroup(rbGroup);
             // adds GUI components to hbox8
-            hbox8.getChildren().add(cumulativeRB);
+            hbox9.getChildren().add(cumulativeRB);
 
             // hbox for 9th vbox row
-            HBox hbox9 = new HBox();
+            HBox hbox10 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox9.getStyleClass().add("options");
+            hbox10.getStyleClass().add("options");
             // initializes goalDateLabel
             goalDateLabel = new Label();
             // sets text for goalDateLabel
             goalDateLabel.setText("Date to Complete Goal:");
             // initializes datePicker
             datePicker = new DatePicker();
+            
+            
             // adds GUI components to hbox9
-            hbox9.getChildren().add(goalDateLabel);
-            hbox9.getChildren().add(datePicker);
+            hbox10.getChildren().add(goalDateLabel);
+            hbox10.getChildren().add(datePicker);
             // sets datePicker as disabled
             datePicker.setDisable(true);
 
@@ -610,9 +653,9 @@ public class SkillBlazer extends Application {
             }); // end event handler
 
             // hbox for 10th vbox row
-            HBox hbox10 = new HBox();
+            HBox hbox11 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox10.getStyleClass().add("options");
+            hbox11.getStyleClass().add("options");
             // initializes notesLabel
             notesLabel = new Label();
             // sets text for notesLabel
@@ -621,21 +664,33 @@ public class SkillBlazer extends Application {
             notesTextArea = new TextArea();
             notesTextArea.setPrefSize(350, 350);
             // adds GUI components to hbox9
-            hbox10.getChildren().add(notesLabel);
-            hbox10.getChildren().add(notesTextArea);
+            hbox11.getChildren().add(notesLabel);
+            hbox11.getChildren().add(notesTextArea);
 
             // hbox for 11th vbox row
-            HBox hbox11 = new HBox();
+            HBox hbox12 = new HBox();
             // necessary to pull css specs from style sheet
-            hbox11.getStyleClass().add("options");
+            hbox12.getStyleClass().add("options");
             // initializes submitButton
             submitButton = new Button();
             // sets text for submitButton
             submitButton.setText("Submit");
+            
+            submitButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        
+                        // TO DO: Save to JSON file
+                        
+                        optionsStage.close();
+                     
+                    }});
+            
+            
             // centers hbox that submitButton is placed in
-            hbox11.setAlignment(Pos.CENTER);
+            hbox12.setAlignment(Pos.CENTER);
             // adds GUI components to hbox11
-            hbox11.getChildren().add(submitButton);
+            hbox12.getChildren().add(submitButton);
 
             // new vbox layout
             VBox optionsVbox = new VBox();
@@ -653,7 +708,7 @@ public class SkillBlazer extends Application {
             optionsVbox.getChildren().add(hbox9);
             optionsVbox.getChildren().add(hbox10);
             optionsVbox.getChildren().add(hbox11);
-
+            optionsVbox.getChildren().add(hbox12);
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVbox, 700, 700);
             // adds scene to stage 
