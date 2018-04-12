@@ -63,6 +63,13 @@
     -fx-font-size: 13;
 }
 
+.optionsButtonHboxes {
+     /* sets padding */
+    -fx-padding: 15;
+    /* sets font size */
+    -fx-font-size: 13;
+}
+
 .progressButtonHboxes {
     /* sets padding */
     -fx-padding: 15;

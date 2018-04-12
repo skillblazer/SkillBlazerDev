@@ -48,7 +48,7 @@ public class SkillBlazer extends Application {
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(3.0);
         dropShadow.setOffsetY(3.0);
-        
+
         // instantiates CalendarCalculator
         calCalc = new CalendarCalculator();
 
@@ -102,7 +102,7 @@ public class SkillBlazer extends Application {
                 drawCalendar();
             }
         }); // end event handler
-        
+
         // initializes backMonthButton
         backMonthButton = new Button();
         // sets text of backMonthButton
@@ -132,7 +132,7 @@ public class SkillBlazer extends Application {
                 LifetimeMetrics lifetimemetrics = new LifetimeMetrics();
             }
         }); // end event handler
-        
+
         // creation of BorderPane for the overall layout
         BorderPane borderPaneMain = new BorderPane();
         // sets up layout pane (VBox); will be placed in borderPaneMain
@@ -182,10 +182,10 @@ public class SkillBlazer extends Application {
         calendarPane.setPrefRows(7);
         // sets preferred columns for calendarPane
         calendarPane.setPrefColumns(7);
-        
+
         // call to drawCalendar() method, which is responsible for creating calendar
         drawCalendar();
-        
+
         // hbox layout for calendarPane
         HBox hboxCalendar = new HBox();
         // pulls css specs from style sheet
@@ -217,20 +217,20 @@ public class SkillBlazer extends Application {
         // uncomment for Macintosh style
         //AquaFx.style();
     } // end start() method
-    
+
     // drawCalendar() method; responsible for creating the calendar
     private void drawCalendar() {
-        
+
         // member fields
         int firstDayOfWeekCurrentMonth = calCalc.getFirstDayOfWeekCurrentMonth(); // int that holds 1st day of week
         int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();             // int that holds # of days
         int j = 0;                                                                // iterator
-        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",                  // string array holding days
+        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", // string array holding days
             "Thursday", "Friday", "Saturday", "Sunday"};
-        
+
         // clears calendar interface
         calendarPane.getChildren().clear();
-        
+
         // 'for' loop used to populate days of the week in top of calendar interface
         for (int i = 0; i < 7; i++) {
             // initializes vboxArray
@@ -266,7 +266,7 @@ public class SkillBlazer extends Application {
             // adds vboxArray[i] to calendarPane
             calendarPane.getChildren().add(vboxArray[i]);
         } // end 'for' loop
-        
+
         // 'for' loop used to populate actual calendar boxes of calendar interface
         for (int i = 7; i < vboxArray.length; i++) {
             // initializes vboxArray
@@ -346,7 +346,9 @@ public class SkillBlazer extends Application {
     class Options {
 
         // member fields - GUI elements
- 
+        Button notificationsButton;                     // button for notifications screen
+        Button deleteSkillHistoryButton;                // button for deleting skill history screen
+        Button deleteGoalButton;                        // button for deleting goal from calendar screen
 
         // constructor
         public Options() {
@@ -355,18 +357,268 @@ public class SkillBlazer extends Application {
             Stage optionsStage = new Stage();
             // sets title
             optionsStage.setTitle("Options");
+
+            // hbox for 1st vbox row
+            HBox optionsButtonHbox1 = new HBox();
+            // sets alignment for hbox
+            optionsButtonHbox1.setAlignment(Pos.CENTER);
+            // pulls css specs from style sheet
+            optionsButtonHbox1.getStyleClass().add("optionsButtonHboxes");
+            // initializes notificationsButton
+            notificationsButton = new Button();
+            // sets text for notificationsButton
+            notificationsButton.setText("Notifications: On/Off");
+            // event handler for notificationsButton
+            notificationsButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    // creates a new stage
+                    Stage notificationsStage = new Stage();
+                    // label for enable notifications message
+                    Label enableNotifications = new Label("Enable Notifications?");
+                    // button for user to select yes
+                    Button yesButton = new Button("Yes");
+                    // button for user to select no
+                    Button noButton = new Button("No");
+
+                    // hbox for 1st vbox row
+                    HBox notificationsHbox1 = new HBox();
+                    // sets alignment of hbox to center
+                    notificationsHbox1.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    notificationsHbox1.getStyleClass().add("optionsButtonHboxes");
+                    // adds enableNotifications to notificationsHbox1
+                    notificationsHbox1.getChildren().add(enableNotifications);
+
+                    // hbox for 2nd vbox row
+                    HBox notificationsHbox2 = new HBox();
+                    // sets alignment of hbox to center
+                    notificationsHbox2.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    notificationsHbox2.getStyleClass().add("optionsButtonHboxes");
+                    // adds yesButton to notificationsHbox2
+                    notificationsHbox2.getChildren().add(yesButton);
+                    // adds noButton to notificationsHbox2
+                    notificationsHbox2.getChildren().add(noButton);
+
+                    // new vbox layout
+                    VBox notificationsVBox = new VBox();
+                    // pulls css specs from style sheet
+                    notificationsVBox.getStyleClass().add("secondaryWindow");
+                    // adds all hboxes to optionsVBox
+                    notificationsVBox.getChildren().add(notificationsHbox1);
+                    notificationsVBox.getChildren().add(notificationsHbox2);
+
+                    // adds notificationsVBox to the notificationsScene
+                    Scene notificationsScene = new Scene(notificationsVBox, 250, 250);
+                    // adds notificationsScene to notificationsStage 
+                    notificationsStage.setScene(notificationsScene);
+                    // gets css style sheet
+                    notificationsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+                    // shows the stage; actually displays the scene
+                    notificationsStage.show();
+
+                }
+            }); // end event handler
+            // adds notificationsButton to optionsButtonHbox1
+            optionsButtonHbox1.getChildren().add(notificationsButton);
+
+            // hbox for 2nd vbox row
+            HBox optionsButtonHbox2 = new HBox();
+            // sets alignment for hbox
+            optionsButtonHbox2.setAlignment(Pos.CENTER);
+            // pulls css specs from style sheet
+            optionsButtonHbox2.getStyleClass().add("optionsButtonHboxes");
+            // initializes deleteSkillHistoryButton
+            deleteSkillHistoryButton = new Button();
+            // sets text for deleteSkillHistoryButton
+            deleteSkillHistoryButton.setText("Delete Skill History");
+            // event handler for deleteSkillHistoryButton
+            deleteSkillHistoryButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    // creates a new stage
+                    Stage deleteSkillStage = new Stage();
+                    // label for enable notifications message
+                    Label skillLabel = new Label("Choose which skill you would like to delete:");
+                    // combobox for user to select skill from list
+                    ComboBox skillsComboBox = new ComboBox();                   // ****TO DO: populate user's skills
+                    // button for user to delete skill history
+                    Button deleteButton = new Button("Delete");
+
+                    // hbox for 1st vbox row
+                    HBox deleteSkillHbox1 = new HBox();
+                    // sets alignment of hbox to center
+                    deleteSkillHbox1.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteSkillHbox1.getStyleClass().add("optionsButtonHboxes");
+                    // adds skillLabel to deleteSkillsHbox1
+                    deleteSkillHbox1.getChildren().add(skillLabel);
+
+                    // hbox for 2nd vbox row
+                    HBox deleteSkillHbox2 = new HBox();
+                    // sets alignment of hbox to center
+                    deleteSkillHbox2.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteSkillHbox2.getStyleClass().add("optionsButtonHboxes");
+                    // adds skillsComboBox to deleteSkillsHbox2
+                    deleteSkillHbox2.getChildren().add(skillsComboBox);
+
+                    // hbox for 3rd vbox row
+                    HBox deleteSkillHbox3 = new HBox();
+                    // sets alignment of hbox to center
+                    deleteSkillHbox3.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteSkillHbox3.getStyleClass().add("optionsButtonHboxes");
+                    // adds deleteButton to deleteSkillsHbox3
+                    deleteSkillHbox3.getChildren().add(deleteButton);
+
+                    // new vbox layout
+                    VBox deleteSkillVBox = new VBox();
+                    // pulls css specs from style sheet
+                    deleteSkillVBox.getStyleClass().add("secondaryWindow");
+                    // adds all hboxes to deleteSkillVBox
+                    deleteSkillVBox.getChildren().add(deleteSkillHbox1);
+                    deleteSkillVBox.getChildren().add(deleteSkillHbox2);
+                    deleteSkillVBox.getChildren().add(deleteSkillHbox3);
+
+                    // adds deleteSkillsVBox to the deleteSkillScene
+                    Scene deleteSkillScene = new Scene(deleteSkillVBox, 450, 450);
+                    // adds deleteSkillScene to deleteSkillStage 
+                    deleteSkillStage.setScene(deleteSkillScene);
+                    // gets css style sheet
+                    deleteSkillScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+                    // shows the stage; actually displays the scene
+                    deleteSkillStage.show();
+
+                }
+            }); // end event handler
+            // adds deleteSkillHistoryButton to optionsButtonHbox2
+            optionsButtonHbox2.getChildren().add(deleteSkillHistoryButton);
+
+            // hbox for 3rd vbox row
+            HBox optionsButtonHbox3 = new HBox();
+            // sets alignment for hbox
+            optionsButtonHbox3.setAlignment(Pos.CENTER);
+            // pulls css specs from style sheet
+            optionsButtonHbox3.getStyleClass().add("optionsButtonHboxes");
+            // initializes deleteGoalButton
+            deleteGoalButton = new Button();
+            // sets text for deleteGoalButton
+            deleteGoalButton.setText("Delete Goal from Calendar");
+            // sets alignment for both
+            deleteGoalButton.setAlignment(Pos.CENTER);
+            // event handler for deleteGoalButton
+            deleteGoalButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    // creates a new stage
+                    Stage deleteGoalStage = new Stage();
+                    // label for enable notifications message
+                    Label skillLabel = new Label("Choose a skill:");
+                    // combobox for user to select skill from list
+                    ComboBox skillsComboBox = new ComboBox();                   // ****TO DO: populate user's skills
+                    // label for delete goal message
+                    Label goalLabel = new Label("Choose which goal you would like to delete:");
+                    // combobox for user to select goal from list
+                    ComboBox goalsComboBox = new ComboBox();                    // ****TO DO: populate user's goals
+                    // button for user to delete skill history
+                    Button deleteButton = new Button("Delete");
+
+                    // hbox for 1st vbox row
+                    HBox deleteGoalHbox1 = new HBox();
+                    // sets alignment for hbox
+                    deleteGoalHbox1.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteGoalHbox1.getStyleClass().add("optionsButtonHboxes");
+                    // adds skillLabel to deleteGoalHbox1
+                    deleteGoalHbox1.getChildren().add(skillLabel);
+
+                    // hbox for 2nd vbox row
+                    HBox deleteGoalHbox2 = new HBox();
+                    // sets alignment of hbox to center
+                    deleteGoalHbox2.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteGoalHbox2.getStyleClass().add("optionsButtonHboxes");
+                    // adds skillsComboBox to deleteGoalHbox2
+                    deleteGoalHbox2.getChildren().add(skillsComboBox);
+
+                    // hbox for 3rd vbox row
+                    HBox deleteGoalHbox3 = new HBox();
+                    // sets alignment of hbox to center
+                    deleteGoalHbox3.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteGoalHbox3.getStyleClass().add("optionsButtonHboxes");
+                    // adds goalLabel to deleteGoalHbox3
+                    deleteGoalHbox3.getChildren().add(goalLabel);
+                    
+                    // hbox for 4th vbox row
+                    HBox deleteGoalHbox4 = new HBox();
+                    // sets alignment of hbox to center
+                    deleteGoalHbox4.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteGoalHbox4.getStyleClass().add("optionsButtonHboxes");
+                    // adds goalsComboBox to deleteGoalHbox4
+                    deleteGoalHbox4.getChildren().add(goalsComboBox);
+                    
+                    // hbox for 5th vbox row
+                    HBox deleteGoalHbox5 = new HBox();
+                    // sets alignment of hbox to center
+                    deleteGoalHbox5.setAlignment(Pos.CENTER);
+                    // pulls css specs from style sheet
+                    deleteGoalHbox5.getStyleClass().add("optionsButtonHboxes");
+                    // adds deleteButton to deleteGoalHbox5
+                    deleteGoalHbox5.getChildren().add(deleteButton);
+                    
+                    // new vbox layout
+                    VBox deleteGoalVBox = new VBox();
+                    // pulls css specs from style sheet
+                    deleteGoalVBox.getStyleClass().add("secondaryWindow");
+                    // adds all hboxes to deleteGoalVBox
+                    deleteGoalVBox.getChildren().add(deleteGoalHbox1);
+                    deleteGoalVBox.getChildren().add(deleteGoalHbox2);
+                    deleteGoalVBox.getChildren().add(deleteGoalHbox3);
+                    deleteGoalVBox.getChildren().add(deleteGoalHbox4);
+                    deleteGoalVBox.getChildren().add(deleteGoalHbox5);
+
+                    // adds deleteGoalVBox to the deleteGoalScene
+                    Scene deleteGoalScene = new Scene(deleteGoalVBox, 450, 450);
+                    // adds deleteGoalScene to deleteGoalStage 
+                    deleteGoalStage.setScene(deleteGoalScene);
+                    // gets css style sheet
+                    deleteGoalScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+                    // shows the stage; actually displays the scene
+                    deleteGoalStage.show();
+                }
+            }); // end event handler
+            // adds deleteGoalButton to optionsButtonHbox3
+            optionsButtonHbox3.getChildren().add(deleteGoalButton);
+
             // new vbox layout
             VBox optionsVBox = new VBox();
             // necessary to pull css specs from style sheet
             optionsVBox.getStyleClass().add("secondaryWindow");
+            
+            // creates new regions (for layout/alignment purposes)
+            Region emptyRegion1 = new Region();
+            Region emptyRegion2 = new Region();
+            
+            // adds all hboxes and regions to optionsVBox
+            optionsVBox.getChildren().add(optionsButtonHbox1);
+            optionsVBox.getChildren().add(emptyRegion1);
+            optionsVBox.getChildren().add(optionsButtonHbox2);
+            optionsVBox.getChildren().add(emptyRegion2);
+            optionsVBox.getChildren().add(optionsButtonHbox3);
+
             // adds this pane/layout to the scene
-            Scene optionsScene = new Scene(optionsVBox, 600, 680);
+            Scene optionsScene = new Scene(optionsVBox, 350, 350);
             // adds scene to stage 
             optionsStage.setScene(optionsScene);
             // gets css style sheet
             optionsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            // shows the stage
-            optionsStage.show();    // actually displays the scene
+            // shows the stage; actually displays the scene
+            optionsStage.show();
+
         }
 
     } // end class Options
@@ -431,7 +683,7 @@ public class SkillBlazer extends Application {
             // creates new stage
             Stage habitEntryStage = new Stage();
             // sets title for habitEntryStage
-            habitEntryStage.setTitle("Habit Entry");
+            habitEntryStage.setTitle("Habit/Skill Creation");
 
             // hbox for 1st vbox row
             HBox habitCreationButtonHbox1 = new HBox();
@@ -710,7 +962,7 @@ public class SkillBlazer extends Application {
             submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                                                                        // ****TO DO: Save to JSON file
+                    // ****TO DO: Save to JSON file
                     habitEntryStage.close();    // closes window
                 }
             }); // end event handler
@@ -737,7 +989,7 @@ public class SkillBlazer extends Application {
             habitCreationVbox.getChildren().add(habitCreationButtonHbox10);
             habitCreationVbox.getChildren().add(habitCreationButtonHbox11);
             habitCreationVbox.getChildren().add(habitCreationButtonHbox12);
-            
+
             // adds habitCreationVbox to optionsScene
             Scene optionsScene = new Scene(habitCreationVbox, 700, 700);
             // adds optionsScene to habitEntryStage 
@@ -745,9 +997,9 @@ public class SkillBlazer extends Application {
             // gets css style sheet
             optionsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             // shows the stage; actually displays the scene
-            habitEntryStage.show();   
+            habitEntryStage.show();
         } // end constructor
-        
+
     } // end class HabitCreationButton
 
     // inner class for handling when user clicks on the "+" button to add progress
@@ -764,15 +1016,15 @@ public class SkillBlazer extends Application {
         Label notesLabel;                       // label for "Notes" area
         TextArea notesTextArea;                 // textArea for "Notes" area
         Button submitButton;                    // button for user to submit progress information
-        
+
         // constructor
         ProgressButton() {
 
             // creates new stage
             Stage progressStage = new Stage();
             // sets title for progressStage
-            progressStage.setTitle("Habit/Skill Creation");
-            
+            progressStage.setTitle("Habit Progress");
+
             // hbox for 1st vbox row
             HBox progressButtonHbox1 = new HBox();
             // pulls css styling information
@@ -791,8 +1043,8 @@ public class SkillBlazer extends Application {
             progressButtonHbox1.getChildren().add(habitLabel);
             // adds habitComboBox to progressButtonHbox1
             progressButtonHbox1.getChildren().add(habitComboBox);
-            
-             // hbox for 2nd vbox row
+
+            // hbox for 2nd vbox row
             HBox progressButtonHbox2 = new HBox();
             // pulls css styling information
             progressButtonHbox2.getStyleClass().add("progressButtonHboxes");
@@ -800,14 +1052,14 @@ public class SkillBlazer extends Application {
             goalLabel = new Label();
             // sets text for goalLabel
             goalLabel.setText("Goal:");
-             // initializes goalComboBox
+            // initializes goalComboBox
             goalComboBox = new ComboBox();
-                                                                    // ****TO DO: populate goals in goalComboBox
+            // ****TO DO: populate goals in goalComboBox
             // adds goalLabel to progressButtonHbox2                                
             progressButtonHbox2.getChildren().add(goalLabel);
             // adds goalComboBox to progressButtonHbox2     
             progressButtonHbox2.getChildren().add(goalComboBox);
-            
+
             // hbox for 3rd vbox row
             HBox progressButtonHbox3 = new HBox();
             // pulls css styling information
@@ -816,18 +1068,18 @@ public class SkillBlazer extends Application {
             progressMadeLabel = new Label();
             // sets text for progressMadeLabel
             progressMadeLabel.setText("Progress Made:");
-             // initializes progressMadeTextField
+            // initializes progressMadeTextField
             progressMadeTextField = new TextField();
             // sets max size of progressMadeTextField
             progressMadeTextField.setMaxSize(80, 80);
             // initializes progressMetrics
             progressMetricsComboBox = new ComboBox();
-                                                            // ****TO DO: populate goals in progressMetricsComboBox
+            // ****TO DO: populate goals in progressMetricsComboBox
             // adds components to progressButtonHbox3                                    
-            progressButtonHbox3.getChildren().add(progressMadeLabel);                                  
+            progressButtonHbox3.getChildren().add(progressMadeLabel);
             progressButtonHbox3.getChildren().add(progressMadeTextField);
             progressButtonHbox3.getChildren().add(progressMetricsComboBox);
-            
+
             // hbox for 4th vbox row
             HBox progressButtonHbox4 = new HBox();
             // pulls css styling information
@@ -841,7 +1093,7 @@ public class SkillBlazer extends Application {
             // sets preferred size of notesTextArea
             notesTextArea.setPrefSize(350, 350);
             // adds notesLabel to progressButtonHbox4                                    
-            progressButtonHbox4.getChildren().add(notesLabel); 
+            progressButtonHbox4.getChildren().add(notesLabel);
             // adds notesTextArea to progressButtonHbox4    
             progressButtonHbox4.getChildren().add(notesTextArea);
 
@@ -854,21 +1106,21 @@ public class SkillBlazer extends Application {
             // sets text for submitButton
             submitButton.setText("Submit");
             // event handler for submitButton
-             submitButton.setOnAction(new EventHandler() {
+            submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
 
-                                                                        // ****TO DO: Save to JSON file
+                    // ****TO DO: Save to JSON file
                     progressStage.close();      // closes window
 
                 }
             }); // end event handler
 
             // centers hbox that submitButton is placed in
-            progressButtonHbox5.setAlignment(Pos.CENTER);         
+            progressButtonHbox5.setAlignment(Pos.CENTER);
             // adds submitButton to progressButtonHbox5                                    
             progressButtonHbox5.getChildren().add(submitButton);
-            
+
             // new vbox layout
             VBox progressVbox = new VBox();
             // pulls css specs from style sheet
@@ -879,7 +1131,7 @@ public class SkillBlazer extends Application {
             progressVbox.getChildren().add(progressButtonHbox3);
             progressVbox.getChildren().add(progressButtonHbox4);
             progressVbox.getChildren().add(progressButtonHbox5);
-      
+
             // adds progressVbox to progressScene
             Scene progressScene = new Scene(progressVbox, 700, 700);
             // adds progressScene to progressStage 
@@ -889,7 +1141,7 @@ public class SkillBlazer extends Application {
             // shows the stage; actually displays the scene
             progressStage.show();
         } // end constructor
-        
+
     } // end class ProgressButton
 
     // main method
