@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import org.json.simple.JSONArray;
@@ -57,24 +58,34 @@ public class JSONLoader {
         return jsonTaskList;
     }
 
+    /**
+     * Given a jsonObject <Task> and an ArrayList<Task> this method
+     * will instantiate the appropriate Task subclass, and add it to the
+     * ArrayList that is passed as a parameter
+     */
     private void parseAndCreateTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
         boolean isCompleted;
-        int currentStreak = 0;
-        int bestStreak = 0;
+        int currentStreak;
+        int bestStreak;
 
-        String type = (String) jsonObject.get("type");
+        String taskName = (String) jsonObject.get("taskName");
         int taskId = (int) jsonObject.get("taskId");
+
+        int year = (int) jsonObject.get("year");
+        int month = (int) jsonObject.get("month");
+        int day = (int) jsonObject.get("date");
+
+        Calendar startDate = new GregorianCalendar();
+        startDate.set(year, month, day);
+
         String isCompletedString = (String) jsonObject.get("isCompleted");
-
-        String startDate = (String) jsonObject.get("startDate");
-
         if(isCompletedString.equals("false")) {
             isCompleted = false;
         } else {
             isCompleted = true;
         }
+        String type = (String) jsonObject.get("type");
 
-        String taskName = (String) jsonObject.get("taskName");
 
         // Parse the remaining subclass-specific (unique) fields and
         // instantiate the correct Task subclass, add it to the
@@ -86,7 +97,7 @@ public class JSONLoader {
                 bestStreak = (int) jsonObject.get("bestStreak");
 
                 // instantiate a DailyTask object and add to ArrayList
-                taskArrayList.add(new DailyTask());
+                taskArrayList.add(new DailyTask(taskName, taskId, startDate, isCompleted, type, currentStreak, bestStreak));
                 break;
 
             case "weekly":
@@ -95,7 +106,7 @@ public class JSONLoader {
                 bestStreak = (int) jsonObject.get("bestStreak");
 
                 // instantiate a WeeklyTask object and add to ArrayList
-                taskArrayList.add(new WeeklyTask());
+                taskArrayList.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, type, currentStreak, bestStreak));
                 break;
 
             case "custom":
@@ -103,16 +114,38 @@ public class JSONLoader {
                 currentStreak = (int) jsonObject.get("currentStreak");
                 bestStreak = (int) jsonObject.get("bestStreak");
 
+                JSONArray days = (JSONArray) jsonObject.get("days");
+
+                ArrayList<String> dayListing = new ArrayList<>();
+
+                // copy the contents of the JSONArray into an ArrayList
+                Iterator<String> iterator = days.iterator();
+                while (iterator.hasNext()) {
+                    dayListing.add(iterator.next());
+                }
+
+                String[] daysOfWeekArray = new String[7];
+                // copy ArrayList contents into a primitive String[] array
+                for (int i = 0; i < dayListing.size(); i++) {
+                    daysOfWeekArray[i] = dayListing.get(i);
+                }
+
                 // instantiate a CustomTask object and add to ArrayList
-                taskArrayList.add(new CustomTask());
+                taskArrayList.add(new CustomTask(taskName, taskId, startDate, isCompleted, type, currentStreak, bestStreak, daysOfWeekArray));
                 break;
 
             case "cumulative":
                 // parse remaining fields specific to a CumulativeTask object
-                Calendar endDate = (Calendar) jsonObject.get("endDate");
+                //Calendar endDate = (Calendar) jsonObject.get("endDate");
+                int endYear = (int) jsonObject.get("endYear");
+                int endMonth = (int) jsonObject.get("endMonth");
+                int endDay = (int) jsonObject.get("endDate");
+
+                Calendar endDate = new GregorianCalendar();
+                endDate.set(endYear, endMonth, endDay);
 
                 // instantiate a CumulativeTask object and add to ArrayList
-                taskArrayList.add(new CumulativeTask());
+                taskArrayList.add(new CumulativeTask(taskName, taskId, startDate, isCompleted, type, endDate));
                 break;
         }
     }
