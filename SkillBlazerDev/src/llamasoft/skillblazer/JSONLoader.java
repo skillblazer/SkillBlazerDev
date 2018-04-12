@@ -17,9 +17,9 @@ import org.json.simple.parser.ParseException;
 public class JSONLoader {
     protected SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
     private JSONParser jsonParser = new JSONParser();
-    private ArrayList<Task> jsonTaskList = new ArrayList<>();
-    protected JSONArray calendarOfTasks;
+    private ArrayList<Task> userTaskList = new ArrayList<>();
     private JSONObject jsonUserObject;
+    public UserProfile profileFromDisk;
 
     public JSONLoader() {}
 
@@ -55,15 +55,37 @@ public class JSONLoader {
 //        jsonObject.con
 
 
-        return jsonTaskList;
+        return userTaskList;
     }
+
+    /**
+     *
+     * @param jsonObject
+     * @return UserProfile object
+     */
+    private UserProfile parseAndReturnUserProfile(JSONObject jsonObject) {
+        String type = "userProfile";
+
+        int year = (int) jsonObject.get("year");
+        int month = (int) jsonObject.get("month");
+        int day = (int) jsonObject.get("date");
+
+        Calendar userStartDate = new GregorianCalendar();
+        userStartDate.set(year, month, day);
+
+        String userName = (String) jsonObject.get("userName");
+        long taskNumber = (long) jsonObject.get("taskNumber");
+
+        return new UserProfile(userName, userStartDate, taskNumber);;
+    }
+
 
     /**
      * Given a jsonObject <Task> and an ArrayList<Task> this method
      * will instantiate the appropriate Task subclass, and add it to the
-     * ArrayList that is passed as a parameter
+     * class member ArrayList that is passed as a parameter
      */
-    private void parseAndCreateTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
+    private void parseCreateAndAddTaskToList(JSONObject jsonObject, ArrayList<Task> userTaskList) {
         boolean isCompleted;
         int currentStreak;
         int bestStreak;
@@ -89,7 +111,7 @@ public class JSONLoader {
 
         // Parse the remaining subclass-specific (unique) fields and
         // instantiate the correct Task subclass, add it to the
-        // ArrayList<Task> taskArrayList
+        // ArrayList<Task> userTaskList
         switch (type) {
             case "daily":
                 // parse remaining fields specific to a DailyTask object
@@ -97,7 +119,8 @@ public class JSONLoader {
                 bestStreak = (int) jsonObject.get("bestStreak");
 
                 // instantiate a DailyTask object and add to ArrayList
-                taskArrayList.add(new DailyTask(taskName, taskId, startDate, isCompleted, type, currentStreak, bestStreak));
+                userTaskList.add(new DailyTask(taskName, taskId, startDate,
+                        isCompleted, type, currentStreak, bestStreak));
                 break;
 
             case "weekly":
@@ -106,7 +129,8 @@ public class JSONLoader {
                 bestStreak = (int) jsonObject.get("bestStreak");
 
                 // instantiate a WeeklyTask object and add to ArrayList
-                taskArrayList.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, type, currentStreak, bestStreak));
+                userTaskList.add(new WeeklyTask(taskName, taskId, startDate,
+                        isCompleted, type, currentStreak, bestStreak));
                 break;
 
             case "custom":
@@ -131,7 +155,8 @@ public class JSONLoader {
                 }
 
                 // instantiate a CustomTask object and add to ArrayList
-                taskArrayList.add(new CustomTask(taskName, taskId, startDate, isCompleted, type, currentStreak, bestStreak, daysOfWeekArray));
+                userTaskList.add(new CustomTask(taskName, taskId, startDate,
+                        isCompleted, type, currentStreak, bestStreak, daysOfWeekArray));
                 break;
 
             case "cumulative":
@@ -145,14 +170,15 @@ public class JSONLoader {
                 endDate.set(endYear, endMonth, endDay);
 
                 // instantiate a CumulativeTask object and add to ArrayList
-                taskArrayList.add(new CumulativeTask(taskName, taskId, startDate, isCompleted, type, endDate));
+                userTaskList.add(new CumulativeTask(taskName, taskId, startDate,
+                        isCompleted, type, endDate));
                 break;
         }
     }
 
 
     public ArrayList<Task> getJsonDatabase() {
-        return jsonTaskList; // May not be complete
+        return userTaskList; // May not be complete
     }
 
 }

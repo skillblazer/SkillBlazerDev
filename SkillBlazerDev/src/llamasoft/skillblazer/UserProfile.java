@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UserProfile {
-    private final String type = "userprofile";
+    private final String type = "userProfile";
 
     private String preferredSaveLocation;
 
@@ -59,6 +59,16 @@ public class UserProfile {
     public UserProfile(String userName, Calendar userStartDate) {
         this.userName = userName;
         this.userStartDate = userStartDate;
+    } //end UserProfile constructor
+
+    /*
+     * Overloaded Class Constructor to instantiate userName and userStartDate and taskNumber
+     * added by JME 13APR
+     */
+    public UserProfile(String userName, Calendar userStartDate, long taskNumber) {
+        this.userName = userName;
+        this.userStartDate = userStartDate;
+        this.taskNumber = taskNumber;
     } //end UserProfile constructor
 
     /*
