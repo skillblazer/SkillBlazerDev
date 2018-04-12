@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UserProfile {
+    private final String type = "userprofile";
 
     private String preferredSaveLocation;
 

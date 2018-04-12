@@ -26,6 +26,7 @@ package llamasoft.skillblazer;
 import java.util.Calendar;
 
 public class CustomTask extends Task {
+    private String type = "custom";
 
     private String[] daysOfWeek; //days of the week the user has selected
     private int currentStreak; //current streak of completions
@@ -66,6 +67,17 @@ public class CustomTask extends Task {
     public CustomTask(String taskName, Calendar startDate, String[] arrayOfDays, int currentStreak,
     		int bestStreak) {
         super(taskName, startDate);
+        daysOfWeek = arrayOfDays.clone();
+        this.currentStreak = currentStreak;
+        this.bestStreak = bestStreak;
+    } //end CustomTask constructor
+
+    /*
+     *  Fully qualified constructor (needed for initializing objects stored on disk
+     */
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, int currentStreak,
+                      int bestStreak, String[] arrayOfDays) {
+        super(taskName, taskId, startDate, isCompleted, type);
         daysOfWeek = arrayOfDays.clone();
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;

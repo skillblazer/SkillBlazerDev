@@ -25,17 +25,21 @@ class SkillBlazerInitializer {
     protected static final String userFileLocation = userHome + "\\SkillBlazer\\";
     private static final String initFile = "SBinit.txt";
 
+    protected SkillBlazerInitializer() {}
+
     protected static String getUserDataLocation() {
         return userHome;
     }
-
-
-    protected SkillBlazerInitializer() {}
 
     protected static void createSkillBlazerDirectory() {
         boolean newDirectory = new File(userFileLocation).mkdirs();
     }
 
+    /**
+     * Read the contents of the SBinit.txt file from the disk
+     * Return the contents as an ArrayList<String>
+     *
+     */
     protected static ArrayList<String> getFileList() {
         ArrayList<String> listOfJsonFiles = new ArrayList<>();
 
@@ -45,15 +49,18 @@ class SkillBlazerInitializer {
 
         try {
             if (!directory.exists()) {
+                // create the directory if it doesn't already exists or was
+                // deleted
                 createSkillBlazerDirectory();
             }
+
             if (!file.exists()) {
                 // if the file doesn't exist, go ahead and create it for later
                 // (usually occurs when the user runs the program for the very
+                // first time.
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
                 output.close();  // close the file
-            }
-            else {
+            } else {
                 Scanner input = new Scanner(file);
                 while (input.hasNext()) {
                     // take the contents of SBinit.txt and ADD them to the ArrayList
@@ -68,7 +75,7 @@ class SkillBlazerInitializer {
             System.out.println("Error while READING data from: " + initFile +
                     "  It's quite possible that the file has been set to read " +
                     "only, or the program cannot access the folder specified!" +
-                    "\n1.  Check permissions for folder: " + userFileLocation +
+                    "\n1.  Check Permissions for folder: " + userFileLocation +
                     "\n2.  Check Permissions for file: " + userFileLocation + initFile);
         }
         // pass the ArrayList<String> listOfJsonFiles to the caller
@@ -117,7 +124,7 @@ class SkillBlazerInitializer {
             System.out.println(" Error while WRITING data to " + initFile +
                 "  It's quite possible that the file has been set to read " +
                 "only, or the program cannot access the folder specified!" +
-                "\n1.  Check permissions for folder: " + userFileLocation +
+                "\n1.  Check Permissions for folder: " + userFileLocation +
                 "\n2.  Check Permissions for file: " + userFileLocation + initFile);
         }
     }

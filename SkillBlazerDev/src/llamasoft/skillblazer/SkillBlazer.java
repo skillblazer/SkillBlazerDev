@@ -13,10 +13,12 @@ import java.util.Iterator;
 
 
 public class SkillBlazer extends Application {
-    SkillBlazerInitializer intializer = new SkillBlazerInitializer();
+
     JSONLoader jsonLoader = new JSONLoader();
     JSONWriter jsonWriter = new JSONWriter();
 
+    // TODO: This can be removed once testing is completed!
+    SkillBlazerInitializer intializer = new SkillBlazerInitializer();
 
     @Override
     public void start(Stage primaryStage) {

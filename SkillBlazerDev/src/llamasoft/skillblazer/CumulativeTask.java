@@ -61,7 +61,14 @@ public class CumulativeTask extends Task {
         super(taskName, startDate);
         this.endDate = endDate;
     } //end CumulativeTask constructor
-    
+
+    /*
+     * Fully qualified constructor
+     */
+    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, Calendar endDate) {
+        super(taskName, taskId, startDate, isCompleted, type);
+        this.endDate = endDate;
+    } //end CumulativeTask constructor
     /*
      * Mutator method - endDate
      */

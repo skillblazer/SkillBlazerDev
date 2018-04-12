@@ -35,7 +35,6 @@ public class Day {
     }
 
 
-
     // Constructor that will accept a date from the calling method
     // This is important for creating FUTURE dates that will go
     // into a monthly calendar

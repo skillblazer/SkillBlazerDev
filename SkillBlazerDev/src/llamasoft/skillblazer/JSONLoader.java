@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 import org.json.simple.JSONArray;
@@ -13,7 +14,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONLoader {
-    private SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
+    protected SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
     private JSONParser jsonParser = new JSONParser();
     private ArrayList<Task> jsonTaskList = new ArrayList<>();
     protected JSONArray calendarOfTasks;
@@ -25,19 +26,17 @@ public class JSONLoader {
     private JSONObject loadFromJSON(String filename) {
         // loads the JSON file from the disk, populates the ArrayList
         try {
-            FileReader fileReader = new FileReader( getJSONFileLocation() );
+            // TODO: Make sure this reference to a file is correct
+            FileReader fileReader = new FileReader( skillBlazerInit.getLastJSONFilePath() + filename );
             jsonUserObject = (JSONObject)(jsonParser.parse(fileReader));
 
         } catch (FileNotFoundException e) {
-            // TODO: Pop a JavaFX prompt to find the File!
             System.out.println("\nNothing at this location\n");
             e.printStackTrace();
         } catch (ParseException e) {
-            // TODO: Pop a JavaFX prompt to find the File!
             System.out.println("\nParsing exception thrown\n");
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO: Pop a JavaFX prompt to find the File!
             System.out.println("\nIOException error thrown\n");
             e.printStackTrace();
         }
@@ -58,16 +57,18 @@ public class JSONLoader {
         return jsonTaskList;
     }
 
-    private ArrayList<Task> parseCommonTaskFields(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
+    private void parseAndCreateTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
         boolean isCompleted;
+        int currentStreak = 0;
+        int bestStreak = 0;
 
+        String type = (String) jsonObject.get("type");
         int taskId = (int) jsonObject.get("taskId");
+        String isCompletedString = (String) jsonObject.get("isCompleted");
+
         String startDate = (String) jsonObject.get("startDate");
 
-        String isCompletedString = (String) jsonObject.get("isCompleted");
-        if((isCompletedString.equals("false")) ||
-           (isCompletedString.equals("FALSE")) ||
-           (isCompletedString.equals("False")) ) {
+        if(isCompletedString.equals("false")) {
             isCompleted = false;
         } else {
             isCompleted = true;
@@ -75,43 +76,50 @@ public class JSONLoader {
 
         String taskName = (String) jsonObject.get("taskName");
 
-        // selection statements to determine if this is a subclass of Task.java
+        // Parse the remaining subclass-specific (unique) fields and
+        // instantiate the correct Task subclass, add it to the
+        // ArrayList<Task> taskArrayList
+        switch (type) {
+            case "daily":
+                // parse remaining fields specific to a DailyTask object
+                currentStreak = (int) jsonObject.get("currentStreak");
+                bestStreak = (int) jsonObject.get("bestStreak");
 
-        // instantiate the correct type of Task/DailyTask/WeeklyTask
-        return taskArrayList;
+                // instantiate a DailyTask object and add to ArrayList
+                taskArrayList.add(new DailyTask());
+                break;
+
+            case "weekly":
+                // parse remaining fields specific to a WeeklyTask object
+                currentStreak = (int) jsonObject.get("currentStreak");
+                bestStreak = (int) jsonObject.get("bestStreak");
+
+                // instantiate a WeeklyTask object and add to ArrayList
+                taskArrayList.add(new WeeklyTask());
+                break;
+
+            case "custom":
+                // parse remaining fields specific to a CustomTask object
+                currentStreak = (int) jsonObject.get("currentStreak");
+                bestStreak = (int) jsonObject.get("bestStreak");
+
+                // instantiate a CustomTask object and add to ArrayList
+                taskArrayList.add(new CustomTask());
+                break;
+
+            case "cumulative":
+                // parse remaining fields specific to a CumulativeTask object
+                Calendar endDate = (Calendar) jsonObject.get("endDate");
+
+                // instantiate a CumulativeTask object and add to ArrayList
+                taskArrayList.add(new CumulativeTask());
+                break;
+        }
     }
-
-    // parse JSONObject fields specific to a Daily Task Object
-    private void parseDailyTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
-        parseCommonTaskFields(jsonObject, taskArrayList);
-
-    }
-
-    // parse JSONObject fields specific to a Weekly Task Object
-    private void parseWeeklyTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
-        parseCommonTaskFields(jsonObject, taskArrayList);
-    }
-
-    // parse JSONObject fields specific to a Cumulative Task object
-    private void parseCumulativeTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
-        parseCommonTaskFields(jsonObject, taskArrayList);
-    }
-
-    // parse JSONObject fields specific to a Custom Task object
-    private void parseCustomTask(JSONObject jsonObject, ArrayList<Task> taskArrayList) {
-        parseCommonTaskFields(jsonObject, taskArrayList);
-    }
-
-
 
 
     public ArrayList<Task> getJsonDatabase() {
         return jsonTaskList; // May not be complete
-    }
-
-
-    private String getJSONFileLocation() {
-        return skillBlazerInit.getLastJSONFilePath();
     }
 
 }
