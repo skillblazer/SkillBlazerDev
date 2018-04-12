@@ -1,5 +1,7 @@
+// package
 package llamasoft.skillblazer;
 
+// import
 import java.time.LocalDate;
 import javafx.application.*;
 import javafx.scene.*;
@@ -12,28 +14,28 @@ import javafx.scene.effect.*;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
 
+// main class; extends Application
 public class SkillBlazer extends Application {
 
-    // Primary GUI interface fields
-    Button optionsButton;           // options button
-    Label appTitle;                 // application title
-    Button lifetimeMetricsButton;   // lifetime metrics button
-    Label currentMonthYearLabel;     // label for current month and year
-    Button forwardMonthButton;       // button to move month forward
-    Button backMonthButton;          // button to move month back
-    CalendarCalculator calCalc;      // CalendarCalculator object
-    TilePane calendarPane;           // tilepane object for calendar
-    Label monLabel;
-    Label tuesLabel;
-    Label wedLabel;
-    Label thursLabel;
-    Label friLabel;
-    Label satLabel;
-    Label sunLabel;
-    VBox[] vboxArray = new VBox[49];
-    Button habitCreationButton;
+    // primary GUI interface fields
+    Button optionsButton;               // options button
+    Label appTitle;                     // application title
+    Button lifetimeMetricsButton;       // lifetime metrics button
+    Label currentMonthYearLabel;        // label for current month and year
+    Button forwardMonthButton;          // button to move month forward
+    Button backMonthButton;             // button to move month back
+    CalendarCalculator calCalc;         // CalendarCalculator object
+    TilePane calendarPane;              // tilepane object for calendar
+    Label monLabel;                     // label for "Monday"
+    Label tuesLabel;                    // label for "Tuesday"
+    Label wedLabel;                     // label for "Wednesday"
+    Label thursLabel;                   // label for "Thursday"
+    Label friLabel;                     // label for "Friday"
+    Label satLabel;                     // label for "Saturday"
+    Label sunLabel;                     // label for "Sunday"
+    VBox[] vboxArray = new VBox[49];    // vbox array for main calendar interface
+    Button habitCreationButton;         // button for habit creation
 
-    // TO DO:  Add Calendar GUI features - TilePane (smaller for days of the week, larger for eeach day block)
     // sets up the main stage, scenes and such
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -46,13 +48,15 @@ public class SkillBlazer extends Application {
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(3.0);
         dropShadow.setOffsetY(3.0);
-        //dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+        
+        // instantiates CalendarCalculator
         calCalc = new CalendarCalculator();
-//        System.out.println(calCalc.getCurrentMonthString());      // Used for testing display of month
+
         // initializes optionsButton
         optionsButton = new Button();
         // sets text of optionsButton
         optionsButton.setText("Options");
+        // sets preferred width of optionsButton
         optionsButton.setPrefWidth(120);
         // event handler for 'Options' button
         optionsButton.setOnAction(new EventHandler() {
@@ -61,7 +65,7 @@ public class SkillBlazer extends Application {
                 // instantiates Options
                 Options options = new Options();
             }
-        });
+        }); // end event handler
 
         // initializes appTitle
         appTitle = new Label();
@@ -69,13 +73,13 @@ public class SkillBlazer extends Application {
         appTitle.getStyleClass().add("appTitle");
         // sets text of appTitle
         appTitle.setText("Skillblazer Habit Tracker");
+        // creates new region (for layout/alignment purposes)
         Region region1 = new Region();
-        //            vboxLabel.setAlignment(Pos.CENTER);
-        //            vboxLabel.setTextAlignment(Pos.TOP_RIGHT);
+        // for layout/alignment purposes
         HBox.setHgrow(region1, Priority.ALWAYS);
-        // sets alignment of appTitle to center
-        //appTitle.setAlignment(Pos.CENTER);
+        // creates new region (for layout/alignment purposes)
         Region region2 = new Region();
+        // for layout/alignment purposes
         HBox.setHgrow(region2, Priority.ALWAYS);
 
         // initializes currentMonthYearLabel
@@ -96,9 +100,9 @@ public class SkillBlazer extends Application {
                 // sets text of currentMonthYearLabel by calling two methods in CalendarCalculator class
                 currentMonthYearLabel.setText(" " + calCalc.getCurrentMonthString() + " " + calCalc.getCurrentYearInt() + " ");
                 drawCalendar();
-
             }
         }); // end event handler
+        
         // initializes backMonthButton
         backMonthButton = new Button();
         // sets text of backMonthButton
@@ -118,9 +122,8 @@ public class SkillBlazer extends Application {
         lifetimeMetricsButton = new Button();
         // sets text of lifetimeMetricsButton
         lifetimeMetricsButton.setText("Lifetime Metrics");
+        // sets preferred width of lifetimeMetricsButton
         lifetimeMetricsButton.setPrefWidth(120);
-        // lambda expression - event handler
-        //lifetimeMetricsButton.setOnAction(e -> System.out.println("Hello!"));
         // event handler for 'Lifetime Metrics' button
         lifetimeMetricsButton.setOnAction(new EventHandler() {
             @Override
@@ -129,9 +132,10 @@ public class SkillBlazer extends Application {
                 LifetimeMetrics lifetimemetrics = new LifetimeMetrics();
             }
         }); // end event handler
-
+        
+        // creation of BorderPane for the overall layout
         BorderPane borderPaneMain = new BorderPane();
-        // sets up layout pane (VBox)
+        // sets up layout pane (VBox); will be placed in borderPaneMain
         VBox vboxMain = new VBox();
 
         // hbox layout for top of screen
@@ -140,13 +144,14 @@ public class SkillBlazer extends Application {
         hboxTop.getStyleClass().add("vboxMain");
         // adds hbox to vboxMain
         vboxMain.getChildren().add(hboxTop);
-        // adds optionsButton to hbox
+        // adds optionsButton to hboxTop
         hboxTop.getChildren().add(optionsButton);
+        // adds region1 to hboxTop
         hboxTop.getChildren().add(region1);
-        // adds appTitle to hbox
+        // adds appTitle to hboxTop
         hboxTop.getChildren().add(appTitle);
+        // adds appTitle to region2
         hboxTop.getChildren().add(region2);
-
         // adds lifetimeMetricsButton to hbox
         hboxTop.getChildren().add(lifetimeMetricsButton);
 
@@ -156,204 +161,215 @@ public class SkillBlazer extends Application {
         hboxMonthYear.getStyleClass().add("vboxMain");
         // sets layout of center of borderPane to hbox 
         vboxMain.getChildren().add(hboxMonthYear);
-        // sets alignment for hbox2
+        // sets alignment for hboxMonthYear
         hboxMonthYear.setAlignment(Pos.TOP_CENTER);
-        // adds backMonthButton to hbox
+        // adds backMonthButton to hboxMonthYear
         hboxMonthYear.getChildren().add(backMonthButton);
-        // adds currentMonthLabel to hbox
+        // adds currentMonthLabel to hboxMonthYear
         hboxMonthYear.getChildren().add(currentMonthYearLabel);
-        // adds forwardMonthButton to hbox
+        // adds forwardMonthButton to hboxMonthYear
         hboxMonthYear.getChildren().add(forwardMonthButton);
 
-//        HBox hboxDays = new HBox();
-//        vboxMain.getChildren().add(hboxDays);
-//        monLabel = new Label("Monday");
-//        tuesLabel = new Label("Tuesday");
-//        wedLabel = new Label("Wednesday");
-//        thursLabel = new Label("Thursday");
-//        friLabel = new Label("Friday");
-//        satLabel = new Label("Saturday");
-//        sunLabel = new Label("Sunday");
-//        hboxDays.getStylesheets().add("days");
-//        hboxDays.getChildren().add(sunLabel);
-//        hboxDays.getChildren().add(monLabel);
-//        hboxDays.getChildren().add(tuesLabel);
-//        hboxDays.getChildren().add(wedLabel);
-//        hboxDays.getChildren().add(thursLabel);
-//        hboxDays.getChildren().add(friLabel);
-//        hboxDays.getChildren().add(satLabel);
-//        hboxDays.getStyleClass().add("hbox3");
         // initializes calendarPane
         calendarPane = new TilePane();
+        // pulls css specs from style sheet
         calendarPane.getStyleClass().add("calendarPane");
+        // sets layoutX for calendarPane
         calendarPane.setLayoutX(140);
+        // sets layoutY for calendarPane
         calendarPane.setLayoutY(50);
-        //calendarPane.setTileAlignment(Pos.CENTER);
-        //calendarPane.setAlignment(Pos.CENTER);
+        // sets preferred rows for calendarPane
         calendarPane.setPrefRows(7);
+        // sets preferred columns for calendarPane
         calendarPane.setPrefColumns(7);
-
+        
+        // call to drawCalendar() method, which is responsible for creating calendar
         drawCalendar();
-
+        
+        // hbox layout for calendarPane
         HBox hboxCalendar = new HBox();
-        // necessary to pull css specs from style sheet
+        // pulls css specs from style sheet
         hboxCalendar.getStyleClass().add("vboxMain");
+        // sets preferred height of hboxCalendar
         hboxCalendar.setPrefHeight(500);
+        // adds calendarPane to hboxCalendar
         hboxCalendar.getChildren().add(calendarPane);
+        // sets alignment of hboxCalendar
         hboxCalendar.setAlignment(Pos.CENTER);
+        // adds hboxCalendar to vboxMain
         vboxMain.getChildren().add(hboxCalendar);
 
-        // adds this pane/layout to the scene
-//        Scene scene = new Scene(vboxMain, 900, 800);
+        // adds vboxMain to center region of borderPaneMain
         borderPaneMain.setCenter(vboxMain);
+        // pulls css specs from style sheet
         borderPaneMain.getStyleClass().add("vboxMain");
+        // creates a new scene and adds borderPaneMain
         Scene scene = new Scene(borderPaneMain, 1000, 800);
         // adds scene to stage
         primaryStage.setScene(scene);
 
-        // gets css style sheet
+        // pulls css style sheet
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-        // shows the stage
-        primaryStage.show();  // actually displays the scene
+        // shows the stage; actually displays the scen
+        primaryStage.show();
 
         // uncomment for Macintosh style
         //AquaFx.style();
     } // end start() method
-
-    private void drawCalendar() {
-        int firstWeekdayMonth = calCalc.getFirstDayOfWeekCurrentMonth();
-        int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();
-        int j = 0;
-        calendarPane.getChildren().clear();
-
-        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",
-            "Thursday", "Friday", "Saturday", "Sunday"};
-        for (int i = 0; i < 7; i++) {
-            vboxArray[i] = new VBox();
-            HBox hboxCal = new HBox();
-            Label vboxLabel = new Label(daysOfWeek[i]);
-            vboxLabel.getStyleClass().add("dayOfWeekLabels");
-
-            Region emptyRegion1 = new Region();
-            Region emptyRegion2 = new Region();
-            Region emptyRegion3 = new Region();
-            HBox.setHgrow(emptyRegion3, Priority.ALWAYS);
-            HBox.setHgrow(emptyRegion2, Priority.ALWAYS);
-            VBox.setVgrow(emptyRegion1, Priority.ALWAYS);
-            hboxCal.getChildren().add(emptyRegion3);
-            hboxCal.getChildren().add(vboxLabel);
-            hboxCal.getChildren().add(emptyRegion2);
-            vboxArray[i].getChildren().add(emptyRegion1);
-            vboxArray[i].getChildren().add(hboxCal);
-            calendarPane.getChildren().add(vboxArray[i]);
-        }
     
-        for (int i = 7; i < vboxArray.length; i++) {
-
+    // drawCalendar() method; responsible for creating the calendar
+    private void drawCalendar() {
+        
+        // member fields
+        int firstDayOfWeekCurrentMonth = calCalc.getFirstDayOfWeekCurrentMonth(); // int that holds 1st day of week
+        int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();             // int that holds # of days
+        int j = 0;                                                                // iterator
+        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",                  // string array holding days
+            "Thursday", "Friday", "Saturday", "Sunday"};
+        
+        // clears calendar interface
+        calendarPane.getChildren().clear();
+        
+        // 'for' loop used to populate days of the week in top of calendar interface
+        for (int i = 0; i < 7; i++) {
+            // initializes vboxArray
             vboxArray[i] = new VBox();
+            // creates and initializes hboxCal
+            HBox hboxCal = new HBox();
+            // creates and initializes; fills it with string value from daysOfWeek
+            Label vboxLabel = new Label(daysOfWeek[i]);
+            // pulls css specs from style sheet
+            vboxLabel.getStyleClass().add("dayOfWeekLabels");
+            // creates new region (for layout/alignment purposes)
+            Region emptyRegion1 = new Region();
+            // creates new region (for layout/alignment purposes)
+            Region emptyRegion2 = new Region();
+            // creates new region (for layout/alignment purposes)
+            Region emptyRegion3 = new Region();
+            // for layout/alignment purposes
+            HBox.setHgrow(emptyRegion3, Priority.ALWAYS);
+            // for layout/alignment purposes
+            HBox.setHgrow(emptyRegion2, Priority.ALWAYS);
+            // for layout/alignment purposes
+            VBox.setVgrow(emptyRegion1, Priority.ALWAYS);
+            // adds emptyRegion3 to hboxCal
+            hboxCal.getChildren().add(emptyRegion3);
+            // adds vboxLabel to hboxCal
+            hboxCal.getChildren().add(vboxLabel);
+            // adds emptyRegion2 to hboxCal
+            hboxCal.getChildren().add(emptyRegion2);
+            // adds emptyRegion1 to vboxArray
+            vboxArray[i].getChildren().add(emptyRegion1);
+            // adds hboxCal to vboxArray
+            vboxArray[i].getChildren().add(hboxCal);
+            // adds vboxArray[i] to calendarPane
+            calendarPane.getChildren().add(vboxArray[i]);
+        } // end 'for' loop
+        
+        // 'for' loop used to populate actual calendar boxes of calendar interface
+        for (int i = 7; i < vboxArray.length; i++) {
+            // initializes vboxArray
+            vboxArray[i] = new VBox();
+            // sets preferred size of vboxArray
             vboxArray[i].setPrefSize(120, 85);
-            if (((i - 7) >= firstWeekdayMonth) && j < numberDaysCurrentMonth) {
+            // conditional statement
+            if (((i - 7) >= firstDayOfWeekCurrentMonth) && j < numberDaysCurrentMonth) {
+                // pulls css specs from style sheet
                 vboxArray[i].getStyleClass().add("vboxCalendar");
+                // creates and initializes hboxCal
                 HBox hboxCal = new HBox();
+                // int j iterates
                 j++;
+                // creates and initializes vboxLabel
                 Label vboxLabel = new Label("" + j);
+                // creates new region (for layout/alignment purposes)
                 Region emptyRegion = new Region();
+                // creates and initializes vboxButton
                 Button vboxButton = new Button("+");
+                // sets preferred size of vboxButton
                 vboxButton.setPrefSize(20, 20);
-                HBox.setHgrow(emptyRegion, Priority.ALWAYS);    
+                // for layout/alignment purposes
+                HBox.setHgrow(emptyRegion, Priority.ALWAYS);
+                // event handler for vboxButton
                 vboxButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        // instantiates Options
-                        CalendarButton calButton = new CalendarButton();
+                        // instantiates progressButton
+                        ProgressButton progressButton = new ProgressButton();
                     }
-
                 }); // end event handler
+                // adds vboxButton to hboxCal
                 hboxCal.getChildren().add(vboxButton);
+                // adds emptyRegion to hboxCal
                 hboxCal.getChildren().add(emptyRegion);
+                // adds vboxLabel to hboxCal
                 hboxCal.getChildren().add(vboxLabel);
-
+                // adds hboxCal to vboxArray[i]
                 vboxArray[i].getChildren().add(hboxCal);
             }
-            // "Habit Creation Button"
-            if(i==47) {
-                habitCreationButton = new Button("Create Habit");
+            // "Create Habit/Skill Button"
+            if (i == 47) {
+                // initializes habitCreationButton
+                habitCreationButton = new Button("Create Habit/Skill");
+                // pulls css specs from style sheet
                 habitCreationButton.getStyleClass().add("habitCreationButton");
+                // creates new region (for layout/alignment purposes)
                 Region emptyRegion1 = new Region();
+                // creates new region (for layout/alignment purposes)
                 Region emptyRegion2 = new Region();
+                // for layout/alignment purposes
                 VBox.setVgrow(emptyRegion1, Priority.ALWAYS);
+                // for layout/alignment purposes
                 VBox.setVgrow(emptyRegion2, Priority.ALWAYS);
+                // adds emptyRegion1 to vboxArray
                 vboxArray[i].getChildren().add(emptyRegion1);
+                // adds habitCreationButton to vboxArray
                 vboxArray[i].getChildren().add(habitCreationButton);
+                // adds emptyRegion2 to vboxArray
                 vboxArray[i].getChildren().add(emptyRegion2);
+                // event handler for habitCreationButton
                 habitCreationButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
                         // instantiates Options
-                        CalendarButton calButton = new CalendarButton();
+                        HabitCreationButton habitCreationButton = new HabitCreationButton();
                     }
-
                 }); // end event handler
             }
-            
-            
+            // adds vboxArray[i] to calendarPane
             calendarPane.getChildren().add(vboxArray[i]);
-        }
-
-    }
+        } // end 'for' loop
+    } // end drawCalendar() method
 
     // inner class for 'Options' menu
     class Options {
 
         // member fields - GUI elements
-        Label habitLabel;
-        TextField habitTextField;
-        Label goalLabel;
-        TextField numTextField;
-        ComboBox goalComboBox;
-        Label freqLabel;
-        ToggleGroup rbGroup = new ToggleGroup();
-        RadioButton dailyRB;
-        RadioButton weeklyRB;
-        RadioButton customRB;
-        RadioButton monRB;
-        RadioButton tuesRB;
-        RadioButton wedRB;
-        RadioButton thursRB;
-        RadioButton friRB;
-        RadioButton satRB;
-        RadioButton sunRB;
-        RadioButton cumulativeRB;
-        Label goalDateLabel;
-        DatePicker datePicker;
-        
-        Label notesLabel;
-        TextArea notesTextArea;
-        Button submitButton;
+ 
 
         // constructor
         public Options() {
 
             // creates new stage
-            Stage habitEntryStage = new Stage();
+            Stage optionsStage = new Stage();
             // sets title
-            habitEntryStage.setTitle("Options");
+            optionsStage.setTitle("Options");
             // new vbox layout
-            VBox habitEntryVBox = new VBox();
+            VBox optionsVBox = new VBox();
             // necessary to pull css specs from style sheet
-            habitEntryVBox.getStyleClass().add("secondaryWindow");
+            optionsVBox.getStyleClass().add("secondaryWindow");
             // adds this pane/layout to the scene
-            Scene habitEntryScene = new Scene(habitEntryVBox, 600, 680);
+            Scene optionsScene = new Scene(optionsVBox, 600, 680);
             // adds scene to stage 
-            habitEntryStage.setScene(habitEntryScene);
+            optionsStage.setScene(optionsScene);
             // gets css style sheet
-            habitEntryScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            optionsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             // shows the stage
-            habitEntryStage.show();    // actually displays the scene
+            optionsStage.show();    // actually displays the scene
         }
 
-    } // end Options class
+    } // end class Options
 
     // inner class for 'Lifetime Metrics' menu
     class LifetimeMetrics {
@@ -377,80 +393,82 @@ public class SkillBlazer extends Application {
             // shows the stage
             lifeMetricsStage.show();    // actually displays the scene
         }
-    } // end LifetimeMetrics class
+    } // end class LifetimeMetrics
 
     // inner class for handling when user clicks on a calendar button
-    class CalendarButton {
+    class HabitCreationButton {
 
         // member fields - GUI elements
-        Label habitLabel;
-        TextField habitTextField;
-        Label goalLabel;
-        TextField numTextField;
-        ComboBox goalComboBox;
-        Label freqLabel;
-        ToggleGroup rbGroup = new ToggleGroup();
-        RadioButton dailyRB;
-        RadioButton weeklyRB;
-        RadioButton customRB;
-        RadioButton monRB;
-        RadioButton tuesRB;
-        RadioButton wedRB;
-        RadioButton thursRB;
-        RadioButton friRB;
-        RadioButton satRB;
-        RadioButton sunRB;
-        RadioButton cumulativeRB;
-        Label goalDateLabel;
-        DatePicker datePicker;
-        Label startDateLabel;
-        DatePicker startDatePicker;
-        Label notesLabel;
-        TextArea notesTextArea;
-        Button submitButton;
+        Label startDateLabel;                           // label for 'Date to Start Goal'
+        DatePicker startDatePicker;                     // datepicker for user to enter start date for goal
+        Label habitLabel;                               // label for 'Habit Name'
+        TextField habitTextField;                       // textfield for habit name
+        Label goalLabel;                                // label for 'Goal'
+        TextField numTextField;                         // textfield for goal number
+        ComboBox goalComboBox;                          // combobox for goal metric
+        Label freqLabel;                                // label for 'Frequency'
+        ToggleGroup rbGroup = new ToggleGroup();        // togglegroup for radio button group
+        RadioButton dailyRB;                            // radio button for 'Daily' option
+        RadioButton weeklyRB;                           // radio button for 'Weekly' option
+        RadioButton customRB;                           // radio button for 'Custom' option
+        RadioButton monRB;                              // radio button for 'Monday' option
+        RadioButton tuesRB;                             // radio button for 'Tuesday' option
+        RadioButton wedRB;                              // radio button for 'Wednesday' option
+        RadioButton thursRB;                            // radio button for 'Thursday' option
+        RadioButton friRB;                              // radio button for 'Friday' option
+        RadioButton satRB;                              // radio button for 'Saturday' option
+        RadioButton sunRB;                              // radio button for 'Sunday' option
+        RadioButton cumulativeRB;                       // radio button for 'Cumulative' option
+        Label goalDateLabel;                            // label for 'Date to Complete Goal'
+        DatePicker datePicker;                          // datepicker for user to enter date to complete goal
+        Label notesLabel;                               // label for 'Notes'
+        TextArea notesTextArea;                         // textarea for notes section   
+        Button submitButton;                            // button for submitting informatione entered by user
 
         // constructor
-        public CalendarButton() {
+        public HabitCreationButton() {
 
             // creates new stage
-            Stage optionsStage = new Stage();
-            // sets title for optionsStage
-            optionsStage.setTitle("Habit Entry");
+            Stage habitEntryStage = new Stage();
+            // sets title for habitEntryStage
+            habitEntryStage.setTitle("Habit Entry");
 
-             // hbox for 1st vbox row
-            HBox hbox1 = new HBox();
-            hbox1.getStyleClass().add("options");
+            // hbox for 1st vbox row
+            HBox habitCreationButtonHbox1 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox1.getStyleClass().add("habitCreationButtonHboxes");
             // initializes startDateLabel
             startDateLabel = new Label();
-            // sets text for goalDateLabel
+            // sets text for startDateLabel
             startDateLabel.setText("Date to Start Goal:");
+            // initializes startDatePicker
             startDatePicker = new DatePicker();
+            // sets startDatePicker to the current date by default
             startDatePicker.setValue(LocalDate.now());
-            hbox1.getChildren().add(startDateLabel);
-            hbox1.getChildren().add(startDatePicker);
-            
-            
+            // adds startDateLabel to habitCreationButtonHbox1
+            habitCreationButtonHbox1.getChildren().add(startDateLabel);
+            // adds startDatePicker to habitCreationButtonHbox1
+            habitCreationButtonHbox1.getChildren().add(startDatePicker);
+
             // hbox for 2nd vbox row
-            HBox hbox2 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox2.getStyleClass().add("options");
+            HBox habitCreationButtonHbox2 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox2.getStyleClass().add("habitCreationButtonHboxes");
             // initializes habitLabel
             habitLabel = new Label();
             // sets text of habitLabel
             habitLabel.setText("Habit/Skill:");
             // initializes habitTextField
             habitTextField = new TextField();
-            // adds GUI components to hbox1
-            hbox2.getChildren().add(habitLabel);
-            hbox2.getChildren().add(habitTextField);
-            
-            
-            
+            // adds habitLabel to habitCreationButtonHbox2
+            habitCreationButtonHbox2.getChildren().add(habitLabel);
+            // adds habitTextField to habitCreationButtonHbox2
+            habitCreationButtonHbox2.getChildren().add(habitTextField);
 
             // hbox for 2nd vbox row
-            HBox hbox3 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox3.getStyleClass().add("options");
+            HBox habitCreationButtonHbox3 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox3.getStyleClass().add("habitCreationButtonHboxes");
             // initializes goalLabel
             goalLabel = new Label();
             // sets text of goalLabel
@@ -460,74 +478,75 @@ public class SkillBlazer extends Application {
             // sets max size of numTextField
             numTextField.setMaxSize(80, 80);
             // initializes goalComboBox
+            // initializes goalComboBox
             goalComboBox = new ComboBox();
+            // adds metrics to goalComboBox
             goalComboBox.getItems().add("minutes");
             goalComboBox.getItems().add("hours");
             goalComboBox.getItems().add("miles");
-            // adds GUI components to hbox2
-            hbox3.getChildren().add(goalLabel);
-            hbox3.getChildren().add(numTextField);
-            hbox3.getChildren().add(goalComboBox);
+            // adds goalLabel to habitCreationButtonHbox3
+            habitCreationButtonHbox3.getChildren().add(goalLabel);
+            // adds numTextField to habitCreationButtonHbox3
+            habitCreationButtonHbox3.getChildren().add(numTextField);
+            // adds goalComboBox to habitCreationButtonHbox3
+            habitCreationButtonHbox3.getChildren().add(goalComboBox);
 
-           
-            
-            
             // hbox for 3rd vbox row
-            HBox hbox4 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox4.getStyleClass().add("options");
+            HBox habitCreationButtonHbox4 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox4.getStyleClass().add("habitCreationButtonHboxes");
             // initializes freqLabel
             freqLabel = new Label();
             // sets text of freqLabel
             freqLabel.setText("Frequency:");
-            // adds GUI components to hbox3
-            hbox4.getChildren().add(freqLabel);
+            // adds freqLabel to habitCreationButtonHbox4
+            habitCreationButtonHbox4.getChildren().add(freqLabel);
 
             // hbox for 4th vbox row
-            HBox hbox5 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox5.getStyleClass().add("options");
+            HBox habitCreationButtonHbox5 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox5.getStyleClass().add("habitCreationButtonHboxes");
             // initializes dailyRB
             dailyRB = new RadioButton();
             // sets text of dailyRB
             dailyRB.setText("Daily");
-            // adds dailyRB to toggle group
+            // adds dailyRB to toggle group rbGroup
             dailyRB.setToggleGroup(rbGroup);
             // sets 'Daily' option as selected by default
             dailyRB.setSelected(true);
-            // adds GUI components to hbox4
-            hbox5.getChildren().add(dailyRB);
+            // adds dailyRB to habitCreationButtonHbox5
+            habitCreationButtonHbox5.getChildren().add(dailyRB);
 
             // hbox for 5th vbox row
-            HBox hbox6 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox6.getStyleClass().add("options");
+            HBox habitCreationButtonHbox6 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox6.getStyleClass().add("habitCreationButtonHboxes");
             // initializes weeklyRB
             weeklyRB = new RadioButton();
             // sets text of weeklyRB
             weeklyRB.setText("Weekly");
-            // adds weeklyRB to toggle group
+            // adds weeklyRB to toggle group rbGroup
             weeklyRB.setToggleGroup(rbGroup);
-            // adds GUI components to hbox5
-            hbox6.getChildren().add(weeklyRB);
+            // adds weeklyRB to habitCreationButtonHbox6
+            habitCreationButtonHbox6.getChildren().add(weeklyRB);
 
             // hbox for 6th vbox row
-            HBox hbox7 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox7.getStyleClass().add("options");
+            HBox habitCreationButtonHbox7 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox7.getStyleClass().add("habitCreationButtonHboxes");
             // initializes customRB
             customRB = new RadioButton();
             // sets text for customRB
             customRB.setText("Custom");
-            // adds customRB to toggle group
+            // adds customRB to toggle group rbGroup
             customRB.setToggleGroup(rbGroup);
-            // adds GUI components to hbox6
-            hbox7.getChildren().add(customRB);
+            // adds customRB to habitCreationButtonHbox7
+            habitCreationButtonHbox7.getChildren().add(customRB);
 
             // hbox for 7th vbox row
-            HBox hbox8 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox8.getStyleClass().add("hbox8");
+            HBox habitCreationButtonHbox8 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox8.getStyleClass().add("habitCreationButtonHboxes");
             // initializes monRB
             monRB = new RadioButton();
             // sets text of monRB
@@ -564,48 +583,55 @@ public class SkillBlazer extends Application {
             friRB.setDisable(true);
             satRB.setDisable(true);
             sunRB.setDisable(true);
-            // adds GUI components to hbox7
-            hbox8.getChildren().add(monRB);
-            hbox8.getChildren().add(tuesRB);
-            hbox8.getChildren().add(wedRB);
-            hbox8.getChildren().add(thursRB);
-            hbox8.getChildren().add(friRB);
-            hbox8.getChildren().add(satRB);
-            hbox8.getChildren().add(sunRB);
+            // adds monRB to habitCreationButtonHbox8
+            habitCreationButtonHbox8.getChildren().add(monRB);
+            // adds tuesRB to habitCreationButtonHbox8
+            habitCreationButtonHbox8.getChildren().add(tuesRB);
+            // adds wedRB to habitCreationButtonHbox8
+            habitCreationButtonHbox8.getChildren().add(wedRB);
+            // adds thursRB to habitCreationButtonHbox8
+            habitCreationButtonHbox8.getChildren().add(thursRB);
+            // adds friRB to habitCreationButtonHbox8
+            habitCreationButtonHbox8.getChildren().add(friRB);
+            // adds satRB to habitCreationButtonHbox8
+            habitCreationButtonHbox8.getChildren().add(satRB);
+            // adds sunRB to habitCreationButtonHbox8
+            habitCreationButtonHbox8.getChildren().add(sunRB);
 
             // hbox for 8th vbox row
-            HBox hbox9 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox9.getStyleClass().add("options");
+            HBox habitCreationButtonHbox9 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox9.getStyleClass().add("habitCreationButtonHboxes");
             // initializes cumulativeRB
             cumulativeRB = new RadioButton();
             // sets text for cumulativeRB
             cumulativeRB.setText("Cumulative");
-            // adds cumulativeRB to toggle group
+            // adds cumulativeRB to toggle group rbGroup
             cumulativeRB.setToggleGroup(rbGroup);
-            // adds GUI components to hbox8
-            hbox9.getChildren().add(cumulativeRB);
+            // adds cumulativeRB to habitCreationButtonHbox9
+            habitCreationButtonHbox9.getChildren().add(cumulativeRB);
 
             // hbox for 9th vbox row
-            HBox hbox10 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox10.getStyleClass().add("options");
+            HBox habitCreationButtonHbox10 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox10.getStyleClass().add("habitCreationButtonHboxes");
             // initializes goalDateLabel
             goalDateLabel = new Label();
             // sets text for goalDateLabel
             goalDateLabel.setText("Date to Complete Goal:");
             // initializes datePicker
             datePicker = new DatePicker();
-            
-            
-            // adds GUI components to hbox9
-            hbox10.getChildren().add(goalDateLabel);
-            hbox10.getChildren().add(datePicker);
+
+            // adds goalDateLabel to habitCreationButtonHbox10
+            habitCreationButtonHbox10.getChildren().add(goalDateLabel);
+            // adds datePicker to habitCreationButtonHbox10
+            habitCreationButtonHbox10.getChildren().add(datePicker);
             // sets datePicker as disabled
             datePicker.setDisable(true);
 
             // event handler for customRB
             customRB.setOnAction(e -> {
+                // sets all radio buttons to enabled
                 monRB.setDisable(false);
                 tuesRB.setDisable(false);
                 wedRB.setDisable(false);
@@ -618,6 +644,7 @@ public class SkillBlazer extends Application {
 
             // event handler for weeklyRB
             weeklyRB.setOnAction(e -> {
+                // sets all radio buttons to disabled
                 monRB.setDisable(true);
                 tuesRB.setDisable(true);
                 wedRB.setDisable(true);
@@ -630,6 +657,7 @@ public class SkillBlazer extends Application {
 
             // event handler for dailyRB
             dailyRB.setOnAction(e -> {
+                // sets all radio buttons to disabled
                 monRB.setDisable(true);
                 tuesRB.setDisable(true);
                 wedRB.setDisable(true);
@@ -642,6 +670,7 @@ public class SkillBlazer extends Application {
 
             // event handler for cumulativeRB
             cumulativeRB.setOnAction(e -> {
+                // sets all radio buttons to disabled
                 monRB.setDisable(true);
                 tuesRB.setDisable(true);
                 wedRB.setDisable(true);
@@ -653,77 +682,219 @@ public class SkillBlazer extends Application {
             }); // end event handler
 
             // hbox for 10th vbox row
-            HBox hbox11 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox11.getStyleClass().add("options");
+            HBox habitCreationButtonHbox11 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox11.getStyleClass().add("habitCreationButtonHboxes");
             // initializes notesLabel
             notesLabel = new Label();
             // sets text for notesLabel
             notesLabel.setText("Notes:");
             // initializes notesTextArea
             notesTextArea = new TextArea();
+            // sets preferred size of notesTextArea
             notesTextArea.setPrefSize(350, 350);
-            // adds GUI components to hbox9
-            hbox11.getChildren().add(notesLabel);
-            hbox11.getChildren().add(notesTextArea);
+            // adds notesLabel to habitCreationButtonHbox11
+            habitCreationButtonHbox11.getChildren().add(notesLabel);
+            // adds notesTextArea to habitCreationButtonHbox11
+            habitCreationButtonHbox11.getChildren().add(notesTextArea);
 
             // hbox for 11th vbox row
-            HBox hbox12 = new HBox();
-            // necessary to pull css specs from style sheet
-            hbox12.getStyleClass().add("options");
+            HBox habitCreationButtonHbox12 = new HBox();
+            // pulls css specs from style sheet
+            habitCreationButtonHbox12.getStyleClass().add("habitCreationButtonHboxes");
             // initializes submitButton
             submitButton = new Button();
             // sets text for submitButton
             submitButton.setText("Submit");
-            
+            // event handler for submitButton
             submitButton.setOnAction(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
-                        
-                        // TO DO: Save to JSON file
-                        
-                        optionsStage.close();
-                     
-                    }});
-            
-            
-            // centers hbox that submitButton is placed in
-            hbox12.setAlignment(Pos.CENTER);
-            // adds GUI components to hbox11
-            hbox12.getChildren().add(submitButton);
+                @Override
+                public void handle(Event event) {
+                                                                        // ****TO DO: Save to JSON file
+                    habitEntryStage.close();    // closes window
+                }
+            }); // end event handler
+
+            // centers the hbox that submitButton is placed in
+            habitCreationButtonHbox12.setAlignment(Pos.CENTER);
+            // adds submitButton to habitCreationButtonHbox12
+            habitCreationButtonHbox12.getChildren().add(submitButton);
 
             // new vbox layout
-            VBox optionsVbox = new VBox();
-            // necessary to pull css specs from style sheet
-            optionsVbox.getStyleClass().add("secondaryWindow");
-            // adds hboxes to vbox layout
-            optionsVbox.getChildren().add(hbox1);
-            optionsVbox.getChildren().add(hbox2);
-            optionsVbox.getChildren().add(hbox3);
-            optionsVbox.getChildren().add(hbox4);
-            optionsVbox.getChildren().add(hbox5);
-            optionsVbox.getChildren().add(hbox6);
-            optionsVbox.getChildren().add(hbox7);
-            optionsVbox.getChildren().add(hbox8);
-            optionsVbox.getChildren().add(hbox9);
-            optionsVbox.getChildren().add(hbox10);
-            optionsVbox.getChildren().add(hbox11);
-            optionsVbox.getChildren().add(hbox12);
-            // adds this pane/layout to the scene
-            Scene optionsScene = new Scene(optionsVbox, 700, 700);
-            // adds scene to stage 
-            optionsStage.setScene(optionsScene);
+            VBox habitCreationVbox = new VBox();
+            // pulls css specs from style sheet
+            habitCreationVbox.getStyleClass().add("secondaryWindow");
+            // adds all hboxes to habitCreationVbox
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox1);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox2);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox3);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox4);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox5);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox6);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox7);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox8);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox9);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox10);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox11);
+            habitCreationVbox.getChildren().add(habitCreationButtonHbox12);
+            
+            // adds habitCreationVbox to optionsScene
+            Scene optionsScene = new Scene(habitCreationVbox, 700, 700);
+            // adds optionsScene to habitEntryStage 
+            habitEntryStage.setScene(optionsScene);
             // gets css style sheet
             optionsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            // shows the stage
-            optionsStage.show();    // actually displays the scene
-        }
+            // shows the stage; actually displays the scene
+            habitEntryStage.show();   
+        } // end constructor
+        
+    } // end class HabitCreationButton
 
-    }
+    // inner class for handling when user clicks on the "+" button to add progress
+    class ProgressButton {
+
+        // member fields - GUI elements
+        Label habitLabel;                       // label for habitComboBox
+        ComboBox habitComboBox;                 // comboBox for list of populated habits/skills of user
+        Label goalLabel;                        // label for goalComboBox
+        ComboBox goalComboBox;                  // comboBox for list of goals pertaining to chosen habit/skill
+        Label progressMadeLabel;                // label for "Progress Made" TextField
+        TextField progressMadeTextField;        // textField for "Progress Made"; user can enter progress metrics  
+        ComboBox progressMetricsComboBox;       // comboBox for list of metrics when user updates progress
+        Label notesLabel;                       // label for "Notes" area
+        TextArea notesTextArea;                 // textArea for "Notes" area
+        Button submitButton;                    // button for user to submit progress information
+        
+        // constructor
+        ProgressButton() {
+
+            // creates new stage
+            Stage progressStage = new Stage();
+            // sets title for progressStage
+            progressStage.setTitle("Habit/Skill Creation");
+            
+            // hbox for 1st vbox row
+            HBox progressButtonHbox1 = new HBox();
+            // pulls css styling information
+            progressButtonHbox1.getStyleClass().add("progressButtonHboxes");
+            // initializes habitLabel
+            habitLabel = new Label();
+            // sets text for habitLabel
+            habitLabel.setText("Habit/Skill:");
+            // initializes habitComboBox
+            habitComboBox = new ComboBox();
+            // adds items to habitComboBox
+            habitComboBox.getItems().add("minutes");
+            habitComboBox.getItems().add("hours");
+            habitComboBox.getItems().add("miles");
+            // adds habitLabel to progressButtonHbox1
+            progressButtonHbox1.getChildren().add(habitLabel);
+            // adds habitComboBox to progressButtonHbox1
+            progressButtonHbox1.getChildren().add(habitComboBox);
+            
+             // hbox for 2nd vbox row
+            HBox progressButtonHbox2 = new HBox();
+            // pulls css styling information
+            progressButtonHbox2.getStyleClass().add("progressButtonHboxes");
+            // initializes goalLabel
+            goalLabel = new Label();
+            // sets text for goalLabel
+            goalLabel.setText("Goal:");
+             // initializes goalComboBox
+            goalComboBox = new ComboBox();
+                                                                    // ****TO DO: populate goals in goalComboBox
+            // adds goalLabel to progressButtonHbox2                                
+            progressButtonHbox2.getChildren().add(goalLabel);
+            // adds goalComboBox to progressButtonHbox2     
+            progressButtonHbox2.getChildren().add(goalComboBox);
+            
+            // hbox for 3rd vbox row
+            HBox progressButtonHbox3 = new HBox();
+            // pulls css styling information
+            progressButtonHbox3.getStyleClass().add("progressButtonHboxes");
+            // initializes progressMadeLabel
+            progressMadeLabel = new Label();
+            // sets text for progressMadeLabel
+            progressMadeLabel.setText("Progress Made:");
+             // initializes progressMadeTextField
+            progressMadeTextField = new TextField();
+            // sets max size of progressMadeTextField
+            progressMadeTextField.setMaxSize(80, 80);
+            // initializes progressMetrics
+            progressMetricsComboBox = new ComboBox();
+                                                            // ****TO DO: populate goals in progressMetricsComboBox
+            // adds components to progressButtonHbox3                                    
+            progressButtonHbox3.getChildren().add(progressMadeLabel);                                  
+            progressButtonHbox3.getChildren().add(progressMadeTextField);
+            progressButtonHbox3.getChildren().add(progressMetricsComboBox);
+            
+            // hbox for 4th vbox row
+            HBox progressButtonHbox4 = new HBox();
+            // pulls css styling information
+            progressButtonHbox4.getStyleClass().add("progressButtonHboxes");
+            // initializes notesLabel
+            notesLabel = new Label();
+            // sets text for notesLabel
+            notesLabel.setText("Notes:");
+            // initializes notesTextArea
+            notesTextArea = new TextArea();
+            // sets preferred size of notesTextArea
+            notesTextArea.setPrefSize(350, 350);
+            // adds notesLabel to progressButtonHbox4                                    
+            progressButtonHbox4.getChildren().add(notesLabel); 
+            // adds notesTextArea to progressButtonHbox4    
+            progressButtonHbox4.getChildren().add(notesTextArea);
+
+            // hbox for 5th vbox row
+            HBox progressButtonHbox5 = new HBox();
+            // pulls css styling information
+            progressButtonHbox5.getStyleClass().add("progressButtonHboxes");
+            // initializes submitButton
+            submitButton = new Button();
+            // sets text for submitButton
+            submitButton.setText("Submit");
+            // event handler for submitButton
+             submitButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+
+                                                                        // ****TO DO: Save to JSON file
+                    progressStage.close();      // closes window
+
+                }
+            }); // end event handler
+
+            // centers hbox that submitButton is placed in
+            progressButtonHbox5.setAlignment(Pos.CENTER);         
+            // adds submitButton to progressButtonHbox5                                    
+            progressButtonHbox5.getChildren().add(submitButton);
+            
+            // new vbox layout
+            VBox progressVbox = new VBox();
+            // pulls css specs from style sheet
+            progressVbox.getStyleClass().add("secondaryWindow");
+            // adds all of the hboxes to progressVbox
+            progressVbox.getChildren().add(progressButtonHbox1);
+            progressVbox.getChildren().add(progressButtonHbox2);
+            progressVbox.getChildren().add(progressButtonHbox3);
+            progressVbox.getChildren().add(progressButtonHbox4);
+            progressVbox.getChildren().add(progressButtonHbox5);
+      
+            // adds progressVbox to progressScene
+            Scene progressScene = new Scene(progressVbox, 700, 700);
+            // adds progressScene to progressStage 
+            progressStage.setScene(progressScene);
+            // gets css style sheet
+            progressScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            // shows the stage; actually displays the scene
+            progressStage.show();
+        } // end constructor
+        
+    } // end class ProgressButton
 
     // main method
     public static void main(String[] args) {
-        launch(args);  // opens the JavaFX Stage
+        launch(args);               // opens the JavaFX Stage
     } // end main method
 
-} // end Skillblazer class
+} // end class Skillblazer
