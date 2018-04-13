@@ -17,17 +17,16 @@
 
 package llamasoft.skillblazer;
 
-/*import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Label;*/
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+/*import javafx.geometry.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;*/
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -36,35 +35,48 @@ import twitter4j.auth.RequestToken;
 
 public class TwitterIntegration {
 	
-	/*
-	 * STILL REQUIRES A LOT OF WORK
-	 * 
-	 * Includes main method solely for testing purposes.
-	 * 
-	 * Might integrate separate FX window here for this
-	 * Confirm with GUI design first!!!!!
-	 */
-	
-	//Consumer key for allowing application to access Twitter
+	//Consumer key token for allowing application to access Twitter
 	private final static String CONSUMER_KEY = "";
-	//Consumer secret for allowing application to access Twitter
+	//Consumer secret token for allowing application to access Twitter
 	private final static String CONSUMER_KEY_SECRET = "";
 	
-	//private Stage window;
-	//private Button button;
 	@SuppressWarnings("unused")
 	private boolean isEnabled; //determines if Twitter option was selected
 
+	//Integrating window generation for Twitter here. Special 
+	//case for this integration. Primary GUI will call this
+	//and present the secondary Twitter window.
+	
 	/*
-	 * @Override public void start(Stage primaryStage) throws Exception {
-	 * 
-	 * }
-	 */
+	 * public static void display(String title, String message) {
+		Stage window = new Stage();
+		
+		window.initModality(Modality.APPLICATION_MODAL);
+		window.setTitle(title);
+		window.setMinWidth(250);
+		
+		Label label1 = new Label();
+		label1.setText(message);
+		Button closeButton = new Button ("Close the window");
+		closeButton.setOnAction(e -> window.close());
+		
+		VBox layout = new VBox(10);
+		layout.getChildren().addAll(label1, closeButton);
+		layout.setAlignment(Pos.CENTER);
+		
+		Scene scene = new Scene(layout);
+		window.setScene(scene);
+		window.showAndWait();
+	}*/
+	
+	private void readUserTokensFromFile() {
+		//read user tokens from designated file
+	}
 
 	/*
 	 * 
 	 */
-	public void start() throws TwitterException, IOException {
+	private void start() throws TwitterException, IOException {
 
 		Twitter twitter = new TwitterFactory().getInstance();
 		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);

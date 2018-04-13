@@ -84,7 +84,9 @@ public class UserProfile {
     		storageFolderPath = (homePath + "\\Documents\\skillblazerApp");
     	}
     	
-    	return storageFolderPath;
+    	//if path returns empty, then window will need to appear stating that
+    	//the OS they are using cannot use this application
+    	return storageFolderPath; 
     }
     
     /*
@@ -105,7 +107,7 @@ public class UserProfile {
      * Accessor Method - taskNumber
      */
     public long getTaskNumber() {
-    	return this.taskNumber;
+    	return taskNumber;
     } //end getTaskNumber method
     
     /*
