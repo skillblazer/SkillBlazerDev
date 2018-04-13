@@ -23,12 +23,12 @@
 
 package llamasoft.skillblazer;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CustomTask extends Task {
     private String type = "custom";
-
-    private String[] daysOfWeek; //days of the week the user has selected
+    private ArrayList<String> actualDaysInTask = new ArrayList<>();
     private int currentStreak; //current streak of completions
     private int bestStreak; //best streak of completions
     
@@ -56,18 +56,20 @@ public class CustomTask extends Task {
     /*
      * 
      */
-    public CustomTask(String taskName, Calendar startDate, String[] arrayOfDays) {
+    public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays) {
         super(taskName, startDate);
-        daysOfWeek = arrayOfDays.clone();
+
+
+        this.actualDaysInTask.addAll(arrayOfDays);
     } //end CustomTask constructor
     
     /*
      * 
      */
-    public CustomTask(String taskName, Calendar startDate, String[] arrayOfDays, int currentStreak,
+    public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays, int currentStreak,
     		int bestStreak) {
         super(taskName, startDate);
-        daysOfWeek = arrayOfDays.clone();
+        this.actualDaysInTask.addAll(arrayOfDays);
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end CustomTask constructor
@@ -76,9 +78,11 @@ public class CustomTask extends Task {
      *  Fully qualified constructor (needed for initializing objects stored on disk
      */
     public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, int currentStreak,
-                      int bestStreak, String[] arrayOfDays) {
+                      int bestStreak, ArrayList<String> daysInTask) {
         super(taskName, taskId, startDate, isCompleted, type);
-        daysOfWeek = arrayOfDays.clone();
+
+        this.actualDaysInTask.addAll(daysInTask);
+
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end CustomTask constructor
@@ -86,15 +90,15 @@ public class CustomTask extends Task {
     /*
      * 
      */
-    public String[] getDaysOfWeek() {
-        return this.daysOfWeek;
+    public ArrayList<String> getDaysOfWeek() {
+        return this.actualDaysInTask;
     } //end getDaysOfWeek method
     
     /*
      * 
      */
-    public void setDaysOfWeek(String[] arrayOfDays) {
-    	daysOfWeek = arrayOfDays.clone();
+    public void setDaysOfWeek(ArrayList<String> listOfDays) {
+        this.actualDaysInTask.addAll(listOfDays);
     } //end setDaysOfWeek method
 
     /*

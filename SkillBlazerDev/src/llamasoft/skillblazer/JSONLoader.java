@@ -15,47 +15,71 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONLoader {
-    protected SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
+    SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
     private JSONParser jsonParser = new JSONParser();
-    private ArrayList<Task> userTaskList = new ArrayList<>();
-    private JSONObject jsonUserObject;
-    public UserProfile profileFromDisk;
+    private ArrayList<Task> userTasks = new ArrayList<>();
 
     public JSONLoader() {}
 
+    // Only use this getter during runtime
+    // At startup you should be calling loadFromJSON()
+    public ArrayList<Task> getTasks() { return this.userTasks; }
 
-    private JSONObject loadFromJSON(String filename) {
+
+    protected ArrayList<Task> loadFromJSON(String filename) {
         // loads the JSON file from the disk, populates the ArrayList
-        try {
-            // TODO: Make sure this reference to a file is correct
-            FileReader fileReader = new FileReader( skillBlazerInit.getLastJSONFilePath() + filename );
-            jsonUserObject = (JSONObject)(jsonParser.parse(fileReader));
 
-        } catch (FileNotFoundException e) {
-            System.out.println("\nNothing at this location\n");
-            e.printStackTrace();
-        } catch (ParseException e) {
-            System.out.println("\nParsing exception thrown\n");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("\nIOException error thrown\n");
-            e.printStackTrace();
-        }
+        // allFileNames will contain everything in the user.home\\skillblazer\
+        // directory -> First we need to create a list of RELEVANT files
+        // that will be used in the program
+        ArrayList<String> allFileNames = skillBlazerInit.getFileList();
+        Iterator<String> allFileIterator = allFileNames.iterator();
 
-        return jsonUserObject;
-    }
+        // This is the arraylist that will contain genuine skillblazer files
+        ArrayList<String> skillblazerFileNames = new ArrayList<>();
+        Iterator<String> userFileIterator = skillblazerFileNames.iterator();
 
-    // Call the current file contents on disk and return an ArrayList<Task>
-    // This method only returns the file contents that were last saved to disk
-    public ArrayList<Task> getTaskListFromJSON(JSONObject jsonObject) {
+        /*
+         * look for SkillBlazer files in the directory
+         */
+        while (allFileIterator.hasNext()) {
+            if (allFileIterator.next().contains("skblw") ||  // weekly task
+                allFileIterator.next().contains("skbld") ||  // daily task
+                allFileIterator.next().contains("skblc") ||  // custom task
+                allFileIterator.next().contains("skblv") ||  // cumulative task
+                // not a task file?  is it the UserProfile data? :
+                allFileIterator.next().contains("userProfile")) {
+                // if the filename has a skillblazer format add it to the list
+                skillblazerFileNames.add(allFileIterator.next());
+            }
+        } //end while loop
 
-//        while (jsonObject.)
-//        parseTask(jsonObject);
-//
-//        jsonObject.con
+        // go through all the files that were confirmed to have skillblazer
+        // filenames
+        while (userFileIterator.hasNext()) {
+            try {
 
-
-        return userTaskList;
+                FileReader fileReader = new FileReader(skillBlazerInit.getLastJSONFilePath() + filename );
+                JSONObject jsonUserObject = (JSONObject)(jsonParser.parse(fileReader));
+                if (jsonUserObject.get("type") == "userProfile") {
+                    // call the method to instantiate the UserProfile object
+                    parseAndReturnUserProfile(jsonUserObject);
+                }
+                else {
+                    parseCreateAndAddTaskToList(jsonUserObject, userTasks);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("\nNothing at this location\n");
+                e.printStackTrace();
+            } catch (ParseException e) {
+                System.out.println("\nParsing exception thrown\n");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\nIOException error thrown\n");
+                e.printStackTrace();
+            }
+        } //end while loop
+        return userTasks;
     }
 
 
@@ -77,7 +101,7 @@ public class JSONLoader {
         String userName = (String) jsonObject.get("userName");
         long taskNumber = (long) jsonObject.get("taskNumber");
 
-        return new UserProfile(userName, userStartDate, taskNumber);
+        return (new UserProfile(userName, userStartDate, taskNumber));
     }
 
 
@@ -86,7 +110,7 @@ public class JSONLoader {
      * will instantiate the appropriate Task subclass, and add it to the
      * class member ArrayList that is passed as a parameter
      */
-    private void parseCreateAndAddTaskToList(JSONObject jsonObject, ArrayList<Task> userTaskList) {
+    private void parseCreateAndAddTaskToList(JSONObject jsonObject, ArrayList<Task> userTasks) {
         boolean isCompleted;
         int currentStreak;
         int bestStreak;
@@ -109,7 +133,6 @@ public class JSONLoader {
         }
         String type = (String) jsonObject.get("type");
 
-
         // Parse the remaining subclass-specific (unique) fields and
         // instantiate the correct Task subclass, add it to the
         // ArrayList<Task> userTaskList
@@ -120,7 +143,7 @@ public class JSONLoader {
                 bestStreak = (int) jsonObject.get("bestStreak");
 
                 // instantiate a DailyTask object and add to ArrayList
-                userTaskList.add(new DailyTask(taskName, taskId, startDate,
+                userTasks.add(new DailyTask(taskName, taskId, startDate,
                         isCompleted, type, currentStreak, bestStreak));
                 break;
 
@@ -130,7 +153,7 @@ public class JSONLoader {
                 bestStreak = (int) jsonObject.get("bestStreak");
 
                 // instantiate a WeeklyTask object and add to ArrayList
-                userTaskList.add(new WeeklyTask(taskName, taskId, startDate,
+                userTasks.add(new WeeklyTask(taskName, taskId, startDate,
                         isCompleted, type, currentStreak, bestStreak));
                 break;
 
@@ -140,24 +163,13 @@ public class JSONLoader {
                 bestStreak = (int) jsonObject.get("bestStreak");
 
                 JSONArray days = (JSONArray) jsonObject.get("days");
-
                 ArrayList<String> dayListing = new ArrayList<>();
-
                 // copy the contents of the JSONArray into an ArrayList
-                Iterator<String> iterator = days.iterator();
-                while (iterator.hasNext()) {
-                    dayListing.add(iterator.next());
-                }
-
-                String[] daysOfWeekArray = new String[7];
-                // copy ArrayList contents into a primitive String[] array
-                for (int i = 0; i < dayListing.size(); i++) {
-                    daysOfWeekArray[i] = dayListing.get(i);
-                }
+                dayListing.addAll(days);
 
                 // instantiate a CustomTask object and add to ArrayList
-                userTaskList.add(new CustomTask(taskName, taskId, startDate,
-                        isCompleted, type, currentStreak, bestStreak, daysOfWeekArray));
+                userTasks.add(new CustomTask(taskName, taskId, startDate,
+                        isCompleted, type, currentStreak, bestStreak, dayListing));
                 break;
 
             case "cumulative":
@@ -171,15 +183,11 @@ public class JSONLoader {
                 endDate.set(endYear, endMonth, endDay);
 
                 // instantiate a CumulativeTask object and add to ArrayList
-                userTaskList.add(new CumulativeTask(taskName, taskId, startDate,
+                userTasks.add(new CumulativeTask(taskName, taskId, startDate,
                         isCompleted, type, endDate));
                 break;
-        }
-    }
+        } //end switch statement
 
-
-    public ArrayList<Task> getJsonDatabase() {
-        return userTaskList; // May not be complete
-    }
+    } //end method parseCreateAndAddTaskToList()
 
 }

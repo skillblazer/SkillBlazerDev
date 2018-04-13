@@ -21,17 +21,17 @@ import java.util.*;
  * */
 
 class SkillBlazerInitializer {
-    protected static final String userHome = System.getProperty("user.home");
-    protected static final String userFileLocation = userHome + "\\SkillBlazer\\";
+    private static final String userHome = System.getProperty("user.home");
+    private static final String userFileLocation = userHome + "\\SkillBlazer\\";
     private static final String initFile = "SBinit.txt";
 
-    protected SkillBlazerInitializer() {}
+    SkillBlazerInitializer() {}
 
-    protected static String getUserDataLocation() {
+    static String getUserDataLocation() {
         return userHome;
     }
 
-    protected static void createSkillBlazerDirectory() {
+    private static void createSkillBlazerDirectory() {
         boolean newDirectory = new File(userFileLocation).mkdirs();
     }
 
@@ -40,7 +40,7 @@ class SkillBlazerInitializer {
      * Return the contents as an ArrayList<String>
      *
      */
-    protected static ArrayList<String> getFileList() {
+    ArrayList<String> getFileList() {
         ArrayList<String> listOfJsonFiles = new ArrayList<>();
 
         // create a File object in the local directory relevant to the current path
@@ -83,7 +83,7 @@ class SkillBlazerInitializer {
     }
 
 
-    public static void writeJsonFileListToInit(ArrayList<String> fileList) {
+    static void writeJsonFileListToInit(ArrayList<String> fileList) {
         // a method will need to be written to handle taking the Task
         // objects and creating a corresponding list of Strings for the
         // filename e.g. d0005.json or userProfile.json
@@ -132,13 +132,10 @@ class SkillBlazerInitializer {
     /**
      * TODO: This should use the user-set (custom) value set in UserProfile.java
      * This method will eventually find a CUSTOM location set by the user.
-     * Likely this method will not be implemented until Phase 2 or Phase 3
+     * Likely this user story will not be implemented until Phase 2 or Phase 3
      */
-    protected String getLastJSONFilePath() {
-
-        String userHome = System.getProperty("user.home");
-        //bogus return statement, never use absolute paths
-        return userHome;
+    String getLastJSONFilePath() {
+        return userFileLocation;
     }
 
 }
