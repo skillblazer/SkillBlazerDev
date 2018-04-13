@@ -82,7 +82,7 @@ public class UserProfile {
     	String currentDate = currentDateFormat.format(currentCalDate.getTime());
     	
     	return currentDate;
-    } //end getCurrentDate method
+    } //end calculateCurrentDate method
     
     /*
      * Determines if the folder for the skillblazer app has been created

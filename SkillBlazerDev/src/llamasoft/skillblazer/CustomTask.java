@@ -58,8 +58,6 @@ public class CustomTask extends Task {
      */
     public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays) {
         super(taskName, startDate);
-
-
         this.actualDaysInTask.addAll(arrayOfDays);
     } //end CustomTask constructor
     
@@ -80,9 +78,7 @@ public class CustomTask extends Task {
     public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, int currentStreak,
                       int bestStreak, ArrayList<String> daysInTask) {
         super(taskName, taskId, startDate, isCompleted, type);
-
         this.actualDaysInTask.addAll(daysInTask);
-
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end CustomTask constructor

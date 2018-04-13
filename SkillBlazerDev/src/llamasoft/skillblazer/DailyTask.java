@@ -16,13 +16,14 @@ import java.util.Calendar;
  * that value.
  */
 public class DailyTask extends Task {
-    private String type = "daily";
+
 
     /* REMEMBER ALL YOUR SUPERCLASS MEMBERS!!! */
     private boolean isCompleted = false;
     private String taskName;
     private int currentStreak;
     private int bestStreak;
+    private String type = "daily";
 
     public boolean getIsCompleted() {
         return isCompleted;

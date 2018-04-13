@@ -32,6 +32,6 @@ public class JSONWriter {
 
     public void saveUserProfileToFile(UserProfile userProfile) {
         // save user profile to file
-        // filename should be in format [userName].json
+        // filename should be in format userProfile.json
     }
 }
