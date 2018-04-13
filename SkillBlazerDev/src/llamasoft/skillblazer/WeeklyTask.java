@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class WeeklyTask extends Task {
+    private String type = "weekly";
 
     /* REMEMBER ALL YOUR SUPERCLASS MEMBERS!!! */
 
@@ -33,9 +34,11 @@ public class WeeklyTask extends Task {
         super(taskName);
     }
 
-    public WeeklyTask(String taskName, Calendar startDate) {
-        super(taskName, startDate);
-    }
+    public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, int currentStreak, int bestStreak) {
+        super(taskName, taskId, startDate, isCompleted, type);
+        this.currentStreak = currentStreak;
+        this.bestStreak = bestStreak;
+    } //end WeeklyTask constructor
 
     public Calendar getStartDate() {
         return this.startDate;
