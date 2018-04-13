@@ -38,7 +38,7 @@ public class Task {
     public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type) {
         this.taskName = taskName;
         this.taskId = taskId;
-        this.startDate = startDate;  // startDate is a Calendar object -> this may not work!!!!
+        this.startDate = startDate;
         this.isCompleted = isCompleted;
         this.type = type;
     }
