@@ -28,7 +28,7 @@ import java.util.Calendar;
 
 public class CumulativeTask extends Task {
 
-    Calendar endDate; //end date for cumulative task
+    public Calendar endDate; //end date for cumulative task
 
     /*
      * Default Class Constructor - calls parent constructor
