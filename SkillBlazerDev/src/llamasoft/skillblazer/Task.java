@@ -10,11 +10,11 @@ package llamasoft.skillblazer;
 import java.util.Calendar;
 
 public class Task {
-
+    String taskName;
     protected long taskId;
     private Calendar startDate;
     private boolean isCompleted;
-    String taskName;
+    private String type;
 
     long getTaskId() {
         return 0;  // placeholder return statement -> needs real code!
@@ -32,7 +32,15 @@ public class Task {
 
     public Task(String taskName, Calendar startDate) {
         this.taskName = taskName;
-        this.startDate = startDate;  // startDate is a Calendar object -> this may not work!!!!
+        this.startDate = startDate;
+    }
+
+    public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type) {
+        this.taskName = taskName;
+        this.taskId = taskId;
+        this.startDate = startDate;
+        this.isCompleted = isCompleted;
+        this.type = type;
     }
 
     public String getTaskName() {

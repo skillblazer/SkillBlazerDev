@@ -17,11 +17,13 @@ import java.util.Calendar;
  */
 public class DailyTask extends Task {
 
+
     /* REMEMBER ALL YOUR SUPERCLASS MEMBERS!!! */
     private boolean isCompleted = false;
     private String taskName;
     private int currentStreak;
     private int bestStreak;
+    private String type = "daily";
 
     public boolean getIsCompleted() {
         return isCompleted;
@@ -51,9 +53,12 @@ public class DailyTask extends Task {
         super(taskName);
     }
 
-    public DailyTask(String taskName, Calendar startDate) {
-        super(taskName, startDate);
-    }
+    public DailyTask(String taskName, long taskId, Calendar startDate,
+                     boolean isCompleted,  String type, int currentStreak, int bestStreak) {
+        super(taskName, taskId, startDate, isCompleted, type);
+        this.currentStreak = currentStreak;
+        this.bestStreak = bestStreak;
+    } //end DailyTask constructor
 
     /* DO YOU NEED TO OVERRIDE the Task.getCurrentStreak() or
      * Task.getBestStreak() methods?  */
