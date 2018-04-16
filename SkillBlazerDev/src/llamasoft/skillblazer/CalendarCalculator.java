@@ -120,11 +120,15 @@ public class CalendarCalculator {
 
 
     // method that determines leap year so February is correctly created!
+    /*
+     * @Author
+     * ‘Cletus’ (2009, June 20).  Java code for calculating leap year.
+     * Message and source code posted to http://stackoverflow.com.
+     */
     private boolean isLeapYear(int currentYear) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, currentYear);
-
-        return cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, currentYear);
+        return calendar.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
     } // end isLeapYear() method
 
 } // end class CalendarCalculator
