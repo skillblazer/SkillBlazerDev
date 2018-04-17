@@ -15,10 +15,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONLoader {
-    private SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
+    protected SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
     private JSONParser jsonParser = new JSONParser();
     private ArrayList<Task> userTasks = new ArrayList<>();
-    private static JSONObject jsonUserObject;
+    private JSONObject jsonUserObject;
 
     public JSONLoader() {}
 
@@ -61,6 +61,8 @@ public class JSONLoader {
                 // call the method to instantiate the UserProfile object
                 parseAndReturnUserProfile(jsonUserObject);
             } else {
+                // call the method to instantiate a Task-subclass object and
+                // add it to the arraylist of tasks
                 parseCreateAndAddTaskToList(jsonUserObject, userTasks);
             }
 

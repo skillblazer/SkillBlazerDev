@@ -70,13 +70,14 @@ class SkillBlazerInitializer {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("\n\n");
+
             System.out.println("Error while READING data from: " + initFile +
                     "  It's quite possible that the file has been set to read " +
                     "only, or the program cannot access the folder specified!" +
                     "\n1.  Check Permissions for folder: " + userFileLocation +
                     "\n2.  Check Permissions for file: " + userFileLocation + initFile);
+            System.out.println("\n\n");
+            e.printStackTrace();
         }
         // pass the ArrayList<String> listOfJsonFiles to the caller
         return listOfJsonFiles;
@@ -119,13 +120,13 @@ class SkillBlazerInitializer {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("\n\n");
             System.out.println(" Error while WRITING data to " + initFile +
                 "  It's quite possible that the file has been set to read " +
                 "only, or the program cannot access the folder specified!" +
                 "\n1.  Check Permissions for folder: " + userFileLocation +
                 "\n2.  Check Permissions for file: " + userFileLocation + initFile);
+            System.out.println("\n\n");
+            e.printStackTrace();
         }
     }
 
