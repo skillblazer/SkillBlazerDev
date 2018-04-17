@@ -28,13 +28,14 @@ import java.util.Calendar;
 
 public class CumulativeTask extends Task {
 
-    public Calendar endDate; //end date for cumulative task
+    private Calendar endDate; //end date for cumulative task
 
     /*
      * Default Class Constructor - calls parent constructor
      */
     public CumulativeTask() {
         super();
+        this.type = "cumulative";
     } //end CumulativeTask constructor
 
     /*
@@ -43,6 +44,7 @@ public class CumulativeTask extends Task {
     public CumulativeTask(String taskName) {
         super(taskName);
         this.taskName = taskName;
+        this.type = "cumulative";
     } //end CumulativeTask constructor
 
     /*
@@ -51,6 +53,7 @@ public class CumulativeTask extends Task {
      */
     public CumulativeTask(String taskName, Calendar startDate) {
         super(taskName, startDate);
+        this.type = "cumulative";
     } //end CumulativeTask constructor
 
     /*
@@ -60,15 +63,18 @@ public class CumulativeTask extends Task {
     public CumulativeTask(String taskName, Calendar startDate, Calendar endDate) {
         super(taskName, startDate);
         this.endDate = endDate;
+        this.type = "cumulative";
     } //end CumulativeTask constructor
 
+    
     /*
      * Fully qualified constructor
      */
-    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, Calendar endDate) {
-        super(taskName, taskId, startDate, isCompleted, type);
+    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, Calendar endDate) {
+        super(taskName, taskId, startDate, isCompleted, "cumulative");
         this.endDate = endDate;
     } //end CumulativeTask constructor
+    
     /*
      * Mutator method - endDate
      */
