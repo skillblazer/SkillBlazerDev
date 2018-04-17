@@ -17,7 +17,7 @@ public class Task {
     private String type;
 
     long getTaskId() {
-        return 0;  // placeholder return statement -> needs real code!
+        return 0;  // placeholder return statement -> needs real code! 
     }
 
     Calendar getStartDate() {
