@@ -34,28 +34,30 @@ public class CustomTask extends Task {
     private int bestStreak; //best streak of completions
     
     /*
-     * 
+     * Default Class Constructor - calls parent constructor
      */
     public CustomTask() {
         super();
     } //end CustomTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
      */
     public CustomTask(String taskName) {
         super(taskName);
     } //end CustomTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
+     * and startDate
      */
     public CustomTask(String taskName, Calendar startDate) {
         super(taskName, startDate);
     } //end CustomTask constructor
     
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
+     * and startDate. Initializes arrayOfDays class variable.
      */
     public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays) {
         super(taskName, startDate);
@@ -63,7 +65,8 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
     
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName and 
+     * startDate. Initializes all subclass variables.
      */
     public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays, int currentStreak,
     		int bestStreak) {
@@ -85,44 +88,44 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     * 
+     * Accessor Method - actualDaysInTask
      */
     public ArrayList<String> getDaysOfWeek() {
         return this.actualDaysInTask;
     } //end getDaysOfWeek method
     
     /*
-     * 
+     * Mutator Method - actualDaysInTask
      */
     public void setDaysOfWeek(ArrayList<String> listOfDays) {
         this.actualDaysInTask.addAll(listOfDays);
     } //end setDaysOfWeek method
 
     /*
-     * 
+     * Accessor Method - currentStreak
      */
     public int getCurrentStreak() {
         return this.currentStreak;
     } //end getCurrentStreak method
     
     /*
-     * 
+     * Mutator Method - currentStreak
      */
     public void setCurrentStreak(int currentStreak) {
     	this.currentStreak = currentStreak;
     } //end setCurrentStreak method
 
     /*
-     * 
+     * Accessor Method - bestStreak
      */
     public int getBestStreak() {
         return this.bestStreak;
     } //end getBestStreak method
     
     /*
-     * 
+     * Mutator Method - bestStreak
      */
     public void setBestStreak(int bestStreak) {
         this.bestStreak = bestStreak;
     } //end getBestStreak method
-}
+} //end of CustomTask class

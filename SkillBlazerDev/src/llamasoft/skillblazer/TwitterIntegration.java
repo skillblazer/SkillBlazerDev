@@ -103,24 +103,24 @@ public class TwitterIntegration extends Application {
 		twitterWindow.setTitle("Twitter Integrated Application");
 		twitterWindow.getIcons().add(new Image("/Twitter.jpg"));
 		
-		// hbox for tweet row
+		// hbox for instructions row
         HBox instructHbox = new HBox(5);
         instructHbox.setPadding(new Insets(15, 12, 15, 12));
         // pulls css styling information
         instructHbox.getStyleClass().add("progressButtonHboxes");
-        // initializes tweetLabel
+        // initializes instructLabel
         instructLabel = new Label();
         instructLabel.setTextFill(Color.web("#008000"));
-        // sets text for tweetLabel
+        // sets text for instructLabel
         instructLabel.setText("Instructions:");
-        // initializes tweetTextArea
+        // initializes instructions
         instructions = new Label();
         instructions.setTextFill(Color.web("#008000"));
-        // sets preferred size of tweetTextArea
+        // sets text for instructions
         instructions.setText("These are the instructions.");
-        // adds tweetLabel to tweetHbox                                    
+        // adds instructLabel to instructHbox                                    
 		instructHbox.getChildren().add(instructLabel);
-        // adds tweetTextArea to tweetHbox    
+        // adds instructions to instructHbox    
 		instructHbox.getChildren().add(instructions);
 		
         // hbox for url row
