@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/10/2018
+ * Date: 4/16/2018
  * 
  * Description:
  * 
@@ -20,54 +20,234 @@ package llamasoft.skillblazer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-/*import javafx.geometry.*;
+
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
-import javafx.stage.Stage;*/
+import javafx.stage.Stage;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
-public class TwitterIntegration {
+public class TwitterIntegration extends Application {
 	
 	//Consumer key token for allowing application to access Twitter
 	private final static String CONSUMER_KEY = "";
 	//Consumer secret token for allowing application to access Twitter
 	private final static String CONSUMER_KEY_SECRET = "";
-	
-	@SuppressWarnings("unused")
 	private boolean isEnabled; //determines if Twitter option was selected
-
-	//Integrating window generation for Twitter here. Special 
-	//case for this integration. Primary GUI will call this
-	//and present the secondary Twitter window.
 	
-	/*
-	 * public static void display(String title, String message) {
-		Stage window = new Stage();
+	Stage window;
+	Button button;
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		window = primaryStage;
+		window.setTitle("Test Window");
 		
-		window.initModality(Modality.APPLICATION_MODAL);
-		window.setTitle(title);
-		window.setMinWidth(250);
+		button = new Button("Click me");
 		
-		Label label1 = new Label();
-		label1.setText(message);
-		Button closeButton = new Button ("Close the window");
-		closeButton.setOnAction(e -> window.close());
+		button.setOnAction(e -> {
+			display();
+		});
 		
-		VBox layout = new VBox(10);
-		layout.getChildren().addAll(label1, closeButton);
-		layout.setAlignment(Pos.CENTER);
-		
-		Scene scene = new Scene(layout);
+		StackPane layout = new StackPane();
+		layout.getChildren().add(button);
+		Scene scene = new Scene(layout, 300, 250);
 		window.setScene(scene);
-		window.showAndWait();
-	}*/
+		window.show();
+	 }
+
+	 public static void display() {
+		 
+		Label instructLabel; // label for "Instructions"
+		Label instructions; // "Instructions"
+		Label urlLabel; // label for "Auth URL"
+		Label authURL;  // "Auth URL"
+	    Label pinLabel;	// label for "PIN" 
+	    TextField pinTextField; //text field for "PIN" 
+		Label tweetLabel; // label for "Tweet" area
+		TextArea tweetTextArea; // textArea for "Tweet" area
+		Button submitButton; // button for user to submit tweet
+		
+		int MAX_CHARS = 280;
+		String authorizationURL = "";
+		String pinCode = "";
+		String tweet = "";
+		 
+		Stage twitterWindow = new Stage();
+		twitterWindow.setTitle("Twitter Integrated Application");
+		twitterWindow.getIcons().add(new Image("/Twitter.jpg"));
+		
+		// hbox for tweet row
+        HBox instructHbox = new HBox(5);
+        instructHbox.setPadding(new Insets(15, 12, 15, 12));
+        // pulls css styling information
+        instructHbox.getStyleClass().add("progressButtonHboxes");
+        // initializes tweetLabel
+        instructLabel = new Label();
+        instructLabel.setTextFill(Color.web("#008000"));
+        // sets text for tweetLabel
+        instructLabel.setText("Instructions:");
+        // initializes tweetTextArea
+        instructions = new Label();
+        instructions.setTextFill(Color.web("#008000"));
+        // sets preferred size of tweetTextArea
+        instructions.setText("These are the instructions.");
+        // adds tweetLabel to tweetHbox                                    
+		instructHbox.getChildren().add(instructLabel);
+        // adds tweetTextArea to tweetHbox    
+		instructHbox.getChildren().add(instructions);
+		
+        // hbox for url row
+        HBox urlHbox = new HBox(10);
+        urlHbox.setPadding(new Insets(15, 12, 15, 12));
+        // pulls css styling information
+        urlHbox.getStyleClass().add("progressButtonHboxes");
+        // initializes URL Label
+        urlLabel = new Label();
+        urlLabel.setTextFill(Color.web("#008000"));
+        // sets text for urlLabel
+        urlLabel.setText("Auth URL:");
+        // initializes authURL
+        authURL = new Label();
+        authURL.setTextFill(Color.web("#008000"));
+        // sets text for URL for user to use - EXAMPLE WILL REPLACE
+        authURL.setText("https://twitter.auth.url.example565333424545234234.com");
+        // adds components to urlHbox                                    
+        urlHbox.getChildren().add(urlLabel);
+        urlHbox.getChildren().add(authURL);
+        
+        // hbox for PIN row
+        HBox pinHbox = new HBox(10);
+        pinHbox.setPadding(new Insets(15, 12, 15, 12));
+        // pulls css styling information
+        pinHbox.getStyleClass().add("progressButtonHboxes");
+        // initializes pinLabel
+        pinLabel = new Label();
+        pinLabel.setTextFill(Color.web("#008000"));
+        // sets text for pinLabel
+        pinLabel.setText("Enter PIN:");
+        // initializes pinTextField
+        pinTextField = new TextField();
+        // sets max size of pinTextField
+        pinTextField.setMaxSize(80, 80);
+        
+        /*
+         * This code uses a regex to make the PIN text field numeric. This means
+         * it will not accept any values but numbers. 
+         * @Author Entire changed() method below attained from www.tutorialsface.com with some 
+         * specific skillblazer application alterations
+         * Source: http://www.tutorialsface.com/2016/12/how-to-make-numeric-decimal-textfield-in-javafx-example-tutorial/
+         */
+        pinTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d{0,7}?")) {
+                    pinTextField.setText(oldValue);
+                }
+            }
+        });
+        
+        // adds components to pinHbox                                    
+        pinHbox.getChildren().add(pinLabel);
+        pinHbox.getChildren().add(pinTextField);
+
+        // hbox for tweet row
+        HBox tweetHbox = new HBox(10);
+        tweetHbox.setPadding(new Insets(15, 12, 15, 12));
+        // pulls css styling information
+        tweetHbox.getStyleClass().add("progressButtonHboxes");
+        // initializes tweetLabel
+        tweetLabel = new Label();
+        tweetLabel.setTextFill(Color.web("#008000"));
+        // sets text for tweetLabel
+        tweetLabel.setText("Tweet:");
+        // initializes tweetTextArea
+        tweetTextArea = new TextArea();
+        // sets preferred size of tweetTextArea
+        tweetTextArea.setPrefSize(375, 250);
+        // sets limit on characters to 280 for normal tweet
+		tweetTextArea.setTextFormatter(new TextFormatter<String>(change -> 
+        	change.getControlNewText().length() <= MAX_CHARS ? change : null));
+		tweetTextArea.setWrapText(true);
+        // adds tweetLabel to tweetHbox                                    
+        tweetHbox.getChildren().add(tweetLabel);
+        // adds tweetTextArea to tweetHbox    
+        tweetHbox.getChildren().add(tweetTextArea);
+
+        // hbox for submit button row
+        HBox submitTweetButtonHbox = new HBox(10);
+        submitTweetButtonHbox.setPadding(new Insets(15, 12, 15, 12));
+        // pulls css styling information
+        submitTweetButtonHbox.getStyleClass().add("progressButtonHboxes");
+        // initializes submitButton
+        submitButton = new Button();
+        submitButton.setStyle("-fx-background-color: #87ceeb;");
+        // sets text for submitButton
+        submitButton.setText("Submit Tweet");
+        // event handler for submitButton
+        submitButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+
+                // ****TO DO: Perform twitter integration code
+                twitterWindow.close();      // closes window
+
+            }
+        }); // end event handler
+
+        // centers hbox that submitButton is placed in
+        submitTweetButtonHbox.setAlignment(Pos.CENTER);
+        // adds submitButton to submitTweetButtonHbox                                    
+        submitTweetButtonHbox.getChildren().add(submitButton);
+
+        // new vbox layout
+        VBox twitterVbox = new VBox(20);
+        // pulls css specs from style sheet
+        twitterVbox.getStyleClass().add("secondaryWindow");
+        twitterVbox.setStyle("-fx-background: #ff69b4;");
+        // adds all of the hboxes to twitterVbox
+        twitterVbox.getChildren().add(instructHbox);
+        twitterVbox.getChildren().add(urlHbox);
+        twitterVbox.getChildren().add(pinHbox);
+        twitterVbox.getChildren().add(tweetHbox);
+        twitterVbox.getChildren().add(submitTweetButtonHbox);
+		 
+		// adds twitterVbox to twitterScene
+        Scene twitterScene = new Scene(twitterVbox, 500, 450);
+        // adds twitterScene to twitterWindow 
+        twitterWindow.setScene(twitterScene);
+        // shows the stage; actually displays the scene
+        twitterWindow.show();
+		 
+	 }
+	 
+	/************************************************************************************/ 
 	
 	private void readUserTokensFromFile() {
 		//read user tokens from designated file
@@ -76,7 +256,7 @@ public class TwitterIntegration {
 	/*
 	 * 
 	 */
-	private void start() throws TwitterException, IOException {
+	private void twitterInt() throws TwitterException, IOException {
 
 		Twitter twitter = new TwitterFactory().getInstance();
 		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
@@ -108,15 +288,8 @@ public class TwitterIntegration {
 		twitter.updateStatus("First Tweet using skillblazer application #LlamasForLife");
 
 	}
-	
-	/*
-	 * 
-	 */
-	public void enableTwitterIntegration(Boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
 
-	public static void main(String[] args) throws Exception {
-		new TwitterIntegration().start();// run the Twitter client
-	}
+	/*public static void main(String[] args) throws Exception {
+		new TwitterIntegration().twitterInt();// run the Twitter client
+	}*/
 }

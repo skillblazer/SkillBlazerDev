@@ -3,7 +3,7 @@
  * File Name: CustomTask.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/10/2018
+ * Date: 4/16/2018
  * 
  * Description:
  * 
@@ -27,8 +27,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CustomTask extends Task {
+	
     private String type = "custom";
-    private ArrayList<String> actualDaysInTask = new ArrayList<>();
+    private ArrayList<String> actualDaysInTask = new ArrayList<>(); //days picked by user
     private int currentStreak; //current streak of completions
     private int bestStreak; //best streak of completions
     
