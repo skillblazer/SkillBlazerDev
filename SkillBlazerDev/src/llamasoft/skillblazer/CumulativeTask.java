@@ -41,7 +41,6 @@ public class CumulativeTask extends Task {
     @Override
     public String toString() {
         return super.toString() + "EndDate is: " + endDate;
-
     }
 
     /*

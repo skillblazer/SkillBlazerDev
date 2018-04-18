@@ -71,7 +71,6 @@ public class JSONLoader {
                 // call the method to instantiate the UserProfile object
                 parseAndReturnUserProfile(jsonUserObject);
             } else {
-                System.out.println(jsonUserObject.get(" in the task parse block - type"));  // TODO: REMOVE THIS DEBUG PRINTLN
                 // call the method to instantiate a Task-subclass object and
                 // add it to the arraylist of tasks
                 parseCreateAndAddTaskToList(jsonUserObject, userTasks);
@@ -106,7 +105,6 @@ public class JSONLoader {
                     tempFileName.contains("skblv") ||  // cumulative task
                     // not a task file?  is it the UserProfile data? :
                     tempFileName.contains("userProfile.json")) {
-                System.out.println(tempFileName);
                 // if the filename has a skillblazer format add it to the list
                 actualFilenames.add(tempFileName);
             }
@@ -124,9 +122,7 @@ public class JSONLoader {
      * @return UserProfile object
      */
     private UserProfile parseAndReturnUserProfile(JSONObject jsonObject) {
-        System.out.println(jsonObject);  // TODO: REMOVE THIS PRINTLN
         String userName = (String) jsonObject.get("userName");
-        System.out.println(userName);
 
         String taskStr = (String) jsonObject.get("taskNumber");
         long taskNumber = (long) Integer.parseInt(taskStr);
@@ -143,10 +139,7 @@ public class JSONLoader {
         Calendar userStartDate = new GregorianCalendar();
         userStartDate.set(year, month, day);
 
-
         userProfile = (new UserProfile(userName, userStartDate, taskNumber));
-
-        System.out.println("User: " + userName + " taskName: " + taskNumber + " startDate: " + userStartDate.toString() ); // TODO: REMOVE THIS TEST PRINTLIN()
 
         return userProfile;
     }
@@ -163,7 +156,6 @@ public class JSONLoader {
         int bestStreak;
 
         String taskName = (String) jsonObject.get("taskName");
-        System.out.println("parsed taskname: '" + taskName + "' successfully from file!"); // TODO: REMOVE THIS TEST PRINTLN()
 
         String taskStr = (String) jsonObject.get("taskId");
         int taskId = Integer.parseInt(taskStr);
@@ -229,7 +221,11 @@ public class JSONLoader {
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
                 // copy the contents of the JSONArray into an ArrayList
-                dayListing.addAll(days);
+
+                Iterator<String> dayIterator = days.iterator();
+                while (dayIterator.hasNext()) {
+                    dayListing.add(dayIterator.next());
+                }
 
                 // instantiate a CustomTask object and add to ArrayList
                 userTasks.add(new CustomTask(taskName, taskId, startDate,
@@ -241,8 +237,10 @@ public class JSONLoader {
                 //Calendar endDate = (Calendar) jsonObject.get("endDate");
                 String vyearStr = (String) jsonObject.get("endYear");
                 int endYear = Integer.parseInt(vyearStr);
+
                 String vmonthStr = (String) jsonObject.get("endMonth");
                 int endMonth = Integer.parseInt(vmonthStr);
+
                 String vdayStr = (String) jsonObject.get("endDate");
                 int endDay = Integer.parseInt(vdayStr);
 

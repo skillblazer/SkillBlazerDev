@@ -32,6 +32,10 @@ public class UserProfile {
         return this.preferredSaveLocation;
     }
 
+    @Override
+    public String toString() {
+        return "type is: " + type + " userName is: " + userName + " startDate is: " + userStartDate.toString() + "\n";
+    }
 
 	private String userName = ""; //username for user
     private Calendar userStartDate; //start date that user began using skillblazer

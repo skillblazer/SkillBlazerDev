@@ -49,8 +49,13 @@ public class CustomTask extends Task {
 
     @Override
     public String toString() {
+        System.out.println("Task: " + taskName + " days to perform: ");
+        for (String day : this.actualDaysInTask) {
+            System.out.println(day);
+        }
         return super.toString() + "CurrentStreak is: " + currentStreak +
                 "BestStreak is: " + bestStreak + actualDaysInTask.toString();
+
     }
 
     /*

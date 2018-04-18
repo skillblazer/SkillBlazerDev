@@ -39,6 +39,10 @@ public class SkillBlazer extends Application {
     VBox[] vboxArray = new VBox[49];    // vbox array for main calendar interface
     Button habitCreationButton;         // button for habit creation
 
+    // These objects will conduct the startup routine
+    static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
+
+
     // sets up the main stage, scenes and such
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -1150,25 +1154,15 @@ public class SkillBlazer extends Application {
     // main method
     public static void main(String[] args) {
         /*
-         *  TEST Code to check on status of JSONLoader() development
-         *
-         *
+         * These three objects need to be invoked in main so the rest of the
+         * application can access the UserProfile and the list of Task objects
+         * that were loaded from disk.
          */
-        JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
         ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
+        Iterator<Task> taskIterator = arrayOfTasks.iterator();
+        UserProfile skbUserProfile = jsonLoader.getProfileFromLoader();
 
-        System.out.println("YOU FUCKING DID IT YOU ROCK!!!!!!");
-        for (Task arrayOfTask : arrayOfTasks) {
-            System.out.println(arrayOfTask.toString());
-        }
-
-
-
-
-        /*
-         * Uncomment the launch(args); call before pushing!
-         */
-        //launch(args);               // opens the JavaFX Stage
+        launch(args);               // opens the JavaFX Stage
     } // end main method
 
 } // end class Skillblazer
