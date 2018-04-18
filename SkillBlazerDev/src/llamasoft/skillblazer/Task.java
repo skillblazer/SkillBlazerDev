@@ -17,7 +17,7 @@ public class Task {
     protected String type;
 
     long getTaskId() {
-        return 0;  // placeholder return statement -> needs real code!
+        return this.taskId;
     }
 
     @Override

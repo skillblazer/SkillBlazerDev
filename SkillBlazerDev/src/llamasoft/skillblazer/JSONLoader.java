@@ -15,13 +15,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONLoader {
-    protected SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
+    private SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
     private JSONParser jsonParser = new JSONParser();
     private ArrayList<Task> userTasks = new ArrayList<>();
-    //private JSONObject jsonUserObject;
-    public UserProfile userProfile;
+    private UserProfile userProfile;
     private JSONObject jsonUserObject;
-    public JSONLoader() {}
+
+    JSONLoader() {}
 
     // Only use this getter during runtime
     // At startup you should be calling loadFromJSON()
@@ -125,7 +125,7 @@ public class JSONLoader {
         String userName = (String) jsonObject.get("userName");
 
         String taskStr = (String) jsonObject.get("taskNumber");
-        long taskNumber = (long) Integer.parseInt(taskStr);
+        long taskNumber = Long.parseLong(taskStr);
 
         String yearStr = (String) (jsonObject.get("year"));
         int year = Integer.parseInt(yearStr);
@@ -158,7 +158,7 @@ public class JSONLoader {
         String taskName = (String) jsonObject.get("taskName");
 
         String taskStr = (String) jsonObject.get("taskId");
-        int taskId = Integer.parseInt(taskStr);
+        long taskId = Long.parseLong(taskStr);
 
         String yearStr = (String) (jsonObject.get("year"));
         int year = Integer.parseInt(yearStr);

@@ -20,13 +20,6 @@ public class JSONWriter {
     }
 
     public void saveTaskToFile(Task task) {
-        // save task to file
-        // filename format will be [d|w|s|v][taskNumber].json
-        // task numbers need to be Globally unique!
-        // d = Daily
-        // w = Weekly
-        // s = cuStom
-        // v = cumulatiVe
 
     }
 

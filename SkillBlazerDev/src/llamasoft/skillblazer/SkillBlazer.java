@@ -14,8 +14,6 @@ import javafx.stage.*;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
-// uncomment for Macintosh style
-//import com.aquafx_project.*;
 
 // main class; extends Application
 public class SkillBlazer extends Application {
@@ -221,8 +219,6 @@ public class SkillBlazer extends Application {
         // shows the stage; actually displays the scen
         primaryStage.show();
 
-        // uncomment for Macintosh style
-        //AquaFx.style();
     } // end start() method
 
     // drawCalendar() method; responsible for creating the calendar
