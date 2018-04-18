@@ -34,10 +34,6 @@ public class JSONLoader {
     protected ArrayList<Task> loadFromJSON() {
         String temp;
 
-        // call a method to get all the file names from the SBinit.txt
-        // file in SkillBlazerInitializer.java and
-        // return a ArrayList<String> object that has ONLY the useful filenames
-
         // !!! This ArrayList and its Iterator will contain ABSOLUTE PATHS !!!
         ArrayList<String> actualFilenames = addActualFileNames();
 
