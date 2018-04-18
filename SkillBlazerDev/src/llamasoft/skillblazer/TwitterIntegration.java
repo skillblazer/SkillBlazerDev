@@ -34,8 +34,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.*;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -43,8 +41,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -57,7 +53,6 @@ public class TwitterIntegration extends Application {
 	private final static String CONSUMER_KEY = "34d1J2WyuSLYbvu4zeGLVmGRv";
 	// Consumer secret token for allowing application to access Twitter
 	private final static String CONSUMER_KEY_SECRET = "rmHY2LIUzvMVjGn2AGMx54rAGPx9zKSzlNpY0DSNl05mmqPjzW";
-	private boolean isEnabled; // determines if Twitter option was selected
 
 	Stage window;
 	Button button;
@@ -105,12 +100,11 @@ public class TwitterIntegration extends Application {
 		final int MAX_CHARS = 280;
 		String authorizationURL = "";
 		String pinCode = "";
-		String tweet = "";
 
 		Stage twitterWindow = new Stage();
 		twitterWindow.setTitle("Twitter Integrated Application");
 		twitterWindow.getIcons().add(new Image("/Twitter.jpg"));
-		
+
 		boolean exists = determineFileExists();
 
 		if (exists == false) {
@@ -259,8 +253,7 @@ public class TwitterIntegration extends Application {
 			twitterWindow.setScene(twitterScene);
 			// shows the stage; actually displays the scene
 			twitterWindow.show();
-		}
-		else if (exists == true) {
+		} else if (exists == true) {
 
 			// hbox for instructions row
 			HBox instructHbox = new HBox(5);
@@ -322,26 +315,33 @@ public class TwitterIntegration extends Application {
 				public void handle(Event event) {
 
 					try {
+
 						String homePath = System.getProperty("user.home");
+
+						BufferedReader readKeys = new BufferedReader(
+								new FileReader(homePath + "\\Documents\\skillblazerApp\\twitterAccessFile.txt"));
+						String keys = readKeys.readLine();
+						String[] arOfKeys = keys.split(",");
 						
-			            BufferedReader readKeys = new BufferedReader(new FileReader(homePath +
-			            		"\\Documents\\skillblazerApp\\twitterAccessFile.txt"));
-			            String keys = readKeys.readLine();
-			            String[] arOfKeys = keys.split(",");
-			            
-			            final String accessKey = arOfKeys[0];
-			            final String accessSKey = arOfKeys[1];
-			            
-			            //COMPLETE INTEGRATION HERE!
-			            System.out.println(accessKey + " " + accessSKey);
+						Twitter twitterReuse = new TwitterFactory().getInstance();
+						twitterReuse.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
+						final String accessKey = arOfKeys[0];
+						final String accessSKey = arOfKeys[1];
+						AccessToken oathAccessToken = new AccessToken(accessKey, accessSKey);
+						twitterReuse.setOAuthAccessToken(oathAccessToken);
+						String tweet = tweetTextArea.getText();
+						twitterReuse.updateStatus(tweet);
 
-			            readKeys.close();
-			        } catch (IOException e) {
-			            System.out.println("File Read Error");
-			        }
-					
+						readKeys.close();
+					} catch (IOException e) {
+						//ADD ERROR WINDOW
+						System.out.println("Could not read file!");
+					} catch (TwitterException e) {
+						//ADD ERROR WINDOW
+						System.out.println("Could not send tweet. Try again!");
+					}
+
 					twitterWindow.close(); // closes window
-
 				}
 			}); // end event handler
 
@@ -372,7 +372,7 @@ public class TwitterIntegration extends Application {
 
 	private static boolean determineFileExists() throws IOException {
 		// read user tokens from designated file
-		String homePath = System.getProperty("user.home"); 
+		String homePath = System.getProperty("user.home");
 		File tmpFile = new File(homePath + "\\Documents\\skillblazerApp\\twitterAccessFile.txt");
 		boolean exists = tmpFile.exists();
 
