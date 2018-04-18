@@ -144,7 +144,7 @@ public class JSONLoader {
 
                 // instantiate a DailyTask object and add to ArrayList
                 userTasks.add(new DailyTask(taskName, taskId, startDate,
-                        isCompleted, type, currentStreak, bestStreak));
+                        isCompleted, currentStreak, bestStreak));
                 break;
 
             case "weekly":
@@ -154,7 +154,7 @@ public class JSONLoader {
 
                 // instantiate a WeeklyTask object and add to ArrayList
                 userTasks.add(new WeeklyTask(taskName, taskId, startDate,
-                        isCompleted, type, currentStreak, bestStreak));
+                        isCompleted, currentStreak, bestStreak));
                 break;
 
             case "custom":
@@ -169,7 +169,7 @@ public class JSONLoader {
 
                 // instantiate a CustomTask object and add to ArrayList
                 userTasks.add(new CustomTask(taskName, taskId, startDate,
-                        isCompleted, type, currentStreak, bestStreak, dayListing));
+                        isCompleted, currentStreak, bestStreak, dayListing));
                 break;
 
             case "cumulative":
@@ -184,7 +184,7 @@ public class JSONLoader {
 
                 // instantiate a CumulativeTask object and add to ArrayList
                 userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                        isCompleted, type, endDate));
+                        isCompleted, endDate));
                 break;
         } //end switch statement
 

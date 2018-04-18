@@ -15,6 +15,7 @@
     -fx-text-fill: #87ceeb;
 }
 
+/* properties for calendarPane */
 .calendarPane {
     -fx-hgap: 20;
     -fx-vgap: 20;
@@ -27,8 +28,10 @@
     -fx-font-weight: bold;
 }
 
+/* properties for habitCreationButton */
 .habitCreationButton {
     -fx-background-color: #ff7f50;
+    -fx-font-size: 22px;
 }
 
 /* properties for vbox */
@@ -37,12 +40,13 @@
     -fx-background-color: #4169e1;
 }
 
-/* properties for vbox */
+/* properties for vboxLabel */
 .vboxLabel {
     /* sets background color */
     -fx-alignment: TOP_RIGHT;
 }
 
+/* style specification for secondaryWindow */
 .secondaryWindow {
     /* sets padding */
     -fx-padding: 15;  
@@ -56,13 +60,15 @@
     -fx-font-weight: bold;
 }
 
+/* style specification for habitCreationButtonHboxes */
 .habitCreationButtonHboxes {
     /* sets padding */
-    -fx-padding: 15;
+    -fx-padding: 21;
     /* sets font size */
     -fx-font-size: 13;
 }
 
+/* style specification for optionsButtonHboxes */
 .optionsButtonHboxes {
      /* sets padding */
     -fx-padding: 15;
@@ -70,6 +76,7 @@
     -fx-font-size: 13;
 }
 
+/* style specification for progressButtonHboxes */
 .progressButtonHboxes {
     /* sets padding */
     -fx-padding: 15;
@@ -77,6 +84,7 @@
     -fx-font-size: 13;
 }
 
+/* style specification for options */
 .options {
     /* sets padding */
     -fx-padding: 15;
@@ -84,13 +92,14 @@
     -fx-font-size: 13;
 }
 
+/* style specification for dayOfWeekLabels */
 .dayOfWeekLabels {
     -fx-font-family: "cambria";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
     
-
+/* style specification for habitCreationButtonHbox8 */
 .habitCreationButtonHbox8 {
     /* sets padding */
     -fx-padding: 15;
@@ -102,6 +111,7 @@
     -fx-font-weight: normal;
 }
 
+/* style specification for vboxCalendar */
 .vboxCalendar {
     /* sets background color */
     -fx-background-color: #d3d3d3;
@@ -110,14 +120,25 @@
 }
 
 /* style specification for buttons */
-.button {
+.button1 {
     /* sets background color */
     -fx-background-color: #d3d3d3;
     /* sets dropshadow effect */
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 );
     /* sets font */
     -fx-font-family: "cambria";
-    /* -fx-hgrow: PriorityALWAYS; */
+    -fx-font-size: 12px;
+}
+
+/* style specification for buttons */
+.button2 {
+    /* sets background color */
+    -fx-background-color: #d3d3d3;
+    /* sets dropshadow effect */
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 );
+    /* sets font */
+    -fx-font-family: "cambria";
+    -fx-font-size: 9px;
 }
 
 /* properties when button is pressed */
