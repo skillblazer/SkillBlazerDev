@@ -47,6 +47,12 @@ public class CustomTask extends Task {
         this.type = "custom";
     } //end CustomTask constructor
 
+    @Override
+    public String toString() {
+        return super.toString() + "CurrentStreak is: " + currentStreak +
+                "BestStreak is: " + bestStreak + actualDaysInTask.toString();
+    }
+
     /*
      * 
      */

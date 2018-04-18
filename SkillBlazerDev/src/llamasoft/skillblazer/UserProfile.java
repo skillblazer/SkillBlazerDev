@@ -33,7 +33,6 @@ public class UserProfile {
     }
 
 
-
 	private String userName = ""; //username for user
     private Calendar userStartDate; //start date that user began using skillblazer
     public long taskNumber = 0; //increment number for task ID available

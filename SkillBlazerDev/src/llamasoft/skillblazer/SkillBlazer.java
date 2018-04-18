@@ -3,6 +3,9 @@ package llamasoft.skillblazer;
 
 // import
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -1146,7 +1149,26 @@ public class SkillBlazer extends Application {
 
     // main method
     public static void main(String[] args) {
-        launch(args);               // opens the JavaFX Stage
+        /*
+         *  TEST Code to check on status of JSONLoader() development
+         *
+         *
+         */
+        JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
+        ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
+
+        System.out.println("YOU FUCKING DID IT YOU ROCK!!!!!!");
+        for (Task arrayOfTask : arrayOfTasks) {
+            System.out.println(arrayOfTask.toString());
+        }
+
+
+
+
+        /*
+         * Uncomment the launch(args); call before pushing!
+         */
+        //launch(args);               // opens the JavaFX Stage
     } // end main method
 
 } // end class Skillblazer

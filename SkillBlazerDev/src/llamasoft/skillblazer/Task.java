@@ -20,6 +20,13 @@ public class Task {
         return 0;  // placeholder return statement -> needs real code!
     }
 
+    @Override
+    public String toString() {
+        return "Taskname is: " + taskName + "TaskID is: " + taskId +
+                "StartDate is: " + startDate + "isCompleted is: " +
+                isCompleted + "Type is: " + type;
+    }
+
     Calendar getStartDate() {
         return null;  // placeholder return statement -> needs real code!
     }

@@ -23,7 +23,7 @@ import java.util.*;
 class SkillBlazerInitializer {
     private static final String userHome = System.getProperty("user.home");
     private static final String userFileLocation = userHome + "\\SkillBlazer\\";
-    private static final String initFile = "SBinit.txt";
+    protected static final String initFile = "SBinit.txt";
 
     SkillBlazerInitializer() {}
 
@@ -64,7 +64,7 @@ class SkillBlazerInitializer {
                 Scanner input = new Scanner(file);
                 while (input.hasNext()) {
                     // take the contents of SBinit.txt and ADD them to the ArrayList
-                    listOfJsonFiles.add(input.nextLine());
+                    listOfJsonFiles.add(userFileLocation + input.nextLine());
                 }
                 input.close();
             }
@@ -139,4 +139,7 @@ class SkillBlazerInitializer {
         return userFileLocation;
     }
 
+    String getAbsoluteInitFilePath() {
+        return userFileLocation + initFile;
+    }
 }

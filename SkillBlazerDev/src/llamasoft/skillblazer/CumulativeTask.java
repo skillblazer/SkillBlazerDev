@@ -38,6 +38,12 @@ public class CumulativeTask extends Task {
         this.type = "cumulative";
     } //end CumulativeTask constructor
 
+    @Override
+    public String toString() {
+        return super.toString() + "EndDate is: " + endDate;
+
+    }
+
     /*
      * Overloaded Class Constructor - calls parent constructor with taskName
      */

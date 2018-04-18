@@ -32,6 +32,12 @@ public class DailyTask extends Task {
         return this.taskName;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + "CurrentStreak is: " + currentStreak +
+                "BestStreak is: " + bestStreak;
+    }
+
     public int getCurrentStreak() {
         return this.currentStreak;
     }
