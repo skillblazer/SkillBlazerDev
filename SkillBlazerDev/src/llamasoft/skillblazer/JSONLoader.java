@@ -27,14 +27,13 @@ public class JSONLoader {
     public ArrayList<Task> getTasks() { return this.userTasks; }
 
 
-    protected ArrayList<Task> loadFromJSON(String filename) {
-        // loads the JSON file from the disk, populates the ArrayList
-        String sbInitFileName = skillBlazerInit.getLastJSONFilePath() + filename;
-
+    protected ArrayList<Task> loadFromJSON() {
         // call a method to get all the file names from the SBinit.txt
         // file in SkillBlazerInitializer.java and
         // return a Iterator<String> object that has ONLY the useful filenames
-        Iterator<String> userFileIterator = addToIterator();
+        ArrayList<String> actualFilenames = addActualFileNames();
+
+        Iterator<String> userFileIterator = actualFilenames.iterator();
 
         // go through all the files that were confirmed to have skillblazer
         // filenames.  For each filename, create a FileReader Object and use it
@@ -74,10 +73,14 @@ public class JSONLoader {
      * Method to screen for files with skillblazer filenames and place them in
      * an iterator for later use
      */
-    private Iterator<String> addToIterator() {
+    private ArrayList<String> addActualFileNames() {
+        // get the list of all files in the "user.home" + "\\SkillBlazer\\"
+        // home directory
         ArrayList<String> allFileNames = skillBlazerInit.getFileList();
+        // generate Iterator for all the (un filtered) files in the directory
         Iterator<String> allFileIterator = allFileNames.iterator();
-
+        // generate an Iterator that will reference the ArrayList<String>
+        // that contains files we want to work with
         ArrayList<String> actualFilenames = new ArrayList<>();
         /*
          * look for SkillBlazer files in the directory
@@ -89,12 +92,15 @@ public class JSONLoader {
                     allFileIterator.next().contains("skblv") ||  // cumulative task
                     // not a task file?  is it the UserProfile data? :
                     allFileIterator.next().contains("userProfile")) {
+
                 // if the filename has a skillblazer format add it to the list
                 actualFilenames.add(allFileIterator.next());
             }
         } //end while loop
 
-        return actualFilenames.iterator();
+        // return an Iterator<String> instantiated on
+        // ArrayList<String> actualFilenames
+        return actualFilenames;
     }
 
 
