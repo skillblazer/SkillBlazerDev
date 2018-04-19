@@ -33,7 +33,11 @@ public class Day {
     void createDay() {
         // instantiate a Day object, populate the Day object with tasks
     }
-
+    
+    // method to add a Task to the ArrayList tasksThisDay
+    public void addTask(Task newTask) {
+        tasksThisDay.add(newTask);
+    }
 
     // Constructor that will accept a date from the calling method
     // This is important for creating FUTURE dates that will go
