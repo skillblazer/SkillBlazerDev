@@ -27,18 +27,24 @@ class SkillBlazerInitializer {
 
     SkillBlazerInitializer() {}
 
-    static String getUserDataLocation() {
-        return userHome;
+    static String getUserDataLocation() { return userHome; }
+
+    static String getLastJSONFilePath() {
+        return userFileLocation;
+    }
+
+    static String getAbsoluteInitFilePath() {
+        // will return a String of form "user.home" + \\SkillBlazer\\SBinit.txt"
+        return userFileLocation + initFile;
     }
 
     private static void createSkillBlazerDirectory() {
         boolean newDirectory = new File(userFileLocation).mkdirs();
     }
 
-    /**
+    /*
      * Read the contents of the SBinit.txt file from the disk
      * Return the contents as an ArrayList<String>
-     *
      */
     ArrayList<String> getFileList() {
         ArrayList<String> listOfJsonFiles = new ArrayList<>();
@@ -46,14 +52,12 @@ class SkillBlazerInitializer {
         // create a File object in the local directory relevant to the current path
         java.io.File directory = new java.io.File(userFileLocation);
         java.io.File file = new java.io.File(userFileLocation + initFile);
-
         try {
             if (!directory.exists()) {
                 // create the directory if it doesn't already exists or was
                 // deleted
                 createSkillBlazerDirectory();
             }
-
             if (!file.exists()) {
                 // if the file doesn't exist, go ahead and create it for later
                 // (usually occurs when the user runs the program for the very
@@ -70,7 +74,6 @@ class SkillBlazerInitializer {
             }
         }
         catch (IOException e) {
-
             System.out.println("Error while READING data from: " + initFile +
                     "  It's quite possible that the file has been set to read " +
                     "only, or the program cannot access the folder specified!" +
@@ -130,16 +133,4 @@ class SkillBlazerInitializer {
         }
     }
 
-    /**
-     * TODO: This should use the user-set (custom) value set in UserProfile.java
-     * This method will eventually find a CUSTOM location set by the user.
-     * Likely this user story will not be implemented until Phase 2 or Phase 3
-     */
-    String getLastJSONFilePath() {
-        return userFileLocation;
-    }
-
-    String getAbsoluteInitFilePath() {
-        return userFileLocation + initFile;
-    }
 }

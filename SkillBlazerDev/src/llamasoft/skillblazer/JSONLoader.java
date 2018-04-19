@@ -15,11 +15,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONLoader {
-    private SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
     private JSONParser jsonParser = new JSONParser();
     private ArrayList<Task> userTasks = new ArrayList<>();
-    private UserProfile userProfile;
     private JSONObject jsonUserObject;
+    static SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
+    UserProfile userProfile;
+
 
     JSONLoader() {}
 
