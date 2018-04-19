@@ -39,7 +39,7 @@ public class SkillBlazer extends Application {
 
     // These objects will conduct the startup routine
     static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
-
+    static JSONWriter jsonWriter = new JSONWriter(); // may not be necessary
 
     // sets up the main stage, scenes and such
     @Override

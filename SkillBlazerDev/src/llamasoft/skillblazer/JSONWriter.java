@@ -10,7 +10,11 @@ import java.util.*;
  * JSONWriter.java
  * @Author Jason Engel
  * 19 APR 2018
- * This class will write the UserProfile and Task objects to JSON files
+ * This class will write the UserProfile and Task objects to JSON files as part
+ * of a shutdown routine
+ *
+ * Calls writeTaskToJSON() methods contained in the Task subclasses, which use
+ * 'helper' functions created here
  *
  */
 
@@ -56,7 +60,7 @@ public class JSONWriter {
     }
 
 
-    public static void writeUserProfileToDisk(UserProfile userProfile) {
+    private static void writeUserProfileToDisk(UserProfile userProfile) {
         // save user profile object contents to file
         // filename should be in format userProfile.json
 
