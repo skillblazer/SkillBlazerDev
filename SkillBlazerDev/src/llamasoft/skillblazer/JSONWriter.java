@@ -21,10 +21,17 @@ public class JSONWriter {
 
     public JSONWriter() {}
 
+    /*
+     * May be removed in a future version
+     * */
     public void convertArrayListToJSONArray() {
         // converts ArrayList to JSONArray of associated values
     }
 
+
+    /*
+     * FUTURE IMPLEMENTATION
+     * */
     public void saveHistoryToFile() {
         // writes task history to file
         // this is for completed and expired tasks only
@@ -46,24 +53,123 @@ public class JSONWriter {
         writeUserProfileToDisk(userProfile);
     }
 
-    public static void saveTaskToFile(Task task) {
 
-    }
+    public static void writeTaskToJSON(DailyTask task) {
+        String taskSuffixNumber = String.valueOf(task.getTaskId());
+        String filePrefix = "skbld";
+        String fileName = filePrefix + taskSuffixNumber + ".json";
 
-    public static void writeDailyTaskToJSON(DailyTask task) {
+        Calendar cal = task.getStartDate();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
 
-    }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", task.type);
+        jsonObject.put("taskId", task.getTaskId());
+        jsonObject.put("year", year);
+        jsonObject.put("month", month);
+        jsonObject.put("date", date);
+        jsonObject.put("currentStreak", task.getCurrentStreak());
+        jsonObject.put("bestStreak", task.getBestStreak());
+        jsonObject.put("isCompleted", task.getIsCompleted());
+        jsonObject.put("taskName", task.getTaskName());
 
-    public static void writeWeeklyTaskToJSON(DailyTask task) {
+        writeJSON(jsonObject, fileName);
+    } // end overloaded method writeTaskToJSON(DailyTask task)
 
-    }
 
-    public static void writeCustomTaskToJSON(DailyTask task) {
+    public static void writeTaskToJSON(WeeklyTask task) {
+        String taskSuffixNumber = String.valueOf(task.getTaskId());
+        String filePrefix = "skblw";
+        String fileName = filePrefix + taskSuffixNumber + ".json";
 
-    }
+        Calendar cal = task.getStartDate();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
 
-    public static void writeCumulativeTaskToJSON(DailyTask task) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", task.type);
+        jsonObject.put("taskId", task.getTaskId());
+        jsonObject.put("year", year);
+        jsonObject.put("month", month);
+        jsonObject.put("date", date);
+        jsonObject.put("currentStreak", task.getCurrentStreak());
+        jsonObject.put("bestStreak", task.getBestStreak());
+        jsonObject.put("isCompleted", task.getIsCompleted());
+        jsonObject.put("taskName", task.getTaskName());
 
+        writeJSON(jsonObject, fileName);
+    } // end overloaded method writeTaskToJSON(WeeklyTask task)
+
+
+    public static void writeTaskToJSON(CustomTask task) {
+        String taskSuffixNumber = String.valueOf(task.getTaskId());
+        String filePrefix = "skblc";
+        String fileName = filePrefix + taskSuffixNumber + ".json";
+
+        Calendar cal = task.getStartDate();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", task.type);
+        jsonObject.put("taskId", task.getTaskId());
+        jsonObject.put("year", year);
+        jsonObject.put("month", month);
+        jsonObject.put("date", date);
+        jsonObject.put("currentStreak", task.getCurrentStreak());
+        jsonObject.put("bestStreak", task.getBestStreak());
+        jsonObject.put("isCompleted", task.getIsCompleted());
+        jsonObject.put("taskName", task.getTaskName());
+
+        JSONArray jsonArray = new JSONArray();
+
+        // add all the days listed in task.getDaysOfWeek() to a JSONArray
+        for (String s : task.getDaysOfWeek()) {
+            jsonArray.add(s);
+        }
+
+        // add the JSONArray to the JSONObject, name the array "days"
+        jsonObject.put("days", jsonArray);
+
+        writeJSON(jsonObject, fileName);
+    } //end overloaded method writeTaskToJSON(CustomTask task)
+
+
+    public static void writeTaskToJSON(CumulativeTask task) {
+        String taskSuffixNumber = String.valueOf(task.getTaskId());
+        String filePrefix = "skblv";
+        String fileName = filePrefix + taskSuffixNumber + ".json";
+
+        Calendar taskEndDate = task.getEndDate();
+        int endYear = taskEndDate.get(Calendar.YEAR);
+        int endMonth = taskEndDate.get(Calendar.MONTH);
+        int endDate = taskEndDate.get(Calendar.DATE);
+
+        Calendar startDate = task.getStartDate();
+        int year = startDate.get(Calendar.YEAR);
+        int month = startDate.get(Calendar.MONTH);
+        int date = startDate.get(Calendar.DATE);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", task.type);
+        jsonObject.put("taskId", task.getTaskId());
+        // endDate fields
+        jsonObject.put("endYear", endYear);
+        jsonObject.put("endMonth", endMonth);
+        jsonObject.put("endDate", endDate);
+        // startDate fields
+        jsonObject.put("year", year);
+        jsonObject.put("month", month);
+        jsonObject.put("date", date);
+
+        jsonObject.put("isCompleted", task.getIsCompleted());
+        jsonObject.put("taskName", task.getTaskName());
+
+        writeJSON(jsonObject, fileName);
     }
 
 
@@ -76,6 +182,7 @@ public class JSONWriter {
         // year e.g. '2017'
         // month 0-11 for jan-dec
         // date 1-31
+        String fileName = "userProfile.json";
         Calendar cal = userProfile.getUserStartDate();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
@@ -92,16 +199,21 @@ public class JSONWriter {
         jsonObject.put("date", date);
         jsonObject.put("taskNumber", userProfile.getTaskNumber());
 
+        writeJSON(jsonObject, fileName);
+    } //end method writeUserProfileToDisk()
+
+
+    private static void writeJSON(JSONObject jsonObject, String fileName) {
         try {
-            FileWriter jsonOutput = new FileWriter(SkillBlazerInitializer.getUserDataLocation() + "userProfile.json");
+            FileWriter jsonOutput = new FileWriter(SkillBlazerInitializer.getUserDataLocation() + fileName);
             jsonOutput.write(jsonObject.toJSONString());
             jsonOutput.flush();
             jsonOutput.close();
         }
         catch (IOException e) {
-            System.out.println("Could not find or access userProfile.txt\n");
+            System.out.println("Could not find or access " + fileName + "\n");
         }
-    } //end method writeUserProfileToDisk()
+    } //end method writeJSON()
 
 
     /*

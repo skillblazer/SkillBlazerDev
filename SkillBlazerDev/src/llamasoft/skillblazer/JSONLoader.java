@@ -97,11 +97,11 @@ public class JSONLoader {
         while (allFileIterator.hasNext()) {
             tempFileName = allFileIterator.next();
             if (tempFileName.contains("skblw") ||  // weekly task
-                    tempFileName.contains("skbld") ||  // daily task
-                    tempFileName.contains("skblc") ||  // custom task
-                    tempFileName.contains("skblv") ||  // cumulative task
+                tempFileName.contains("skbld") ||  // daily task
+                tempFileName.contains("skblc") ||  // custom task
+                tempFileName.contains("skblv") ||  // cumulative task
                     // not a task file?  is it the UserProfile data? :
-                    tempFileName.contains("userProfile.json")) {
+                tempFileName.contains("userProfile.json")) {
                 // if the filename has a skillblazer format add it to the list
                 actualFilenames.add(tempFileName);
             }
