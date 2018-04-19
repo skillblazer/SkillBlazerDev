@@ -22,6 +22,9 @@
  ********************************************************** */
 package llamasoft.skillblazer;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -46,6 +49,17 @@ public class CustomTask extends Task {
         super(taskName);
         this.type = "custom";
     } //end CustomTask constructor
+
+    @Override
+    public String toString() {
+        System.out.println("Task: " + taskName + " days to perform: ");
+        for (String day : this.actualDaysInTask) {
+            System.out.println(day);
+        }
+        return super.toString() + "CurrentStreak is: " + currentStreak +
+                "BestStreak is: " + bestStreak + actualDaysInTask.toString();
+
+    }
 
     /*
      * 
@@ -128,4 +142,42 @@ public class CustomTask extends Task {
     public void setBestStreak(int bestStreak) {
         this.bestStreak = bestStreak;
     } //end getBestStreak method
+
+
+    @Override
+    public void writeTaskToJSON() {
+        String taskSuffixNumber = String.valueOf(this.getTaskId());
+        String filePrefix = "skblc";
+        String fileName = filePrefix + taskSuffixNumber + ".json";
+
+        Calendar cal = this.getStartDate();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", this.type);
+        jsonObject.put("taskId", this.getTaskId());
+        jsonObject.put("year", year);
+        jsonObject.put("month", month);
+        jsonObject.put("date", date);
+        jsonObject.put("currentStreak", this.getCurrentStreak());
+        jsonObject.put("bestStreak", this.getBestStreak());
+        jsonObject.put("isCompleted", this.getIsCompleted());
+        jsonObject.put("taskName", this.getTaskName());
+
+        JSONArray jsonArray = new JSONArray();
+
+        // add all the days listed in task.getDaysOfWeek() to a JSONArray
+        for (String s : this.getDaysOfWeek()) {
+            jsonArray.add(s);
+        }
+
+        // add the JSONArray to the JSONObject, name the array "days"
+        jsonObject.put("days", jsonArray);
+
+        JSONWriter.writeJSON(jsonObject, fileName);
+        JSONWriter.addFileToInit(fileName);
+
+    } //end method writeTaskToJSON()
 }

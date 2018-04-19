@@ -4,6 +4,7 @@ package llamasoft.skillblazer;
 // import
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -31,6 +32,10 @@ public class SkillBlazer extends Application {
     VBox[] vboxArray = new VBox[49];    // vbox array for main calendar interface
     Button habitCreationButton;         // button for habit creation
     ArrayList<Task> taskList;
+
+    // These objects will conduct the startup routine
+    static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
+    static JSONWriter jsonWriter = new JSONWriter(); // may not be necessary
 
     // sets up the main stage, scenes and such
     @Override
@@ -221,8 +226,6 @@ public class SkillBlazer extends Application {
         // shows the stage; actually displays the scen
         primaryStage.show();
 
-        // uncomment for Macintosh style
-        //AquaFx.style();
     } // end start() method
 
     // drawCalendar() method; responsible for creating the calendar
@@ -1255,6 +1258,15 @@ public class SkillBlazer extends Application {
 
     // main method
     public static void main(String[] args) {
+        /*
+         * These three objects need to be invoked in main so the rest of the
+         * application can access the UserProfile and the list of Task objects
+         * that were loaded from disk.
+         */
+        ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
+        Iterator<Task> taskIterator = arrayOfTasks.iterator();
+        UserProfile skbUserProfile = jsonLoader.getProfileFromLoader();
+
         launch(args);               // opens the JavaFX Stage
     } // end main method
 

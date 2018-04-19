@@ -13,6 +13,8 @@ package llamasoft.skillblazer;
  * pertains to the number of weeks in a row (as opposed to days in  row).
  */
 
+import org.json.simple.JSONObject;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -50,6 +52,34 @@ public class WeeklyTask extends Task {
     public int getBestStreak() {
         return this.bestStreak;
     }
+
+
+    @Override
+    public void writeTaskToJSON() {
+        String taskSuffixNumber = String.valueOf(this.getTaskId());
+        String filePrefix = "skblw";
+        String fileName = filePrefix + taskSuffixNumber + ".json";
+
+        Calendar cal = this.getStartDate();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", this.type);
+        jsonObject.put("taskId", this.getTaskId());
+        jsonObject.put("year", year);
+        jsonObject.put("month", month);
+        jsonObject.put("date", date);
+        jsonObject.put("currentStreak", this.getCurrentStreak());
+        jsonObject.put("bestStreak", this.getBestStreak());
+        jsonObject.put("isCompleted", this.getIsCompleted());
+        jsonObject.put("taskName", this.getTaskName());
+
+        JSONWriter.writeJSON(jsonObject, fileName);
+        JSONWriter.addFileToInit(fileName);
+
+    } // end overloaded method writeTaskToJSON(WeeklyTask task)
 
     /* DO YOU NEED TO OVERRIDE the Task.getCurrentStreak() or
     Task.getBestStreak() methods? */
