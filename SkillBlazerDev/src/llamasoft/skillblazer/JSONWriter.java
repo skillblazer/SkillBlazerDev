@@ -2,12 +2,9 @@ package llamasoft.skillblazer;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.nio.channels.FileLock;
 import java.util.*;
-import java.io.*;
+
 
 /**
  * JSONWriter.java
