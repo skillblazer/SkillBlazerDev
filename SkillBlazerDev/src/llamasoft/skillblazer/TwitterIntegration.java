@@ -374,7 +374,7 @@ public class TwitterIntegration extends Application {
 	private static boolean determineFileExists() throws IOException {
 		// read user tokens from designated file
 		String homePath = System.getProperty("user.home");
-		File tmpFile = new File(homePath + "\\Documents\\skillblazerApp\\twitterAccessFile.txt");
+		File tmpFile = new File(homePath + "\\Skillblazer\\twitterAccessFile.txt");
 		boolean exists = tmpFile.exists();
 
 		if (exists == false) {
