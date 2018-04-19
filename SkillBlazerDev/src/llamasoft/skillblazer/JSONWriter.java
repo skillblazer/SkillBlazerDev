@@ -21,12 +21,29 @@ public class JSONWriter {
 
     public JSONWriter() {}
 
-    /*
-     * May be removed in a future version
-     * */
-    public void convertArrayListToJSONArray() {
-        // converts ArrayList to JSONArray of associated values
-    }
+    public static void saveAllFilesToDisk(UserProfile userProfile, ArrayList<Task> allTasks) {
+        // save UserProfile to userProfile.java (will also update SBinit.txt
+        saveUser(userProfile);
+
+        // save all tasks to appropriate JSON files
+        // the subsequent method calls will also update SBinit.txt
+        for (Task task : allTasks) {
+            switch (task.type) {
+                case "daily":
+                    writeDailyTaskToJSON((DailyTask) task);
+                    break;
+                case "weekly":
+                    writeWeeklyTaskToJSON((WeeklyTask) task);
+                    break;
+                case "custom":
+                    writeCustomTaskToJSON((CustomTask) task);
+                    break;
+                case "cumulative":
+                    writeCumulativeTaskToJSON((CumulativeTask) task);
+                    break;
+            } //end switch
+        } //end for loop
+    } //end method saveAllFilesToDisk
 
 
     /*
@@ -54,7 +71,7 @@ public class JSONWriter {
     }
 
 
-    public static void writeTaskToJSON(DailyTask task) {
+    public static void writeDailyTaskToJSON(DailyTask task) {
         String taskSuffixNumber = String.valueOf(task.getTaskId());
         String filePrefix = "skbld";
         String fileName = filePrefix + taskSuffixNumber + ".json";
@@ -76,10 +93,12 @@ public class JSONWriter {
         jsonObject.put("taskName", task.getTaskName());
 
         writeJSON(jsonObject, fileName);
+        addFileToInit(fileName);
+
     } // end overloaded method writeTaskToJSON(DailyTask task)
 
 
-    public static void writeTaskToJSON(WeeklyTask task) {
+    public static void writeWeeklyTaskToJSON(WeeklyTask task) {
         String taskSuffixNumber = String.valueOf(task.getTaskId());
         String filePrefix = "skblw";
         String fileName = filePrefix + taskSuffixNumber + ".json";
@@ -101,10 +120,12 @@ public class JSONWriter {
         jsonObject.put("taskName", task.getTaskName());
 
         writeJSON(jsonObject, fileName);
+        addFileToInit(fileName);
+
     } // end overloaded method writeTaskToJSON(WeeklyTask task)
 
 
-    public static void writeTaskToJSON(CustomTask task) {
+    public static void writeCustomTaskToJSON(CustomTask task) {
         String taskSuffixNumber = String.valueOf(task.getTaskId());
         String filePrefix = "skblc";
         String fileName = filePrefix + taskSuffixNumber + ".json";
@@ -136,10 +157,12 @@ public class JSONWriter {
         jsonObject.put("days", jsonArray);
 
         writeJSON(jsonObject, fileName);
+        addFileToInit(fileName);
+
     } //end overloaded method writeTaskToJSON(CustomTask task)
 
 
-    public static void writeTaskToJSON(CumulativeTask task) {
+    public static void writeCumulativeTaskToJSON(CumulativeTask task) {
         String taskSuffixNumber = String.valueOf(task.getTaskId());
         String filePrefix = "skblv";
         String fileName = filePrefix + taskSuffixNumber + ".json";
@@ -170,6 +193,8 @@ public class JSONWriter {
         jsonObject.put("taskName", task.getTaskName());
 
         writeJSON(jsonObject, fileName);
+        addFileToInit(fileName);
+
     }
 
 
