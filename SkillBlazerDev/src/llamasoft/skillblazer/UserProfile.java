@@ -88,13 +88,13 @@ public class UserProfile {
     	if (osName.contains("Windows") || osName.contains("Mac") || osName.contains("Linux") || 
     			osName.contains("Unix")) {
     		
-    		file = new File(homePath + "\\Documents\\skillblazerApp");
+    		file = new File(homePath + "\\Skillblazer");
     		//if folder doesn't exist, create skillblazerApp directory
             if (!file.exists()) {
                 file.mkdir();
             }
             
-    		storageFolderPath = (homePath + "\\Documents\\skillblazerApp");
+    		storageFolderPath = (homePath + "\\Skillblazer");
     	}
     	
     	//if path returns empty, then window will need to appear stating that

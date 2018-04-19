@@ -41,6 +41,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -59,7 +60,7 @@ public class TwitterIntegration extends Application {
 
 	public static void main(String[] args) throws IOException {
 		launch(args);
-	}
+	} //end of main method
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -224,7 +225,7 @@ public class TwitterIntegration extends Application {
 				@Override
 				public void handle(Event event) {
 
-					// ****TO DO: Perform twitter integration code
+					// TODO: Perform twitter integration code
 					twitterWindow.close(); // closes window
 
 				}
@@ -319,10 +320,10 @@ public class TwitterIntegration extends Application {
 						String homePath = System.getProperty("user.home");
 
 						BufferedReader readKeys = new BufferedReader(
-								new FileReader(homePath + "\\Documents\\skillblazerApp\\twitterAccessFile.txt"));
+								new FileReader(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
 						String keys = readKeys.readLine();
 						String[] arOfKeys = keys.split(",");
-						
+
 						Twitter twitterReuse = new TwitterFactory().getInstance();
 						twitterReuse.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
 						final String accessKey = arOfKeys[0];
@@ -334,10 +335,10 @@ public class TwitterIntegration extends Application {
 
 						readKeys.close();
 					} catch (IOException e) {
-						//ADD ERROR WINDOW
+						// TODO ADD ERROR WINDOW
 						System.out.println("Could not read file!");
 					} catch (TwitterException e) {
-						//ADD ERROR WINDOW
+						// TODO ADD ERROR WINDOW
 						System.out.println("Could not send tweet. Try again!");
 					}
 
@@ -368,7 +369,7 @@ public class TwitterIntegration extends Application {
 			twitterWindow.show();
 		}
 
-	}
+	} //end of display method
 
 	private static boolean determineFileExists() throws IOException {
 		// read user tokens from designated file
@@ -381,7 +382,7 @@ public class TwitterIntegration extends Application {
 		}
 
 		return exists;
-	}
+	} //end of determineFileExists method
 
 	/*
 	 * 
@@ -418,4 +419,4 @@ public class TwitterIntegration extends Application {
 		twitter.updateStatus("First Tweet using skillblazer application #LlamasForLife");
 
 	}
-}
+} //end of TwitterIntegration class
