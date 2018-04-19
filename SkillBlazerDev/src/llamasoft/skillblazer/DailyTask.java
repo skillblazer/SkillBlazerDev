@@ -17,13 +17,8 @@ import java.util.Calendar;
  */
 public class DailyTask extends Task {
 
-
-    /* REMEMBER ALL YOUR SUPERCLASS MEMBERS!!! */
-    private boolean isCompleted = false;
-    private String taskName;
     private int currentStreak;
     private int bestStreak;
-    private String type = "daily";
 
     public boolean getIsCompleted() {
         return isCompleted;
@@ -47,15 +42,20 @@ public class DailyTask extends Task {
 
     public DailyTask() {
         super();
+        this.type = "daily";
     }
 
     public DailyTask(String taskName) {
         super(taskName);
+        this.type = "daily";
     }
-
+    
+     /*
+     *  Fully qualified constructor (needed for initializing objects stored on disk
+     */
     public DailyTask(String taskName, long taskId, Calendar startDate,
-                     boolean isCompleted,  String type, int currentStreak, int bestStreak) {
-        super(taskName, taskId, startDate, isCompleted, type);
+                     boolean isCompleted, int currentStreak, int bestStreak) {
+        super(taskName, taskId, startDate, isCompleted, "daily");
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end DailyTask constructor

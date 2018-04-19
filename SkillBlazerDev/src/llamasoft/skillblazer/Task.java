@@ -10,11 +10,11 @@ package llamasoft.skillblazer;
 import java.util.Calendar;
 
 public class Task {
-    String taskName;
+    protected String taskName;
     protected long taskId;
-    private Calendar startDate;
-    private boolean isCompleted;
-    private String type;
+    protected Calendar startDate;
+    protected boolean isCompleted;
+    protected String type;
 
     long getTaskId() {
         return 0;  // placeholder return statement -> needs real code!
