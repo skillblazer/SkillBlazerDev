@@ -78,4 +78,9 @@ public class Task {
         // delete a record
     }
 
+    public void writeTaskToJSON() {
+        // placeholder so the individual task subclasses can have their
+        // writeTaskToJSON() methods referenced by external classes
+    }
+
 }

@@ -23,6 +23,8 @@
 
 package llamasoft.skillblazer;
 
+import org.json.simple.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
@@ -114,4 +116,42 @@ public class CumulativeTask extends Task {
     	DecimalFormat dFormat = new DecimalFormat(".00");
         return dFormat.format(percentageDone);
     } //end checkStatus method
+
+
+    @Override
+    public void writeTaskToJSON() {
+        String taskSuffixNumber = String.valueOf(this.getTaskId());
+        String filePrefix = "skblv";
+        String fileName = filePrefix + taskSuffixNumber + ".json";
+
+        Calendar taskEndDate = this.getEndDate();
+        int endYear = taskEndDate.get(Calendar.YEAR);
+        int endMonth = taskEndDate.get(Calendar.MONTH);
+        int endDate = taskEndDate.get(Calendar.DATE);
+
+        Calendar startDate = this.getStartDate();
+        int year = startDate.get(Calendar.YEAR);
+        int month = startDate.get(Calendar.MONTH);
+        int date = startDate.get(Calendar.DATE);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", this.type);
+        jsonObject.put("taskId", this.getTaskId());
+        // endDate fields
+        jsonObject.put("endYear", endYear);
+        jsonObject.put("endMonth", endMonth);
+        jsonObject.put("endDate", endDate);
+        // startDate fields
+        jsonObject.put("year", year);
+        jsonObject.put("month", month);
+        jsonObject.put("date", date);
+
+        jsonObject.put("isCompleted", this.getIsCompleted());
+        jsonObject.put("taskName", this.getTaskName());
+
+        JSONWriter.writeJSON(jsonObject, fileName);
+        JSONWriter.addFileToInit(fileName);
+
+    }
+
 }//end CumulativeTask class
