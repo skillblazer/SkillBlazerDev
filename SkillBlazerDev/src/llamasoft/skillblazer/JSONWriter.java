@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.nio.channels.FileLock;
 import java.util.*;
 import java.io.*;
 
@@ -69,18 +70,53 @@ public class JSONWriter {
     private static void writeUserProfileToDisk(UserProfile userProfile) {
         // save user profile object contents to file
         // filename should be in format userProfile.json
-    }
+
+        // Take the calendar object for userStartDate
+        // and convert it to int values for:
+        // year e.g. '2017'
+        // month 0-11 for jan-dec
+        // date 1-31
+        Calendar cal = userProfile.getUserStartDate();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+
+        // TODO - remove this println() once you know the Calendar is parsing correctly
+        System.out.println("year: " + year + " month " + month + " date " + date);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", userProfile.getUserName());
+        jsonObject.put("userName", userProfile.getUserName());
+        jsonObject.put("month", month);
+        jsonObject.put("year", year);
+        jsonObject.put("date", date);
+        jsonObject.put("taskNumber", userProfile.getTaskNumber());
+
+        try {
+            FileWriter jsonOutput = new FileWriter(SkillBlazerInitializer.getUserDataLocation() + "userProfile.json");
+            jsonOutput.write(jsonObject.toJSONString());
+            jsonOutput.flush();
+            jsonOutput.close();
+        }
+        catch (IOException e) {
+            System.out.println("Could not find or access userProfile.txt\n");
+        }
+    } //end method writeUserProfileToDisk()
+
 
     /*
      * addFileToInit(String fileName) will be used by all objects
      * that need to persist in .json files to carefully ensure they are
      * listed in SBinit.txt WITHOUT overwriting existing file contents
      *
-     *  */
+     * This class will also create SBinit.txt at the location given by
+     * SkillBlazerInitializer.getLastJSONFilePath() if is not found!
+     *
+     * */
     private static void addFileToInit(String fileName) {
         boolean isListed = false;
         try {
-            java.io.File file = new java.io.File(SkillBlazerInitializer.getAbsoluteInitFilePath());
+            java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath());
             Scanner input = new Scanner(file);
 
             if(!file.exists()) {  // SBinit.txt file does NOT exist
