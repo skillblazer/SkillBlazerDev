@@ -21,8 +21,26 @@ import java.util.Calendar;
 
 public class UserProfile {
 
+<<<<<<< HEAD
     private final String type = "userProfile"; //type of file
     private String preferredSaveLocation; //custom preferred save location if user wants
+=======
+    private String preferredSaveLocation;
+
+    public void setPreferredSaveLocation(String preferredSaveLocation) {
+        this.preferredSaveLocation = preferredSaveLocation;
+    }
+
+    public String getPreferredSaveLocation(UserProfile userProfile) {
+        return this.preferredSaveLocation;
+    }
+
+    @Override
+    public String toString() {
+        return "type is: " + type + " userName is: " + userName + " startDate is: " + userStartDate.toString() + "\n";
+    }
+
+>>>>>>> branch 'PhaseII' of https://j3dispartan@github.com/skillblazer/SkillBlazerDev.git
 	private String userName = ""; //username for user
     private Calendar userStartDate; //start date that user began using skillblazer
     public long taskNumber = 0; //increment number for task ID available

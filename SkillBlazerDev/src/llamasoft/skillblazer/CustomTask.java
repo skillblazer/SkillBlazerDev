@@ -3,13 +3,7 @@
  * File Name: CustomTask.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
-<<<<<<< HEAD
  * Date: 4/16/2018
- * 
-=======
- * Date: 4/10/2018
- *
->>>>>>> branch 'PhaseII' of https://j3dispartan@github.com/skillblazer/SkillBlazerDev.git
  * Description:
  *
  * This child class is one of the kind of tasks that represent
