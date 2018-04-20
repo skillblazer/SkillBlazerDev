@@ -3,8 +3,7 @@
  * File Name: CustomTask.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/10/2018
- *
+ * Date: 4/16/2018
  * Description:
  *
  * This child class is one of the kind of tasks that represent
@@ -29,13 +28,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CustomTask extends Task {
-
-    private ArrayList<String> actualDaysInTask = new ArrayList<>();
+	
+    private ArrayList<String> actualDaysInTask = new ArrayList<>(); //days picked by user
     private int currentStreak; //current streak of completions
     private int bestStreak; //best streak of completions
 
     /*
-     * 
+     * Default Class Constructor - calls parent constructor
      */
     public CustomTask() {
         super();
@@ -43,26 +42,16 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
      */
     public CustomTask(String taskName) {
         super(taskName);
         this.type = "custom";
     } //end CustomTask constructor
 
-    @Override
-    public String toString() {
-        System.out.println("Task: " + taskName + " days to perform: ");
-        for (String day : this.actualDaysInTask) {
-            System.out.println(day);
-        }
-        return super.toString() + "CurrentStreak is: " + currentStreak +
-                "BestStreak is: " + bestStreak + actualDaysInTask.toString();
-
-    }
-
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
+     * and startDate
      */
     public CustomTask(String taskName, Calendar startDate) {
         super(taskName, startDate);
@@ -70,7 +59,8 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName
+     * and startDate. Initializes arrayOfDays class variable.
      */
     public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays) {
         super(taskName, startDate);
@@ -79,7 +69,8 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     * 
+     * Overloaded Class Constructor - calls parent constructor with taskName and 
+     * startDate. Initializes all subclass variables.
      */
     public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays, int currentStreak,
             int bestStreak) {
@@ -102,48 +93,47 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     * 
+     * Accessor Method - actualDaysInTask
      */
     public ArrayList<String> getDaysOfWeek() {
         return this.actualDaysInTask;
     } //end getDaysOfWeek method
 
     /*
-     * 
+     * Mutator Method - actualDaysInTask
      */
     public void setDaysOfWeek(ArrayList<String> listOfDays) {
         this.actualDaysInTask.addAll(listOfDays);
     } //end setDaysOfWeek method
 
     /*
-     * 
+     * Accessor Method - currentStreak
      */
     public int getCurrentStreak() {
         return this.currentStreak;
     } //end getCurrentStreak method
 
     /*
-     * 
+     * Mutator Method - currentStreak
      */
     public void setCurrentStreak(int currentStreak) {
         this.currentStreak = currentStreak;
     } //end setCurrentStreak method
 
     /*
-     * 
+     * Accessor Method - bestStreak
      */
     public int getBestStreak() {
         return this.bestStreak;
     } //end getBestStreak method
 
     /*
-     * 
+     * Mutator Method - bestStreak
      */
     public void setBestStreak(int bestStreak) {
         this.bestStreak = bestStreak;
     } //end getBestStreak method
-
-
+    
     @Override
     public void writeTaskToJSON() {
         String taskSuffixNumber = String.valueOf(this.getTaskId());
@@ -180,4 +170,4 @@ public class CustomTask extends Task {
         JSONWriter.addFileToInit(fileName);
 
     } //end method writeTaskToJSON()
-}
+} //end of CustomTask class
