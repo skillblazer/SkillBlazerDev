@@ -3,7 +3,7 @@
  * File Name: UserProfile.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/10/2018
+ * Date: 4/16/2018
  * 
  * Description:
  * 
@@ -20,24 +20,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UserProfile {
-    private final String type = "userProfile";
 
-    private String preferredSaveLocation;
-
-    public void setPreferredSaveLocation(String preferredSaveLocation) {
-        this.preferredSaveLocation = preferredSaveLocation;
-    }
-
-    public String getPreferredSaveLocation(UserProfile userProfile) {
-        return this.preferredSaveLocation;
-    }
-
-
-
+    private final String type = "userProfile"; //type of file
+    private String preferredSaveLocation; //custom preferred save location if user wants
 	private String userName = ""; //username for user
     private Calendar userStartDate; //start date that user began using skillblazer
     public long taskNumber = 0; //increment number for task ID available
-
 
     /*
      * Default Class Constructor
@@ -91,27 +79,28 @@ public class UserProfile {
      */
     public String determineOSFilePath() {
     	
-    	String storageFolderPath = "";
-    	File file = new File("");
+    	String storageFolderPath = ""; //default initialization - path to send json data
+    	File file = new File(""); //default initialization - will become directory to store data
     	
-    	String osName = System.getProperty("os.name");
-    	String homePath = System.getProperty("user.home");
+    	String osName = System.getProperty("os.name"); //pulls OS name
+    	String homePath = System.getProperty("user.home"); //pulls home directory
     	
     	if (osName.contains("Windows") || osName.contains("Mac") || osName.contains("Linux") || 
     			osName.contains("Unix")) {
     		
-    		file = new File(homePath + "\\Documents\\skillblazerApp");
+    		file = new File(homePath + "\\Skillblazer");
+    		//if folder doesn't exist, create skillblazerApp directory
             if (!file.exists()) {
                 file.mkdir();
             }
             
-    		storageFolderPath = (homePath + "\\Documents\\skillblazerApp");
+    		storageFolderPath = (homePath + "\\Skillblazer");
     	}
     	
     	//if path returns empty, then window will need to appear stating that
     	//the OS they are using cannot use this application
     	return storageFolderPath; 
-    }
+    } //end determineOSFilePath method
     
     /*
      * Accessor Method - userName
@@ -140,4 +129,18 @@ public class UserProfile {
     public void setTaskNumber(long taskNumber) {
     	this.taskNumber = taskNumber;
     } //end setTaskNumber method
+    
+    /*
+     * Mutator Method - preferredSaveLocation
+     */
+    public void setPreferredSaveLocation(String preferredSaveLocation) {
+        this.preferredSaveLocation = preferredSaveLocation;
+    } //end setPreferredSaveLocation method
+
+    /*
+     * Accessor Method - preferredSaveLocation
+     */
+    public String getPreferredSaveLocation(UserProfile userProfile) {
+        return this.preferredSaveLocation;
+    } //end getPreferredSaveLocation method
 } //end UserProfile class

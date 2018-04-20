@@ -3,6 +3,8 @@ package llamasoft.skillblazer;
 
 // import
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -11,6 +13,7 @@ import javafx.stage.*;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
+import java.util.GregorianCalendar;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
 
@@ -26,19 +29,24 @@ public class SkillBlazer extends Application {
     Button backMonthButton;             // button to move month back
     CalendarCalculator calCalc;         // CalendarCalculator object
     TilePane calendarPane;              // tilepane object for calendar
-    Label monLabel;                     // label for "Monday"
-    Label tuesLabel;                    // label for "Tuesday"
-    Label wedLabel;                     // label for "Wednesday"
-    Label thursLabel;                   // label for "Thursday"
-    Label friLabel;                     // label for "Friday"
-    Label satLabel;                     // label for "Saturday"
-    Label sunLabel;                     // label for "Sunday"
     VBox[] vboxArray = new VBox[49];    // vbox array for main calendar interface
     Button habitCreationButton;         // button for habit creation
+    ArrayList<Task> taskList;
+
+    // These objects will conduct the startup routine
+    static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
+    static JSONWriter jsonWriter = new JSONWriter(); // may not be necessary
 
     // sets up the main stage, scenes and such
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        taskList = new ArrayList<Task>();
+        for (int i = 0; i < 5; i++) {
+            GregorianCalendar testStartDate = new GregorianCalendar(2018, 4, 1 + 2 * i);
+            DailyTask testTask = new DailyTask("Test " + i, i, testStartDate, false, 0, 0);
+            taskList.add(testTask);
+        }
 
         // sets title of main window (primaryStage)
         primaryStage.setTitle("Skillblazer Habit Tracker");
@@ -58,6 +66,7 @@ public class SkillBlazer extends Application {
         optionsButton.setText("Options");
         // sets preferred width of optionsButton
         optionsButton.setPrefWidth(120);
+        optionsButton.getStyleClass().add("button1");
         // event handler for 'Options' button
         optionsButton.setOnAction(new EventHandler() {
             @Override
@@ -92,6 +101,7 @@ public class SkillBlazer extends Application {
         forwardMonthButton = new Button();
         // sets text of forwardMonthButton
         forwardMonthButton.setText(">>");
+        forwardMonthButton.getStyleClass().add("button1");
         // event handler for forwardMonthButton
         forwardMonthButton.setOnAction(new EventHandler() {
             @Override
@@ -107,6 +117,7 @@ public class SkillBlazer extends Application {
         backMonthButton = new Button();
         // sets text of backMonthButton
         backMonthButton.setText("<<");
+        backMonthButton.getStyleClass().add("button1");
         // event handler for backMonthButton
         backMonthButton.setOnAction(new EventHandler() {
             @Override
@@ -124,6 +135,7 @@ public class SkillBlazer extends Application {
         lifetimeMetricsButton.setText("Lifetime Metrics");
         // sets preferred width of lifetimeMetricsButton
         lifetimeMetricsButton.setPrefWidth(120);
+        lifetimeMetricsButton.getStyleClass().add("button1");
         // event handler for 'Lifetime Metrics' button
         lifetimeMetricsButton.setOnAction(new EventHandler() {
             @Override
@@ -214,18 +226,17 @@ public class SkillBlazer extends Application {
         // shows the stage; actually displays the scen
         primaryStage.show();
 
-        // uncomment for Macintosh style
-        //AquaFx.style();
     } // end start() method
 
     // drawCalendar() method; responsible for creating the calendar
     private void drawCalendar() {
-
+        // generates day objects for selected calendar month
+        calCalc.instantiateCalendar();
         // member fields
         int firstDayOfWeekCurrentMonth = calCalc.getFirstDayOfWeekCurrentMonth(); // int that holds 1st day of week
         int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();             // int that holds # of days
         int j = 0;                                                                // iterator
-        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", // string array holding days
+        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",                  // string array holding days
             "Thursday", "Friday", "Saturday", "Sunday"};
 
         // clears calendar interface
@@ -275,6 +286,8 @@ public class SkillBlazer extends Application {
             vboxArray[i].setPrefSize(120, 85);
             // conditional statement
             if (((i - 7) >= firstDayOfWeekCurrentMonth) && j < numberDaysCurrentMonth) {
+                // Day object; getDayObject() called
+                Day todayDayOb = calCalc.getDayObject(j);
                 // pulls css specs from style sheet
                 vboxArray[i].getStyleClass().add("vboxCalendar");
                 // creates and initializes hboxCal
@@ -287,8 +300,9 @@ public class SkillBlazer extends Application {
                 Region emptyRegion = new Region();
                 // creates and initializes vboxButton
                 Button vboxButton = new Button("+");
+                vboxButton.getStyleClass().add("button2");
                 // sets preferred size of vboxButton
-                vboxButton.setPrefSize(20, 20);
+                vboxButton.setPrefSize(15, 15);
                 // for layout/alignment purposes
                 HBox.setHgrow(emptyRegion, Priority.ALWAYS);
                 // event handler for vboxButton
@@ -307,13 +321,111 @@ public class SkillBlazer extends Application {
                 hboxCal.getChildren().add(vboxLabel);
                 // adds hboxCal to vboxArray[i]
                 vboxArray[i].getChildren().add(hboxCal);
+                HBox[] taskHboxArray = new HBox[todayDayOb.tasksThisDay.size()];
+                int k = 0;
+                // adds Tasks to calendar day
+                for (Task mt : todayDayOb.tasksThisDay) {
+                    // label for each Task
+                    Label taskLabel = new Label(mt.getTaskName());
+                    // hbox for each task
+                    taskHboxArray[k] = new HBox();
+                    // adds taskHbox to vboxArray
+                    vboxArray[i].getChildren().add(taskHboxArray[k]);
+                    // adds taskLabel to taskHbox
+                    taskHboxArray[k].getChildren().add(taskLabel);
+                    k++;
+                }
+                // if there are more than 3 tasks for a given calendar day
+                if (todayDayOb.tasksThisDay.size() > 4) {
+                    for (k = 3;k<todayDayOb.tasksThisDay.size();k++) {
+                        taskHboxArray[k].setVisible(false);
+                        taskHboxArray[k].setManaged(false);
+                    }
+                    // creates hbox for button
+                    HBox buttonHbox = new HBox();
+                    
+                    Region emptyRegionButton1 = new Region();
+                    HBox.setHgrow(emptyRegionButton1, Priority.ALWAYS);
+                    Region emptyRegionButton2 = new Region();
+                    HBox.setHgrow(emptyRegionButton2, Priority.ALWAYS); 
+                    Region emptyRegionButton3 = new Region();
+                    HBox.setHgrow(emptyRegionButton3, Priority.ALWAYS);
+                    
+                    // down arrow button
+                    Button downArrowButton = new Button("▼");
+                    downArrowButton.getStyleClass().add("button2");
+                    // sets preferred size of downArrowButton
+//                    downArrowButton.setPrefSize(15, 15);
+                    // up arrow button
+                    Button upArrowButton = new Button("▲");
+                    upArrowButton.getStyleClass().add("button2");
+                    // sets preferred size of upArrowButton
+//                    upArrowButton.setPrefSize(20, 20);
+                    // event handler for downArrowButton
+                    downArrowButton.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            int lastVisible = -1;
+                            for (int m = 0;m<todayDayOb.tasksThisDay.size();m++) {
+                                if (taskHboxArray[m].isVisible()) {
+                                    lastVisible = m;
+                                }
+                                taskHboxArray[m].setVisible(false);
+                                taskHboxArray[m].setManaged(false);
+                                
+                            }
+                            int newFirstVisible = lastVisible+1;
+                            if ((newFirstVisible+3)>todayDayOb.tasksThisDay.size()) {
+                                newFirstVisible = todayDayOb.tasksThisDay.size()-3;
+                            }
+                            for (int m = newFirstVisible;m<(newFirstVisible+3);m++) {
+                                taskHboxArray[m].setVisible(true);
+                                taskHboxArray[m].setManaged(true);
+                            }
+                            }                    
+                    }); // end event handler
+                    
+                    upArrowButton.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            int firstVisible = -1;
+                            for (int m = todayDayOb.tasksThisDay.size()-1;m>=0;m--) {
+                                if (taskHboxArray[m].isVisible()) {
+                                    firstVisible = m;
+                                }
+                                taskHboxArray[m].setVisible(false);
+                                taskHboxArray[m].setManaged(false);
+                            }
+                            int newFirstVisible = firstVisible-3;
+                            if (newFirstVisible<0) {
+                                newFirstVisible = 0;
+                            }
+                            for (int m = newFirstVisible;m<(newFirstVisible+3);m++) {
+                                taskHboxArray[m].setVisible(true);
+                                taskHboxArray[m].setManaged(true);
+                            }
+                            }                           
+                    }); // end event handler
+                    
+                    // sets alignment for buttonHbox
+                    buttonHbox.setAlignment(Pos.CENTER);
+                    // adds buttonHbox to vboxArray
+                    vboxArray[i].getChildren().add(buttonHbox);
+                    // adds downArrowButton to buttonHbox
+                    buttonHbox.getChildren().add(emptyRegionButton1);
+                    buttonHbox.getChildren().add(downArrowButton);
+                    buttonHbox.getChildren().add(emptyRegionButton2);
+                    buttonHbox.getChildren().add(upArrowButton);
+                    buttonHbox.getChildren().add(emptyRegionButton3);
+                }
             }
+            
             // "Create Habit/Skill Button"
             if (i == 47) {
                 // initializes habitCreationButton
                 habitCreationButton = new Button("Create Habit/Skill");
                 // pulls css specs from style sheet
-                habitCreationButton.getStyleClass().add("habitCreationButton");
+                habitCreationButton.getStyleClass().add("button1");
                 // creates new region (for layout/alignment purposes)
                 Region emptyRegion1 = new Region();
                 // creates new region (for layout/alignment purposes)
@@ -551,7 +663,7 @@ public class SkillBlazer extends Application {
                     deleteGoalHbox3.getStyleClass().add("optionsButtonHboxes");
                     // adds goalLabel to deleteGoalHbox3
                     deleteGoalHbox3.getChildren().add(goalLabel);
-                    
+
                     // hbox for 4th vbox row
                     HBox deleteGoalHbox4 = new HBox();
                     // sets alignment of hbox to center
@@ -560,7 +672,7 @@ public class SkillBlazer extends Application {
                     deleteGoalHbox4.getStyleClass().add("optionsButtonHboxes");
                     // adds goalsComboBox to deleteGoalHbox4
                     deleteGoalHbox4.getChildren().add(goalsComboBox);
-                    
+
                     // hbox for 5th vbox row
                     HBox deleteGoalHbox5 = new HBox();
                     // sets alignment of hbox to center
@@ -569,7 +681,7 @@ public class SkillBlazer extends Application {
                     deleteGoalHbox5.getStyleClass().add("optionsButtonHboxes");
                     // adds deleteButton to deleteGoalHbox5
                     deleteGoalHbox5.getChildren().add(deleteButton);
-                    
+
                     // new vbox layout
                     VBox deleteGoalVBox = new VBox();
                     // pulls css specs from style sheet
@@ -598,11 +710,11 @@ public class SkillBlazer extends Application {
             VBox optionsVBox = new VBox();
             // necessary to pull css specs from style sheet
             optionsVBox.getStyleClass().add("secondaryWindow");
-            
+
             // creates new regions (for layout/alignment purposes)
             Region emptyRegion1 = new Region();
             Region emptyRegion2 = new Region();
-            
+
             // adds all hboxes and regions to optionsVBox
             optionsVBox.getChildren().add(optionsButtonHbox1);
             optionsVBox.getChildren().add(emptyRegion1);
@@ -991,7 +1103,7 @@ public class SkillBlazer extends Application {
             habitCreationVbox.getChildren().add(habitCreationButtonHbox12);
 
             // adds habitCreationVbox to optionsScene
-            Scene optionsScene = new Scene(habitCreationVbox, 700, 700);
+            Scene optionsScene = new Scene(habitCreationVbox, 800, 800);
             // adds optionsScene to habitEntryStage 
             habitEntryStage.setScene(optionsScene);
             // gets css style sheet
@@ -1146,6 +1258,15 @@ public class SkillBlazer extends Application {
 
     // main method
     public static void main(String[] args) {
+        /*
+         * These three objects need to be invoked in main so the rest of the
+         * application can access the UserProfile and the list of Task objects
+         * that were loaded from disk.
+         */
+        ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
+        Iterator<Task> taskIterator = arrayOfTasks.iterator();
+        UserProfile skbUserProfile = jsonLoader.getProfileFromLoader();
+
         launch(args);               // opens the JavaFX Stage
     } // end main method
 

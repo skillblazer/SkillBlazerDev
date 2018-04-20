@@ -10,14 +10,21 @@ package llamasoft.skillblazer;
 import java.util.Calendar;
 
 public class Task {
-    String taskName;
+    protected String taskName;
     protected long taskId;
-    private Calendar startDate;
-    private boolean isCompleted;
-    private String type;
+    protected Calendar startDate;
+    protected boolean isCompleted;
+    protected String type;
 
     long getTaskId() {
-        return 0;  // placeholder return statement -> needs real code!
+        return this.taskId;
+    }
+
+    @Override
+    public String toString() {
+        return "Taskname is: " + taskName + "TaskID is: " + taskId +
+                "StartDate is: " + startDate + "isCompleted is: " +
+                isCompleted + "Type is: " + type;
     }
 
     Calendar getStartDate() {
@@ -69,6 +76,11 @@ public class Task {
 
     protected void deleteRecord() {
         // delete a record
+    }
+
+    public void writeTaskToJSON() {
+        // placeholder so the individual task subclasses can have their
+        // writeTaskToJSON() methods referenced by external classes
     }
 
 }
