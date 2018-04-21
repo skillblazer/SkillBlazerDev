@@ -1,6 +1,7 @@
 // package
 package llamasoft.skillblazer;
 
+import java.io.IOException;
 // import
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -464,6 +465,7 @@ public class SkillBlazer extends Application {
         Button notificationsButton;                     // button for notifications screen
         Button deleteSkillHistoryButton;                // button for deleting skill history screen
         Button deleteGoalButton;                        // button for deleting goal from calendar screen
+        Button twitterButton;
 
         // constructor
         public Options() {
@@ -709,6 +711,35 @@ public class SkillBlazer extends Application {
             }); // end event handler
             // adds deleteGoalButton to optionsButtonHbox3
             optionsButtonHbox3.getChildren().add(deleteGoalButton);
+            
+            // hbox for 3rd vbox row
+            HBox optionsButtonHbox4 = new HBox();
+            // sets alignment for hbox
+            optionsButtonHbox4.setAlignment(Pos.CENTER);
+            // pulls css specs from style sheet
+            optionsButtonHbox4.getStyleClass().add("optionsButtonHboxes");
+            // initializes deleteGoalButton
+            twitterButton = new Button();
+            twitterButton.setStyle("-fx-background-color: #00bfff;");
+            // sets text for deleteGoalButton
+            twitterButton.setText("Send Tweet");
+            // sets alignment for both
+            twitterButton.setAlignment(Pos.CENTER);
+            // event handler for deleteGoalButton
+            twitterButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    TwitterIntegration twitterApp = new TwitterIntegration();
+                    try {
+						twitterApp.display();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }
+            }); // end event handler
+            // adds twitterButton to optionsButtonHbox4
+            optionsButtonHbox4.getChildren().add(twitterButton);
 
             // new vbox layout
             VBox optionsVBox = new VBox();
@@ -718,6 +749,7 @@ public class SkillBlazer extends Application {
             // creates new regions (for layout/alignment purposes)
             Region emptyRegion1 = new Region();
             Region emptyRegion2 = new Region();
+            Region emptyRegion3 = new Region();
 
             // adds all hboxes and regions to optionsVBox
             optionsVBox.getChildren().add(optionsButtonHbox1);
@@ -725,6 +757,8 @@ public class SkillBlazer extends Application {
             optionsVBox.getChildren().add(optionsButtonHbox2);
             optionsVBox.getChildren().add(emptyRegion2);
             optionsVBox.getChildren().add(optionsButtonHbox3);
+            optionsVBox.getChildren().add(emptyRegion3);
+            optionsVBox.getChildren().add(optionsButtonHbox4);
 
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVBox, 350, 350);
