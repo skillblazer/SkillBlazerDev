@@ -712,20 +712,20 @@ public class SkillBlazer extends Application {
             // adds deleteGoalButton to optionsButtonHbox3
             optionsButtonHbox3.getChildren().add(deleteGoalButton);
             
-            // hbox for 3rd vbox row
+            // hbox for 4th vbox row
             HBox optionsButtonHbox4 = new HBox();
             // sets alignment for hbox
             optionsButtonHbox4.setAlignment(Pos.CENTER);
             // pulls css specs from style sheet
             optionsButtonHbox4.getStyleClass().add("optionsButtonHboxes");
-            // initializes deleteGoalButton
+            // initializes twitterButton
             twitterButton = new Button();
             twitterButton.setStyle("-fx-background-color: #00bfff;");
-            // sets text for deleteGoalButton
+            // sets text for twitterButton
             twitterButton.setText("Send Tweet");
             // sets alignment for both
             twitterButton.setAlignment(Pos.CENTER);
-            // event handler for deleteGoalButton
+            // event handler for twitterButton
             twitterButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
