@@ -1,6 +1,7 @@
 // package
 package llamasoft.skillblazer;
 
+import java.io.IOException;
 // import
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import javafx.stage.*;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
+import javafx.scene.image.Image;
+
 import java.util.GregorianCalendar;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
@@ -51,6 +54,7 @@ public class SkillBlazer extends Application {
 
         // sets title of main window (primaryStage)
         primaryStage.setTitle("Skillblazer Habit Tracker");
+        primaryStage.getIcons().add(new Image("/llama.jpg"));
 
         // dropshadow effect for buttons
         DropShadow dropShadow = new DropShadow();
@@ -462,6 +466,7 @@ public class SkillBlazer extends Application {
         Button notificationsButton;                     // button for notifications screen
         Button deleteSkillHistoryButton;                // button for deleting skill history screen
         Button deleteGoalButton;                        // button for deleting goal from calendar screen
+        Button twitterButton;
 
         // constructor
         public Options() {
@@ -470,6 +475,7 @@ public class SkillBlazer extends Application {
             Stage optionsStage = new Stage();
             // sets title
             optionsStage.setTitle("Options");
+            optionsStage.getIcons().add(new Image("/llama.jpg"));
 
             // hbox for 1st vbox row
             HBox optionsButtonHbox1 = new HBox();
@@ -706,6 +712,35 @@ public class SkillBlazer extends Application {
             }); // end event handler
             // adds deleteGoalButton to optionsButtonHbox3
             optionsButtonHbox3.getChildren().add(deleteGoalButton);
+            
+            // hbox for 4th vbox row
+            HBox optionsButtonHbox4 = new HBox();
+            // sets alignment for hbox
+            optionsButtonHbox4.setAlignment(Pos.CENTER);
+            // pulls css specs from style sheet
+            optionsButtonHbox4.getStyleClass().add("optionsButtonHboxes");
+            // initializes twitterButton
+            twitterButton = new Button();
+            twitterButton.setStyle("-fx-background-color: #00bfff;");
+            // sets text for twitterButton
+            twitterButton.setText("Send Tweet");
+            // sets alignment for both
+            twitterButton.setAlignment(Pos.CENTER);
+            // event handler for twitterButton
+            twitterButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    TwitterIntegration twitterApp = new TwitterIntegration();
+                    try {
+						twitterApp.display();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }
+            }); // end event handler
+            // adds twitterButton to optionsButtonHbox4
+            optionsButtonHbox4.getChildren().add(twitterButton);
 
             // new vbox layout
             VBox optionsVBox = new VBox();
@@ -715,6 +750,7 @@ public class SkillBlazer extends Application {
             // creates new regions (for layout/alignment purposes)
             Region emptyRegion1 = new Region();
             Region emptyRegion2 = new Region();
+            Region emptyRegion3 = new Region();
 
             // adds all hboxes and regions to optionsVBox
             optionsVBox.getChildren().add(optionsButtonHbox1);
@@ -722,6 +758,8 @@ public class SkillBlazer extends Application {
             optionsVBox.getChildren().add(optionsButtonHbox2);
             optionsVBox.getChildren().add(emptyRegion2);
             optionsVBox.getChildren().add(optionsButtonHbox3);
+            optionsVBox.getChildren().add(emptyRegion3);
+            optionsVBox.getChildren().add(optionsButtonHbox4);
 
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVBox, 350, 350);
@@ -745,6 +783,7 @@ public class SkillBlazer extends Application {
             Stage lifeMetricsStage = new Stage();
             // sets title
             lifeMetricsStage.setTitle("Lifetime Metrics");
+            lifeMetricsStage.getIcons().add(new Image("/llama.jpg"));
             // new vbox layout
             VBox lifeMetricsVbox = new VBox();
             // necessary to pull css specs from style sheet
@@ -797,7 +836,7 @@ public class SkillBlazer extends Application {
             Stage habitEntryStage = new Stage();
             // sets title for habitEntryStage
             habitEntryStage.setTitle("Habit/Skill Creation");
-
+            habitEntryStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
             HBox habitCreationButtonHbox1 = new HBox();
             // pulls css specs from style sheet
@@ -1137,7 +1176,7 @@ public class SkillBlazer extends Application {
             Stage progressStage = new Stage();
             // sets title for progressStage
             progressStage.setTitle("Habit Progress");
-
+            progressStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
             HBox progressButtonHbox1 = new HBox();
             // pulls css styling information
