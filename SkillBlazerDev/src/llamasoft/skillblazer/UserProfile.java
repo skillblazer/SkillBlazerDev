@@ -19,6 +19,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javafx.scene.control.Label;
+
 public class UserProfile {
 
     private final String type = "userProfile"; //type of file
@@ -100,6 +102,23 @@ public class UserProfile {
     	//if path returns empty, then window will need to appear stating that
     	//the OS they are using cannot use this application
     	return storageFolderPath; 
+    } //end determineOSFilePath method
+    
+    /*
+     * Determines username of user accessing skillblazer
+     * application and presents it.
+     */
+    public Label determineUsername() {
+    	
+    	Label userNameLabel;
+		String userName;
+		
+		String homePath = System.getProperty("user.home"); //pulls home directory
+		String[] arOfKeys = homePath.split(":?\\\\"); //parses folder path
+		userName = arOfKeys[2]; //takes username from desktop path
+		userNameLabel = new Label(userName); 
+		
+		return userNameLabel; //returns Label with user name 
     } //end determineOSFilePath method
     
     /*
