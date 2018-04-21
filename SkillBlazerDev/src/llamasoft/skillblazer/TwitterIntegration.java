@@ -48,15 +48,45 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
-public class TwitterIntegration {
+public class TwitterIntegration extends Application {
 
 	// Consumer key token for allowing application to access Twitter
 	private final static String CONSUMER_KEY = "34d1J2WyuSLYbvu4zeGLVmGRv";
 	// Consumer secret token for allowing application to access Twitter
 	private final static String CONSUMER_KEY_SECRET = "rmHY2LIUzvMVjGn2AGMx54rAGPx9zKSzlNpY0DSNl05mmqPjzW";
 
+	Stage window;
+	Button button;
+
+	public static void main(String[] args) throws IOException {
+		launch(args);
+	} //end of main method
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		window = primaryStage;
+		window.setTitle("Test Window");
+
+		button = new Button("Click me");
+
+		button.setOnAction(e -> {
+			try {
+				display();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+
+		StackPane layout = new StackPane();
+		layout.getChildren().add(button);
+		Scene scene = new Scene(layout, 300, 250);
+		window.setScene(scene);
+		window.show();
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void display() throws IOException {
+	public static void display() throws IOException {
 
 		Label instructLabel; // label for "Instructions"
 		Label instructions; // "Instructions"
