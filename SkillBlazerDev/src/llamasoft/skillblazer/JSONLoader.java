@@ -232,14 +232,14 @@ public class JSONLoader {
             case "cumulative":
                 // parse remaining fields specific to a CumulativeTask object
                 //Calendar endDate = (Calendar) jsonObject.get("endDate");
-                String vyearStr = (String) jsonObject.get("endYear");
-                int endYear = Integer.parseInt(vyearStr);
+                long vLongYear = (long) jsonObject.get("endYear");
+                int endYear = (int) vLongYear;
 
-                String vmonthStr = (String) jsonObject.get("endMonth");
-                int endMonth = Integer.parseInt(vmonthStr);
+                long vLongMonth = (long) jsonObject.get("endMonth");
+                int endMonth = (int) vLongMonth;
 
-                String vdayStr = (String) jsonObject.get("endDate");
-                int endDay = Integer.parseInt(vdayStr);
+                long vLongDay = (long) jsonObject.get("endDate");
+                int endDay = (int) vLongDay;
 
                 Calendar endDate = new GregorianCalendar();
                 endDate.set(endYear, endMonth, endDay);
