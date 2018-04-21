@@ -4,6 +4,7 @@ package llamasoft.skillblazer;
 // import
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import javafx.application.*;
 import javafx.scene.*;
@@ -1265,7 +1266,16 @@ public class SkillBlazer extends Application {
          */
         ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
         Iterator<Task> taskIterator = arrayOfTasks.iterator();
-        UserProfile skbUserProfile = jsonLoader.getProfileFromLoader();
+
+        // Create a User and test the read/write functions
+        Calendar now = new GregorianCalendar();
+        DailyTask dTask = new DailyTask("test the code", 7, now, false, 0, 0);
+        dTask.writeTaskToJSON();
+
+        // Create a User and test the read/write functions
+        Calendar userNow = new GregorianCalendar();
+        UserProfile skbUserProfile = new UserProfile("Lando", userNow, 7);
+        JSONWriter.saveUser(skbUserProfile);
 
         launch(args);               // opens the JavaFX Stage
     } // end main method

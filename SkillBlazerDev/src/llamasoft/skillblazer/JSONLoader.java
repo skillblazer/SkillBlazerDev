@@ -121,17 +121,16 @@ public class JSONLoader {
     private UserProfile parseAndReturnUserProfile(JSONObject jsonObject) {
         String userName = (String) jsonObject.get("userName");
 
-        String taskStr = (String) jsonObject.get("taskNumber");
-        long taskNumber = Long.parseLong(taskStr);
+        long taskNumber = (long) jsonObject.get("taskNumber");
 
-        String yearStr = (String) (jsonObject.get("year"));
-        int year = Integer.parseInt(yearStr);
+        long longYear = (long) (jsonObject.get("year"));
+        int year = (int) longYear;
 
-        String monthStr = (String) jsonObject.get("month");
-        int month = Integer.parseInt(monthStr);
+        long longMonth = (long) jsonObject.get("month");
+        int month = (int) longMonth;
 
-        String dayStr = (String) jsonObject.get("date");
-        int day = Integer.parseInt(dayStr);
+        long longDay = (long) jsonObject.get("date");
+        int day = (int) longDay;
 
         Calendar userStartDate = new GregorianCalendar();
         userStartDate.set(year, month, day);
@@ -154,27 +153,28 @@ public class JSONLoader {
 
         String taskName = (String) jsonObject.get("taskName");
 
-        String taskStr = (String) jsonObject.get("taskId");
-        long taskId = Long.parseLong(taskStr);
+        long taskId = (long) jsonObject.get("taskId");
+        //long taskId = Long.parseLong(taskStr);
 
-        String yearStr = (String) (jsonObject.get("year"));
-        int year = Integer.parseInt(yearStr);
+        long longYear = (long) (jsonObject.get("year"));
+        int year = (int) longYear;
 
-        String monthStr = (String) jsonObject.get("month");
-        int month = Integer.parseInt(monthStr);
+        long longMonth = (long) jsonObject.get("month");
+        int month = (int) longMonth;
 
-        String dayStr = (String) jsonObject.get("date");
-        int day = Integer.parseInt(dayStr);
+        long longDay = (long) jsonObject.get("date");
+        int day = (int) longDay;
 
         Calendar startDate = new GregorianCalendar();
         startDate.set(year, month, day);
 
-        String isCompletedString = (String) jsonObject.get("isCompleted");
-        if(isCompletedString.equals("false")) {
-            isCompleted = false;
-        } else {
-            isCompleted = true;
-        }
+        isCompleted = (boolean)  jsonObject.get("isCompleted");
+
+//        if(isCompletedString.equals("false")) {
+//            isCompleted = false;
+//        } else {
+//            isCompleted = true;
+//        }
         String type = (String) jsonObject.get("type");
 
         // Parse the remaining subclass-specific (unique) fields and
@@ -183,11 +183,11 @@ public class JSONLoader {
         switch (type) {
             case "daily":
                 // parse remaining fields specific to a DailyTask object
-                String dcurrentStr = (String) jsonObject.get("currentStreak");
-                currentStreak = Integer.parseInt(dcurrentStr);
+                long longCurrent = (long) jsonObject.get("currentStreak");
+                currentStreak = (int) longCurrent;
 
-                String dbestStr = (String) jsonObject.get("bestStreak");
-                bestStreak = Integer.parseInt(dbestStr);
+                long longBest = (long) jsonObject.get("bestStreak");
+                bestStreak = (int) longBest;
 
                 // instantiate a DailyTask object and add to ArrayList
                 userTasks.add(new DailyTask(taskName, taskId, startDate,

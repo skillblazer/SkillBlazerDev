@@ -18,13 +18,14 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class UserProfile {
 
     private final String type = "userProfile"; //type of file
     private String preferredSaveLocation; //custom preferred save location if user wants
 	private String userName = ""; //username for user
-    private Calendar userStartDate; //start date that user began using skillblazer
+    private Calendar userStartDate = new GregorianCalendar(); //start date that user began using skillblazer
     public long taskNumber = 0; //increment number for task ID available
 
     /*

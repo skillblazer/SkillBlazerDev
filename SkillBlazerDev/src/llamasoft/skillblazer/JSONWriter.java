@@ -53,7 +53,7 @@ public class JSONWriter {
     * */
     public static void saveUser(UserProfile userProfile) {
         // update the SBinit.txt file (usually only necessary after first run)
-        addFileToInit("userProfile.txt");
+        addFileToInit("userProfile.json"); // TODO this is destroying the original contents!!!
 
         // write the UserProfile object to userProfile.json
         writeUserProfileToDisk(userProfile);
@@ -92,13 +92,13 @@ public class JSONWriter {
 
      static void writeJSON(JSONObject jsonObject, String fileName) {
         try {
-            FileWriter jsonOutput = new FileWriter(SkillBlazerInitializer.getUserDataLocation() + fileName);
+            FileWriter jsonOutput = new FileWriter(SkillBlazerInitializer.getLastJSONFilePath() + fileName);
             jsonOutput.write(jsonObject.toJSONString());
             jsonOutput.flush();
             jsonOutput.close();
         }
         catch (IOException e) {
-            System.out.println("Could not find or access " + fileName + "\n");
+            System.out.println("Could not find or access " + SkillBlazerInitializer.getLastJSONFilePath() + " or " + fileName + "\n");
         }
     } //end method writeJSON()
 
@@ -115,18 +115,20 @@ public class JSONWriter {
     static void addFileToInit(String fileName) {
         boolean isListed = false;
         try {
-            java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath());
+            java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() + "SBinit.txt");
             Scanner input = new Scanner(file);
 
             if(!file.exists()) {  // SBinit.txt file does NOT exist
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
                 output.println(fileName);
+                output.flush();
                 output.close();
             }
             else {  // SBinit.txt file already exists
                 while(input.hasNext()) {
                     if(input.next().equals(fileName)) {
                         // found the provided .json file entry
+                        System.out.println("FOUND THE FILENAME??? ");
                         isListed = true;
                     }
                 } //end while loop
@@ -135,12 +137,13 @@ public class JSONWriter {
                     // Add it to the SBinit.txt file contents
                     java.io.PrintWriter output = new java.io.PrintWriter(file);
                     output.append(fileName);
+                    output.flush();
                     output.close();
                 }
             } //end else (file does exist)
         }
         catch (IOException e) {
-            System.out.println("SBinit.txt not found when attempting to write" +
+            System.out.println("SBinit.txt not found when attempting to write " + SkillBlazerInitializer.getLastJSONFilePath() +
                     fileName + " info to disk.");
         }
 

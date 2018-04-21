@@ -28,7 +28,7 @@ public class Task {
     }
 
     Calendar getStartDate() {
-        return null;  // placeholder return statement -> needs real code!
+        return this.startDate; // placeholder return statement -> needs real code!
     }
 
     public Task() {}
