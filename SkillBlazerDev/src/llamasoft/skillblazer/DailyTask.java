@@ -22,18 +22,6 @@ public class DailyTask extends Task {
     private int currentStreak;
     private int bestStreak;
 
-    public boolean getIsCompleted() {
-        return isCompleted;
-    }
-
-    protected void setCompleted() {
-        isCompleted = true;
-    }
-
-    public String getTaskName() {
-        return this.taskName;
-    }
-
     @Override
     public String toString() {
         return super.toString() + "CurrentStreak is: " + currentStreak +

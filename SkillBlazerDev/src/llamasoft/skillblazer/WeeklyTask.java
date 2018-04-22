@@ -23,8 +23,6 @@ public class WeeklyTask extends Task {
     private int currentStreak;
     private int bestStreak;
 
-    private Calendar startDate = new GregorianCalendar();
-
     public WeeklyTask() {
         super();
         this.type = "weekly";
@@ -40,10 +38,6 @@ public class WeeklyTask extends Task {
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end WeeklyTask constructor
-    
-    public Calendar getStartDate() {
-        return this.startDate;
-    }
 
     public int getCurrentStreak() {
         return this.currentStreak;
