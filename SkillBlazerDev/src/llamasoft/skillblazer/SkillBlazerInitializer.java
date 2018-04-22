@@ -52,6 +52,7 @@ class SkillBlazerInitializer {
         // create a File object in the local directory relevant to the current path
         java.io.File directory = new java.io.File(userFileLocation);
         java.io.File file = new java.io.File(userFileLocation + initFile);
+
         try {
             if (!directory.exists()) {
                 // create the directory if it doesn't already exists or was
@@ -67,8 +68,11 @@ class SkillBlazerInitializer {
             } else {
                 Scanner input = new Scanner(file);
                 while (input.hasNext()) {
-                    // take the contents of SBinit.txt and ADD them to the ArrayList
-                    listOfJsonFiles.add(userFileLocation + input.nextLine());
+                    java.io.File tempFile = new java.io.File(userFileLocation + input.next());
+                    if (tempFile.exists()) { // is the file still in the SkillBlazer directory?
+                        // take the contents of SBinit.txt and ADD them to the ArrayList
+                        listOfJsonFiles.add(userFileLocation + input.nextLine());
+                    }
                 }
                 input.close();
             }
@@ -112,7 +116,6 @@ class SkillBlazerInitializer {
             } else {
                 // open the file on the disk
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
-
                 // (Overwriting previous contents) add filenames to disk
                 // one per line
                 while (fileNamesIterator.hasNext()) {

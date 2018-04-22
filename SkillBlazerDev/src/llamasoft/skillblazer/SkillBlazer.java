@@ -1265,40 +1265,25 @@ public class SkillBlazer extends Application {
          * that were loaded from disk.
          */
         Calendar now = new GregorianCalendar();
-
         ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
         Iterator<Task> taskIterator = arrayOfTasks.iterator();
-        UserProfile skbUserProfile = new UserProfile("Agent Smith", now, 7);
-        // Create a User and test the read/write functions
 
-        Iterator<Task> iterator = arrayOfTasks.iterator();
+        UserProfile skbUserProfile = jsonLoader.getUserProfile();
 
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next().toString());
-        }
-
-//        DailyTask dTask = new DailyTask("test the code", 7, now, false, 0, 0);
-//
-//
-//        WeeklyTask wTask = new WeeklyTask("test the SBinit", 1, now, false, 0, 0);
+//        UserProfile skbUserProfile = new UserProfile("Jason", now, 1);
 //
 //        ArrayList<String> days = new ArrayList<>();
 //        days.add("monday");
-//        days.add("wednesday");
+//        days.add("tuesday");
 //        days.add("friday");
-//        days.add("sunday");
-//        CustomTask cTask = new CustomTask("play with the computer", 2, now, false, 0, 1, days);
+//        CustomTask cTask = new CustomTask("test the code erryday",
+//                1, now, false, 2, 3, days );
 //
-//        Calendar futureDate = new GregorianCalendar(2019, 1, 14);
-//        CumulativeTask cumTask = new CumulativeTask("I would walk 500 miles and I would walk 500 more", 5, now, false, futureDate);
-//
-//
-//        dTask.writeTaskToJSON();
-//        wTask.writeTaskToJSON();
-//        cTask.writeTaskToJSON();
-//        cumTask.writeTaskToJSON();
+//        arrayOfTasks.add(cTask);
 
-        launch(args);               // opens the JavaFX Stage
+        JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);
+
+        //launch(args);               // opens the JavaFX Stage
     } // end main method
 
 } // end class Skillblazer

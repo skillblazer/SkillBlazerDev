@@ -3,6 +3,8 @@ package llamasoft.skillblazer;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONObject;
+
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -52,8 +54,8 @@ public class JSONWriter {
     * to userProfile.json
     * */
     public static void saveUser(UserProfile userProfile) {
-        // update the SBinit.txt file (usually only necessary after first run)
-        addFileToInit("userProfile.json"); // TODO this is destroying the original contents!!!
+        // update the SBinit.txt file
+        addFileToInit("userProfile.json");
 
         // write the UserProfile object to userProfile.json
         writeUserProfileToDisk(userProfile);
@@ -70,16 +72,12 @@ public class JSONWriter {
         // month 0-11 for jan-dec
         // date 1-31
         String fileName = "userProfile.json";
-        Calendar cal = userProfile.getUserStartDate();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int date = cal.get(Calendar.DATE);
-
-        // TODO - remove this println() once you know the Calendar is parsing correctly
-        System.out.println("year: " + year + " month " + month + " date " + date);
+        int year = userProfile.getUserStartDate().get(Calendar.YEAR);
+        int month = userProfile.getUserStartDate().get(Calendar.MONTH);
+        int date = userProfile.getUserStartDate().get(Calendar.DATE);
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type", userProfile.getUserName());
+        jsonObject.put("type", userProfile.getType());
         jsonObject.put("userName", userProfile.getUserName());
         jsonObject.put("month", month);
         jsonObject.put("year", year);
@@ -114,39 +112,71 @@ public class JSONWriter {
      * */
     static void addFileToInit(String fileName) {
         boolean isListed = false;
+        // get the contents of SBinit.txt, create the file if it doesn't exist
+        ArrayList<String> contents = getFileContents();
+        Iterator<String> iterator = contents.iterator();
+
+        try {
+            java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() + "SBinit.txt");
+            PrintWriter output = new PrintWriter(file);
+
+            // prep the contents arraylist for writing
+            // ensure that empty doesn't stay in the arraylist
+            // place new fileName into ArrayList
+            while(iterator.hasNext()) {
+                if (iterator.next().equals("empty")) {
+                    contents.remove("empty");
+                    contents.add(fileName); // list was empty - add the fileName
+                    output.close();
+                    break; // exit the loop now that the fileName is listed
+                }
+                if (iterator.hasNext() && iterator.next().equals(fileName)) {
+                    isListed = true;  //method will exit if isListed == true
+                    output.close();
+                }
+            } //end while loop
+            if (!isListed) { // fileName not already in SBinit.txt
+                contents.add(fileName); // add fileName to contents (ArrayList)
+
+                for (String item : contents) {
+                    output.println(item); // write the fileName to SBinit.txt
+                }
+                output.flush();
+                output.close();
+            }
+        }
+        catch (IOException e) {
+            System.out.println("SBinit.txt not accessible when attempting to write " + SkillBlazerInitializer.getLastJSONFilePath() +
+                    fileName + " info to disk.");
+        }
+    } //end method addFileToInit()
+
+
+    static ArrayList<String> getFileContents() {
+        ArrayList<String> contents = new ArrayList<>();
+
         try {
             java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() + "SBinit.txt");
             Scanner input = new Scanner(file);
 
-            if(!file.exists()) {  // SBinit.txt file does NOT exist
-                java.io.PrintWriter output = new java.io.PrintWriter(file);
-                output.println(fileName);
+            if(!file.exists()) { // SBinit.txt doesn't already exist
+                java.io.PrintWriter output = new java.io.PrintWriter(file);  // create the file
+                output.println("empty");
                 output.flush();
                 output.close();
-            }
-            else {  // SBinit.txt file already exists
-                while(input.hasNext()) {
-                    if(input.next().equals(fileName)) {
-                        // found the provided .json file entry
-                        System.out.println("FOUND THE FILENAME??? ");
-                        isListed = true;
-                    }
-                } //end while loop
-                if (!isListed) {
-                    // didn't find the .json file listed in SBinit.txt
-                    // Add it to the SBinit.txt file contents
-                    java.io.PrintWriter output = new java.io.PrintWriter(file);
-                    output.append(fileName);
-                    output.flush();
-                    output.close();
+            } else { // file exists, read its contents and add to ArrayList<String>
+                while (input.hasNext()) {
+                    contents.add(input.next());
                 }
-            } //end else (file does exist)
+            }
         }
         catch (IOException e) {
-            System.out.println("SBinit.txt not found when attempting to write " + SkillBlazerInitializer.getLastJSONFilePath() +
-                    fileName + " info to disk.");
+            System.out.println("Error while trying to determine SBinit.txt " +
+                    "file contents");
+            e.printStackTrace();
         }
-
-    } //end method addFileToInit()
+        // pass the ArrayList<String> back to caller
+        return contents;
+    } //end method getFileContents()
 
 }

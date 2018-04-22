@@ -25,7 +25,7 @@ public class UserProfile {
     private final String type = "userProfile"; //type of file
     private String preferredSaveLocation; //custom preferred save location if user wants
 	private String userName = ""; //username for user
-    private Calendar userStartDate = new GregorianCalendar(); //start date that user began using skillblazer
+    Calendar userStartDate = new GregorianCalendar(); //start date that user began using skillblazer
     public long taskNumber = 0; //increment number for task ID available
 
     /*
@@ -59,6 +59,13 @@ public class UserProfile {
         this.userStartDate = userStartDate;
         this.taskNumber = taskNumber;
     } //end UserProfile constructor
+
+    @Override
+    public String toString() {
+        return "UserProfile info is: \nUserName: " + this.userName +
+                "\nLast Task Number created: " + this.taskNumber +
+                "\nCalender info is as follows: \n" + this.userStartDate.toString();
+    } //end method toString()
 
     /*
      * Calculates the current date and places in a mm/dd/yyyy format
@@ -102,7 +109,14 @@ public class UserProfile {
     	//the OS they are using cannot use this application
     	return storageFolderPath; 
     } //end determineOSFilePath method
-    
+
+    /*
+     * Accessor Method - type
+     */
+    public String getType() {
+        return this.type;
+    } //end getType method
+
     /*
      * Accessor Method - userName
      */

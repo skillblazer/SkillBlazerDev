@@ -19,8 +19,7 @@ public class JSONLoader {
     private ArrayList<Task> userTasks = new ArrayList<>();
     private JSONObject jsonUserObject;
     static SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
-    UserProfile userProfile;
-
+    public static UserProfile userProfile;
 
     JSONLoader() {}
 
@@ -28,14 +27,14 @@ public class JSONLoader {
     // At startup you should be calling loadFromJSON()
     public ArrayList<Task> getTasks() { return this.userTasks; }
 
-    public UserProfile getProfileFromLoader() {
-        return this.userProfile;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
     protected ArrayList<Task> loadFromJSON() {
         String temp;
 
-        // !!! This ArrayList and its Iterator will contain ABSOLUTE PATHS !!!
+        // Caution: This ArrayList and its Iterator may contain ABSOLUTE PATHS
         ArrayList<String> actualFilenames = addActualFileNames();
 
         // create an Iterator to reference the VALID filenames
@@ -63,10 +62,9 @@ public class JSONLoader {
                 System.out.println("\nIOException error thrown\n");
                 e.printStackTrace();
             }
-
             if (temp.contains("userProfile")) {
                 // call the method to instantiate the UserProfile object
-                parseAndReturnUserProfile(jsonUserObject);
+                userProfile = parseAndReturnUserProfile(jsonUserObject);
             } else {
                 // call the method to instantiate a Task-subclass object and
                 // add it to the arraylist of tasks
@@ -121,22 +119,15 @@ public class JSONLoader {
      */
     private UserProfile parseAndReturnUserProfile(JSONObject jsonObject) {
         String userName = (String) jsonObject.get("userName");
-
         long taskNumber = (long) jsonObject.get("taskNumber");
-
         int year = convertInt((long) (jsonObject.get("year")));
-        //int year = (int) longYear;
-
         int month = convertInt((long) jsonObject.get("month"));
-        //int month = (int) longMonth;
-
         int day = convertInt((long) jsonObject.get("date"));
-        //int day = (int) longDay;
 
         Calendar userStartDate = new GregorianCalendar();
         userStartDate.set(year, month, day);
 
-        userProfile = (new UserProfile(userName, userStartDate, taskNumber));
+        JSONLoader.userProfile = (new UserProfile(userName, userStartDate, taskNumber));
 
         return userProfile;
     }
@@ -153,28 +144,16 @@ public class JSONLoader {
         int bestStreak;
 
         String taskName = (String) jsonObject.get("taskName");
-
         long taskId = (long) jsonObject.get("taskId");
-
         int year = convertInt((long) jsonObject.get("year"));
-        //int year = (int) longYear;
-
         int month = convertInt((long) jsonObject.get("month"));
-        //int month = (int) longMonth;
-
         int day = convertInt( (long) jsonObject.get("date"));
-        //int day = (int) longDay;
 
         Calendar startDate = new GregorianCalendar();
         startDate.set(year, month, day);
 
         isCompleted = (boolean)  jsonObject.get("isCompleted");
 
-//        if(isCompletedString.equals("false")) {
-//            isCompleted = false;
-//        } else {
-//            isCompleted = true;
-//        }
         String type = (String) jsonObject.get("type");
 
         // Parse the remaining subclass-specific (unique) fields and
@@ -184,10 +163,7 @@ public class JSONLoader {
             case "daily":
                 // parse remaining fields specific to a DailyTask object
                 currentStreak = convertInt((long) jsonObject.get("currentStreak"));
-                //currentStreak = (int) longCurrent;
-
                 bestStreak = convertInt( (long) jsonObject.get("bestStreak"));
-                //bestStreak = (int) longBest;
 
                 // instantiate a DailyTask object and add to ArrayList
                 userTasks.add(new DailyTask(taskName, taskId, startDate,
@@ -197,10 +173,7 @@ public class JSONLoader {
             case "weekly":
                 // parse remaining fields specific to a WeeklyTask object
                 currentStreak = convertInt((long) jsonObject.get("currentStreak"));
-                //currentStreak = Integer.parseInt(wcurrentStr);
-
                 bestStreak = convertInt((long) jsonObject.get("bestStreak"));
-                //bestStreak = Integer.parseInt(wbestStr);
 
                 // instantiate a WeeklyTask object and add to ArrayList
                 userTasks.add(new WeeklyTask(taskName, taskId, startDate,
@@ -210,10 +183,7 @@ public class JSONLoader {
             case "custom":
                 // parse remaining fields specific to a CustomTask object
                 currentStreak = convertInt((long) jsonObject.get("currentStreak"));
-                //currentStreak = Integer.parseInt(ccurrentStr);
-
                 bestStreak = convertInt((long) jsonObject.get("bestStreak"));
-                //bestStreak = Integer.parseInt(cbestStr);
 
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
@@ -233,13 +203,8 @@ public class JSONLoader {
                 // parse remaining fields specific to a CumulativeTask object
                 //Calendar endDate = (Calendar) jsonObject.get("endDate");
                 int endYear = convertInt((long) jsonObject.get("endYear"));
-                //int endYear = (int) vLongYear;
-
                 int endMonth = convertInt((long) jsonObject.get("endMonth"));
-                //int endMonth = (int) vLongMonth;
-
                 int endDay = convertInt((long) jsonObject.get("endDate"));
-                //int endDay = (int) vLongDay;
 
                 Calendar endDate = new GregorianCalendar();
                 endDate.set(endYear, endMonth, endDay);
@@ -257,7 +222,7 @@ public class JSONLoader {
      * Legal JSON places numeric values into the file without quotes
      * As a result Java interprets the value returned by JSONParse.get()
      * methods as a long value.
-     * This method (casts) long values returned by JSON Object 'get' method
+     * This method (casts to primitive int values) long values returned by JSON Object 'get' method
      * to simplify code throughout the parse methods and significantly reduce
      * the number of variables that must be created
      */
