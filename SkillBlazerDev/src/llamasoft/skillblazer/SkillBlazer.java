@@ -1,10 +1,27 @@
+/************************************************************
+ * Application Name: skillblazer
+ * File Name: Skillblazer.java
+ * Package: src/llamasoft/skillblazer
+ * Team: Team B
+ * Date: 4/16/2018
+ * 
+ * Description:
+ * 
+ * This class holds all of the field and methods related to the
+ * primary GUI and secondary windows. It includes the necessary
+ * JavaFX start() method, as well as the main method to run
+ * the application. Other methods exist in this class to assist
+ * in adding habit/task information to the calendar interface.
+ ***********************************************************/
+
 // package
 package llamasoft.skillblazer;
 
+// imports
 import java.io.IOException;
-// import
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import javafx.application.*;
 import javafx.scene.*;
@@ -15,7 +32,6 @@ import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
-
 import java.util.GregorianCalendar;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
@@ -24,17 +40,19 @@ import java.util.GregorianCalendar;
 public class SkillBlazer extends Application {
 
     // primary GUI interface fields
-    Button optionsButton;               // options button
-    Label appTitle;                     // application title
-    Button lifetimeMetricsButton;       // lifetime metrics button
-    Label currentMonthYearLabel;        // label for current month and year
-    Button forwardMonthButton;          // button to move month forward
-    Button backMonthButton;             // button to move month back
-    CalendarCalculator calCalc;         // CalendarCalculator object
-    TilePane calendarPane;              // tilepane object for calendar
-    VBox[] vboxArray = new VBox[49];    // vbox array for main calendar interface
-    Button habitCreationButton;         // button for habit creation
-    ArrayList<Task> taskList;
+    private Button optionsButton;                                                                       // options button
+    private Label appTitle;                                                                             // application title
+    private Button lifetimeMetricsButton;                                                               // lifetime metrics button
+    private Label currentMonthYearLabel;                                                                // label for current month and year
+    private Button forwardMonthButton;                                                                  // button to move month forward
+    private Button backMonthButton;                                                                     // button to move month back
+    private CalendarCalculator calCalc;                                                                 // CalendarCalculator object
+    private TilePane calendarPane;                                                                      // tilepane object for calendar
+    private VBox[] vboxArray = new VBox[49];                                                            // vbox array for main calendar interface
+    private Button habitCreationButton;                                                                 // button for habit creation
+    private ArrayList<Task> taskList;                                                                   // ArrayList holding tasks
+    private static final String[] dayNamesOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday"};                                                          // String array holding names for days of week
 
     // These objects will conduct the startup routine
     static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
@@ -43,16 +61,21 @@ public class SkillBlazer extends Application {
     // sets up the main stage, scenes and such
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        // instantiates taskList
         taskList = new ArrayList<Task>();
+        // 'for' loop
         for (int i = 0; i < 5; i++) {
+            // GregorianCalendar object
             GregorianCalendar testStartDate = new GregorianCalendar(2018, 4, 1 + 2 * i);
+            // DailyTask object
             DailyTask testTask = new DailyTask("Test " + i, i, testStartDate, false, 0, 0);
+            // adds testTask to taskList
             taskList.add(testTask);
-        }
+        } // end 'for' loop
 
         // sets title of main window (primaryStage)
         primaryStage.setTitle("Skillblazer Habit Tracker");
+        // adds Icon to primaryStage
         primaryStage.getIcons().add(new Image("/llama.jpg"));
 
         // dropshadow effect for buttons
@@ -232,15 +255,80 @@ public class SkillBlazer extends Application {
 
     } // end start() method
 
+    // method to populate calendar days with task information; called in drawCalendar() method
+    private void populateDays() {
+        // int that holds 1st day of week
+        int firstDayOfWeekCurrentMonth = calCalc.getFirstDayOfWeekCurrentMonth();
+        // int that holds # of days
+        int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();
+        // int to hold day of week
+        int dayOfWeek = firstDayOfWeekCurrentMonth;
+        // nested 'for' loop
+        for (int i = 0; i < numberDaysCurrentMonth; i++) {
+            for (Task mt : taskList) {
+                // if Task object is an instance of DailyTask
+                if (mt instanceof DailyTask) {
+                    // Calendar object representing task start date
+                    Calendar taskStartDate = ((DailyTask) mt).getStartDate();
+                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
+                        // adds Task objects to Day objects of calCalc
+                        calCalc.getDayObject(i).addTask(mt);
+                    }
+                    // else if Task object is an instance of WeeklyTask
+                } else if (mt instanceof WeeklyTask) {
+                    // Calendar object representing task start date
+                    Calendar taskStartDate = ((WeeklyTask) mt).getStartDate();
+                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
+                        if (dayOfWeek == 6) {
+                            // adds Task objects to Day objects of calCalc
+                            calCalc.getDayObject(i).addTask(mt);
+                        }
+                    }
+                    // else if Task object is an instance of CustomTask
+                } else if (mt instanceof CustomTask) {
+                    // Calendar object representing task start date
+                    Calendar taskStartDate = ((CustomTask) mt).getStartDate();
+                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
+                        ArrayList<String> daysOfWeek = ((CustomTask) mt).getDaysOfWeek();
+                        // boolean that gets set to true if the days of the week shows up in the ArrayList for the days of the week the task has
+                        boolean todayActive = false;
+                        for (String md : daysOfWeek) {
+                            todayActive |= md.equalsIgnoreCase(dayNamesOfWeek[dayOfWeek]);
+                        }
+                        if (todayActive) {
+                            // adds Task objects to Day objects of calCalc
+                            calCalc.getDayObject(i).addTask(mt);
+                        }
+                    }
+                    // else if Task object is an instance of CumulativeTask
+                } else if (mt instanceof CumulativeTask) {
+                    // Calendar object representing task end date
+                    Calendar taskEndDate = ((CumulativeTask) mt).getEndDate();
+                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskEndDate) == 0) {
+                        // adds Task objects to Day objects of calCalc
+                        calCalc.getDayObject(i).addTask(mt);
+                    }
+                }
+            }
+            // week day update
+            dayOfWeek = (dayOfWeek + 1) % 7;
+        }
+    } // end populateDays() method
+
     // drawCalendar() method; responsible for creating the calendar
     private void drawCalendar() {
         // generates day objects for selected calendar month
         calCalc.instantiateCalendar();
-        // member fields
-        int firstDayOfWeekCurrentMonth = calCalc.getFirstDayOfWeekCurrentMonth(); // int that holds 1st day of week
-        int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();             // int that holds # of days
-        int j = 0;                                                                // iterator
-        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",                  // string array holding days
+        // populates calendar days with task information
+        populateDays();
+        // int that holds 1st day of week
+        int firstDayOfWeekCurrentMonth = calCalc.getFirstDayOfWeekCurrentMonth();
+        // int that holds # of days
+        int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();
+        // iterator
+        int j = 0;
+        // string array holding days
+        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
 
         // clears calendar interface
@@ -325,6 +413,7 @@ public class SkillBlazer extends Application {
                 hboxCal.getChildren().add(vboxLabel);
                 // adds hboxCal to vboxArray[i]
                 vboxArray[i].getChildren().add(hboxCal);
+                // HBox array which is the size of tasksThisDay
                 HBox[] taskHboxArray = new HBox[todayDayOb.tasksThisDay.size()];
                 int k = 0;
                 // adds Tasks to calendar day
@@ -341,89 +430,94 @@ public class SkillBlazer extends Application {
                 }
                 // if there are more than 3 tasks for a given calendar day
                 if (todayDayOb.tasksThisDay.size() > 4) {
-                    for (k = 3;k<todayDayOb.tasksThisDay.size();k++) {
+                    for (k = 3; k < todayDayOb.tasksThisDay.size(); k++) {
                         taskHboxArray[k].setVisible(false);
                         taskHboxArray[k].setManaged(false);
                     }
                     // creates hbox for button
                     HBox buttonHbox = new HBox();
-                    
+                    // creates new region (for layout/alignment purposes)
                     Region emptyRegionButton1 = new Region();
+                    // for layout/alignment purposes
                     HBox.setHgrow(emptyRegionButton1, Priority.ALWAYS);
+                    // creates new region (for layout/alignment purposes)
                     Region emptyRegionButton2 = new Region();
-                    HBox.setHgrow(emptyRegionButton2, Priority.ALWAYS); 
+                    // for layout/alignment purposes
+                    HBox.setHgrow(emptyRegionButton2, Priority.ALWAYS);
+                    // creates new region (for layout/alignment purposes)
                     Region emptyRegionButton3 = new Region();
+                    // for layout/alignment purposes
                     HBox.setHgrow(emptyRegionButton3, Priority.ALWAYS);
-                    
                     // down arrow button
                     Button downArrowButton = new Button("▼");
+                    // pulls css specs from style sheet
                     downArrowButton.getStyleClass().add("button2");
-                    // sets preferred size of downArrowButton
-//                    downArrowButton.setPrefSize(15, 15);
                     // up arrow button
                     Button upArrowButton = new Button("▲");
+                    // pulls css specs from style sheet
                     upArrowButton.getStyleClass().add("button2");
-                    // sets preferred size of upArrowButton
-//                    upArrowButton.setPrefSize(20, 20);
                     // event handler for downArrowButton
                     downArrowButton.setOnAction(new EventHandler() {
                         @Override
                         public void handle(Event event) {
                             int lastVisible = -1;
-                            for (int m = 0;m<todayDayOb.tasksThisDay.size();m++) {
+                            for (int m = 0; m < todayDayOb.tasksThisDay.size(); m++) {
                                 if (taskHboxArray[m].isVisible()) {
                                     lastVisible = m;
                                 }
                                 taskHboxArray[m].setVisible(false);
                                 taskHboxArray[m].setManaged(false);
-                                
                             }
-                            int newFirstVisible = lastVisible+1;
-                            if ((newFirstVisible+3)>todayDayOb.tasksThisDay.size()) {
-                                newFirstVisible = todayDayOb.tasksThisDay.size()-3;
+                            int newFirstVisible = lastVisible + 1;
+                            if ((newFirstVisible + 3) > todayDayOb.tasksThisDay.size()) {
+                                newFirstVisible = todayDayOb.tasksThisDay.size() - 3;
                             }
-                            for (int m = newFirstVisible;m<(newFirstVisible+3);m++) {
+                            for (int m = newFirstVisible; m < (newFirstVisible + 3); m++) {
                                 taskHboxArray[m].setVisible(true);
                                 taskHboxArray[m].setManaged(true);
                             }
-                            }                    
+                        }
                     }); // end event handler
-                    
+                    // event handler for upArrowButton
                     upArrowButton.setOnAction(new EventHandler() {
                         @Override
                         public void handle(Event event) {
                             int firstVisible = -1;
-                            for (int m = todayDayOb.tasksThisDay.size()-1;m>=0;m--) {
+                            for (int m = todayDayOb.tasksThisDay.size() - 1; m >= 0; m--) {
                                 if (taskHboxArray[m].isVisible()) {
                                     firstVisible = m;
                                 }
                                 taskHboxArray[m].setVisible(false);
                                 taskHboxArray[m].setManaged(false);
                             }
-                            int newFirstVisible = firstVisible-3;
-                            if (newFirstVisible<0) {
+                            int newFirstVisible = firstVisible - 3;
+                            if (newFirstVisible < 0) {
                                 newFirstVisible = 0;
                             }
-                            for (int m = newFirstVisible;m<(newFirstVisible+3);m++) {
+                            for (int m = newFirstVisible; m < (newFirstVisible + 3); m++) {
                                 taskHboxArray[m].setVisible(true);
                                 taskHboxArray[m].setManaged(true);
                             }
-                            }                           
+                        }
                     }); // end event handler
-                    
+
                     // sets alignment for buttonHbox
                     buttonHbox.setAlignment(Pos.CENTER);
                     // adds buttonHbox to vboxArray
                     vboxArray[i].getChildren().add(buttonHbox);
-                    // adds downArrowButton to buttonHbox
+                    // adds emptyRegionButton1 to buttonHbox
                     buttonHbox.getChildren().add(emptyRegionButton1);
+                    // adds downArrowButton to buttonHbox
                     buttonHbox.getChildren().add(downArrowButton);
+                    // adds emptyRegionButton2 to buttonHbox
                     buttonHbox.getChildren().add(emptyRegionButton2);
+                    // adds upArrowButton to buttonHbox
                     buttonHbox.getChildren().add(upArrowButton);
+                    // adds emptyRegionButton3 to buttonHbox
                     buttonHbox.getChildren().add(emptyRegionButton3);
                 }
             }
-            
+
             // "Create Habit/Skill Button"
             if (i == 47) {
                 // initializes habitCreationButton
@@ -711,7 +805,7 @@ public class SkillBlazer extends Application {
             }); // end event handler
             // adds deleteGoalButton to optionsButtonHbox3
             optionsButtonHbox3.getChildren().add(deleteGoalButton);
-            
+
             // hbox for 4th vbox row
             HBox optionsButtonHbox4 = new HBox();
             // sets alignment for hbox
@@ -731,11 +825,11 @@ public class SkillBlazer extends Application {
                 public void handle(Event event) {
                     TwitterIntegration twitterApp = new TwitterIntegration();
                     try {
-						twitterApp.display();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                        twitterApp.display();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }); // end event handler
             // adds twitterButton to optionsButtonHbox4
