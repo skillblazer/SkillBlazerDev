@@ -77,6 +77,7 @@ public class JSONLoader {
         return userTasks;
     }
 
+
     /*
      * Method to screen for files with skillblazer filenames and place them in
      * an iterator for later use
@@ -123,14 +124,14 @@ public class JSONLoader {
 
         long taskNumber = (long) jsonObject.get("taskNumber");
 
-        long longYear = (long) (jsonObject.get("year"));
-        int year = (int) longYear;
+        int year = convertInt((long) (jsonObject.get("year")));
+        //int year = (int) longYear;
 
-        long longMonth = (long) jsonObject.get("month");
-        int month = (int) longMonth;
+        int month = convertInt((long) jsonObject.get("month"));
+        //int month = (int) longMonth;
 
-        long longDay = (long) jsonObject.get("date");
-        int day = (int) longDay;
+        int day = convertInt((long) jsonObject.get("date"));
+        //int day = (int) longDay;
 
         Calendar userStartDate = new GregorianCalendar();
         userStartDate.set(year, month, day);
@@ -154,16 +155,15 @@ public class JSONLoader {
         String taskName = (String) jsonObject.get("taskName");
 
         long taskId = (long) jsonObject.get("taskId");
-        //long taskId = Long.parseLong(taskStr);
 
-        long longYear = (long) (jsonObject.get("year"));
-        int year = (int) longYear;
+        int year = convertInt((long) jsonObject.get("year"));
+        //int year = (int) longYear;
 
-        long longMonth = (long) jsonObject.get("month");
-        int month = (int) longMonth;
+        int month = convertInt((long) jsonObject.get("month"));
+        //int month = (int) longMonth;
 
-        long longDay = (long) jsonObject.get("date");
-        int day = (int) longDay;
+        int day = convertInt( (long) jsonObject.get("date"));
+        //int day = (int) longDay;
 
         Calendar startDate = new GregorianCalendar();
         startDate.set(year, month, day);
@@ -183,11 +183,11 @@ public class JSONLoader {
         switch (type) {
             case "daily":
                 // parse remaining fields specific to a DailyTask object
-                long longCurrent = (long) jsonObject.get("currentStreak");
-                currentStreak = (int) longCurrent;
+                currentStreak = convertInt((long) jsonObject.get("currentStreak"));
+                //currentStreak = (int) longCurrent;
 
-                long longBest = (long) jsonObject.get("bestStreak");
-                bestStreak = (int) longBest;
+                bestStreak = convertInt( (long) jsonObject.get("bestStreak"));
+                //bestStreak = (int) longBest;
 
                 // instantiate a DailyTask object and add to ArrayList
                 userTasks.add(new DailyTask(taskName, taskId, startDate,
@@ -196,11 +196,11 @@ public class JSONLoader {
 
             case "weekly":
                 // parse remaining fields specific to a WeeklyTask object
-                String wcurrentStr = (String) jsonObject.get("currentStreak");
-                currentStreak = Integer.parseInt(wcurrentStr);
+                currentStreak = convertInt((long) jsonObject.get("currentStreak"));
+                //currentStreak = Integer.parseInt(wcurrentStr);
 
-                String wbestStr = (String) jsonObject.get("bestStreak");
-                bestStreak = Integer.parseInt(wbestStr);
+                bestStreak = convertInt((long) jsonObject.get("bestStreak"));
+                //bestStreak = Integer.parseInt(wbestStr);
 
                 // instantiate a WeeklyTask object and add to ArrayList
                 userTasks.add(new WeeklyTask(taskName, taskId, startDate,
@@ -209,11 +209,11 @@ public class JSONLoader {
 
             case "custom":
                 // parse remaining fields specific to a CustomTask object
-                String ccurrentStr = (String) jsonObject.get("currentStreak");
-                currentStreak = Integer.parseInt(ccurrentStr);
+                currentStreak = convertInt((long) jsonObject.get("currentStreak"));
+                //currentStreak = Integer.parseInt(ccurrentStr);
 
-                String cbestStr = (String) jsonObject.get("bestStreak");
-                bestStreak = Integer.parseInt(cbestStr);
+                bestStreak = convertInt((long) jsonObject.get("bestStreak"));
+                //bestStreak = Integer.parseInt(cbestStr);
 
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
@@ -232,14 +232,14 @@ public class JSONLoader {
             case "cumulative":
                 // parse remaining fields specific to a CumulativeTask object
                 //Calendar endDate = (Calendar) jsonObject.get("endDate");
-                long vLongYear = (long) jsonObject.get("endYear");
-                int endYear = (int) vLongYear;
+                int endYear = convertInt((long) jsonObject.get("endYear"));
+                //int endYear = (int) vLongYear;
 
-                long vLongMonth = (long) jsonObject.get("endMonth");
-                int endMonth = (int) vLongMonth;
+                int endMonth = convertInt((long) jsonObject.get("endMonth"));
+                //int endMonth = (int) vLongMonth;
 
-                long vLongDay = (long) jsonObject.get("endDate");
-                int endDay = (int) vLongDay;
+                int endDay = convertInt((long) jsonObject.get("endDate"));
+                //int endDay = (int) vLongDay;
 
                 Calendar endDate = new GregorianCalendar();
                 endDate.set(endYear, endMonth, endDay);
@@ -251,5 +251,18 @@ public class JSONLoader {
         } //end switch statement
 
     } //end method parseCreateAndAddTaskToList()
+
+
+    /*
+     * Legal JSON places numeric values into the file without quotes
+     * As a result Java interprets the value returned by JSONParse.get()
+     * methods as a long value.
+     * This method (casts) long values returned by JSON Object 'get' method
+     * to simplify code throughout the parse methods and significantly reduce
+     * the number of variables that must be created
+     */
+    private static int convertInt(long numeric) {
+        return (int) numeric;
+    } //end method convertInt()
 
 }
