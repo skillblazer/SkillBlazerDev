@@ -56,7 +56,7 @@ public class TwitterIntegration {
 	private final static String CONSUMER_KEY_SECRET = "rmHY2LIUzvMVjGn2AGMx54rAGPx9zKSzlNpY0DSNl05mmqPjzW";
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void display() throws IOException {
+	public void display() throws IOException, TwitterException {
 
 		Label instructLabel; // label for "Instructions"
 		Label instructions; // "Instructions"
@@ -68,9 +68,7 @@ public class TwitterIntegration {
 		TextArea tweetTextArea; // textArea for "Tweet" area
 		Button submitButton; // button for user to submit tweet
 
-		final int MAX_CHARS = 280;
-		String authorizationURL = "";
-		String pinCode = "";
+		final int MAX_CHARS = 280; //max characters for tweet
 
 		Stage twitterWindow = new Stage();
 		twitterWindow.setTitle("Twitter Integrated Application");
@@ -79,6 +77,11 @@ public class TwitterIntegration {
 		boolean exists = determineFileExists();
 
 		if (exists == false) {
+			
+			Twitter twitter = new TwitterFactory().getInstance();
+			twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
+			RequestToken requestToken = twitter.getOAuthRequestToken();
+			String authorizationURL = requestToken.getAuthorizationURL();
 
 			// hbox for instructions row
 			HBox instructHbox = new HBox(5);
@@ -111,7 +114,7 @@ public class TwitterIntegration {
 			// sets text for urlLabel
 			urlLabel.setText("Auth URL:");
 			// initializes authURL
-			authURL = new Label();
+			authURL = new Label(authorizationURL);
 			authURL.setTextFill(Color.web("#f5fffa"));
 			// sets text for URL for user to use - EXAMPLE WILL REPLACE
 			authURL.setText("https://twitter.auth.url.example565333424545234234.com");
@@ -195,9 +198,24 @@ public class TwitterIntegration {
 				@Override
 				public void handle(Event event) {
 
-					// TODO: Perform twitter integration code
+					String pin = pinTextField.getText();
+					
+					try {
+						AccessToken accessToken = null;
+						accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+						String tweet = tweetTextArea.getText();
+						twitter.updateStatus(tweet);
+						
+						//PLACE tokens in FILE!
+						String aToken = accessToken.getToken();
+						String aSToken = accessToken.getTokenSecret();
+						
+					} catch (TwitterException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 					twitterWindow.close(); // closes window
-
 				}
 			}); // end event handler
 
