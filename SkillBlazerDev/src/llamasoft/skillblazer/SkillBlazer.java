@@ -28,6 +28,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
+import twitter4j.TwitterException;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
@@ -829,7 +830,10 @@ public class SkillBlazer extends Application {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
-                    }
+                    } catch (TwitterException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
             }); // end event handler
             // adds twitterButton to optionsButtonHbox4

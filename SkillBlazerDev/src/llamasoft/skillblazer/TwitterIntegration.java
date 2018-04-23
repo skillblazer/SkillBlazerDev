@@ -18,8 +18,11 @@
 package llamasoft.skillblazer;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -68,7 +71,7 @@ public class TwitterIntegration {
 		TextArea tweetTextArea; // textArea for "Tweet" area
 		Button submitButton; // button for user to submit tweet
 
-		final int MAX_CHARS = 280; //max characters for tweet
+		final int MAX_CHARS = 280; // max characters for tweet
 
 		Stage twitterWindow = new Stage();
 		twitterWindow.setTitle("Twitter Integrated Application");
@@ -77,7 +80,7 @@ public class TwitterIntegration {
 		boolean exists = determineFileExists();
 
 		if (exists == false) {
-			
+
 			Twitter twitter = new TwitterFactory().getInstance();
 			twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
 			RequestToken requestToken = twitter.getOAuthRequestToken();
@@ -199,22 +202,32 @@ public class TwitterIntegration {
 				public void handle(Event event) {
 
 					String pin = pinTextField.getText();
-					
+
 					try {
 						AccessToken accessToken = null;
 						accessToken = twitter.getOAuthAccessToken(requestToken, pin);
 						String tweet = tweetTextArea.getText();
 						twitter.updateStatus(tweet);
-						
-						//PLACE tokens in FILE!
+
+						// PLACE tokens in FILE!
 						String aToken = accessToken.getToken();
 						String aSToken = accessToken.getTokenSecret();
 						
+						String homePath = System.getProperty("user.home");
+						BufferedWriter writeKeys = new BufferedWriter(
+								new FileWriter(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
+
 					} catch (TwitterException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					
+
 					twitterWindow.close(); // closes window
 				}
 			}); // end event handler
@@ -357,7 +370,7 @@ public class TwitterIntegration {
 			twitterWindow.show();
 		}
 
-	} //end of display method
+	} // end of display method
 
 	private static boolean determineFileExists() throws IOException {
 		// read user tokens from designated file
@@ -370,7 +383,7 @@ public class TwitterIntegration {
 		}
 
 		return exists;
-	} //end of determineFileExists method
+	} // end of determineFileExists method
 
 	/*
 	 * 
@@ -407,4 +420,4 @@ public class TwitterIntegration {
 		twitter.updateStatus("First Tweet using skillblazer application #LlamasForLife");
 
 	}
-} //end of TwitterIntegration class
+} // end of TwitterIntegration class
