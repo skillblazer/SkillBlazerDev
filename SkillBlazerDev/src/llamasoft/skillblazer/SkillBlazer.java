@@ -1,19 +1,18 @@
-/************************************************************
+/** **********************************************************
  * Application Name: skillblazer
  * File Name: Skillblazer.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
  * Date: 4/16/2018
- * 
+ *
  * Description:
- * 
+ *
  * This class holds all of the field and methods related to the
  * primary GUI and secondary windows. It includes the necessary
  * JavaFX start() method, as well as the main method to run
  * the application. Other methods exist in this class to assist
  * in adding habit/task information to the calendar interface.
- ***********************************************************/
-
+ ********************************************************** */
 // package
 package llamasoft.skillblazer;
 
@@ -92,6 +91,8 @@ public class SkillBlazer extends Application {
         optionsButton = new Button();
         // sets text of optionsButton
         optionsButton.setText("Options");
+        // Tooltip
+        optionsButton.setTooltip(new Tooltip("Set your preferred options"));
         // sets preferred width of optionsButton
         optionsButton.setPrefWidth(120);
         optionsButton.getStyleClass().add("button1");
@@ -129,6 +130,8 @@ public class SkillBlazer extends Application {
         forwardMonthButton = new Button();
         // sets text of forwardMonthButton
         forwardMonthButton.setText(">>");
+        // Tooltip
+        forwardMonthButton.setTooltip(new Tooltip("Move forward in time"));
         forwardMonthButton.getStyleClass().add("button1");
         // event handler for forwardMonthButton
         forwardMonthButton.setOnAction(new EventHandler() {
@@ -145,6 +148,8 @@ public class SkillBlazer extends Application {
         backMonthButton = new Button();
         // sets text of backMonthButton
         backMonthButton.setText("<<");
+        // Tooltip
+        backMonthButton.setTooltip(new Tooltip("Move backward in time"));
         backMonthButton.getStyleClass().add("button1");
         // event handler for backMonthButton
         backMonthButton.setOnAction(new EventHandler() {
@@ -161,6 +166,8 @@ public class SkillBlazer extends Application {
         lifetimeMetricsButton = new Button();
         // sets text of lifetimeMetricsButton
         lifetimeMetricsButton.setText("Lifetime Metrics");
+        // Tooltip
+        lifetimeMetricsButton.setTooltip(new Tooltip("Check out metrics for one of your tracked habits!"));
         // sets preferred width of lifetimeMetricsButton
         lifetimeMetricsButton.setPrefWidth(120);
         lifetimeMetricsButton.getStyleClass().add("button1");
@@ -393,6 +400,9 @@ public class SkillBlazer extends Application {
                 Region emptyRegion = new Region();
                 // creates and initializes vboxButton
                 Button vboxButton = new Button("+");
+                // Tooltip
+                vboxButton.setTooltip(new Tooltip("Add a habit/skill record!"));
+                // pulls css style sheet
                 vboxButton.getStyleClass().add("button2");
                 // sets preferred size of vboxButton
                 vboxButton.setPrefSize(15, 15);
@@ -523,6 +533,8 @@ public class SkillBlazer extends Application {
             if (i == 47) {
                 // initializes habitCreationButton
                 habitCreationButton = new Button("Create Habit/Skill");
+                // Tooltip
+                habitCreationButton.setTooltip(new Tooltip("Set up a new habit to track!"));
                 // pulls css specs from style sheet
                 habitCreationButton.getStyleClass().add("button1");
                 // creates new region (for layout/alignment purposes)
@@ -570,7 +582,6 @@ public class SkillBlazer extends Application {
             // sets title
             optionsStage.setTitle("Options");
             optionsStage.getIcons().add(new Image("/llama.jpg"));
-
             // hbox for 1st vbox row
             HBox optionsButtonHbox1 = new HBox();
             // sets alignment for hbox
@@ -581,6 +592,8 @@ public class SkillBlazer extends Application {
             notificationsButton = new Button();
             // sets text for notificationsButton
             notificationsButton.setText("Notifications: On/Off");
+            // Tooltip
+            notificationsButton.setTooltip(new Tooltip("Turn notifications on or off"));
             // event handler for notificationsButton
             notificationsButton.setOnAction(new EventHandler() {
                 @Override
@@ -591,9 +604,12 @@ public class SkillBlazer extends Application {
                     Label enableNotifications = new Label("Enable Notifications?");
                     // button for user to select yes
                     Button yesButton = new Button("Yes");
+                    // Tooltip
+                    yesButton.setTooltip(new Tooltip("Go for it!"));
                     // button for user to select no
                     Button noButton = new Button("No");
-
+                    // Tooltip
+                    noButton.setTooltip(new Tooltip("No thanks"));
                     // hbox for 1st vbox row
                     HBox notificationsHbox1 = new HBox();
                     // sets alignment of hbox to center
@@ -646,6 +662,8 @@ public class SkillBlazer extends Application {
             deleteSkillHistoryButton = new Button();
             // sets text for deleteSkillHistoryButton
             deleteSkillHistoryButton.setText("Delete Skill History");
+            // Tooltip
+            deleteSkillHistoryButton.setTooltip(new Tooltip("Delete history for a habit/skill"));
             // event handler for deleteSkillHistoryButton
             deleteSkillHistoryButton.setOnAction(new EventHandler() {
                 @Override
@@ -719,6 +737,8 @@ public class SkillBlazer extends Application {
             deleteGoalButton = new Button();
             // sets text for deleteGoalButton
             deleteGoalButton.setText("Delete Goal from Calendar");
+            // Tooltip
+            deleteGoalButton.setTooltip(new Tooltip("Delete a goal for a given habit/skill"));
             // sets alignment for both
             deleteGoalButton.setAlignment(Pos.CENTER);
             // event handler for deleteGoalButton
@@ -818,6 +838,8 @@ public class SkillBlazer extends Application {
             twitterButton.setStyle("-fx-background-color: #00bfff;");
             // sets text for twitterButton
             twitterButton.setText("Send Tweet");
+            // Tooltip
+            twitterButton.setTooltip(new Tooltip("Send a tweet!"));
             // sets alignment for both
             twitterButton.setAlignment(Pos.CENTER);
             // event handler for twitterButton
@@ -831,9 +853,9 @@ public class SkillBlazer extends Application {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     } catch (TwitterException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }); // end event handler
             // adds twitterButton to optionsButtonHbox4
@@ -933,6 +955,7 @@ public class SkillBlazer extends Application {
             Stage habitEntryStage = new Stage();
             // sets title for habitEntryStage
             habitEntryStage.setTitle("Habit/Skill Creation");
+            // adds skillblazer icon
             habitEntryStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
             HBox habitCreationButtonHbox1 = new HBox();
@@ -944,6 +967,8 @@ public class SkillBlazer extends Application {
             startDateLabel.setText("Date to Start Goal:");
             // initializes startDatePicker
             startDatePicker = new DatePicker();
+            // Tooltip
+            startDatePicker.setTooltip(new Tooltip("Select habit/skill start date"));
             // sets startDatePicker to the current date by default
             startDatePicker.setValue(LocalDate.now());
             // adds startDateLabel to habitCreationButtonHbox1
@@ -961,6 +986,8 @@ public class SkillBlazer extends Application {
             habitLabel.setText("Habit/Skill:");
             // initializes habitTextField
             habitTextField = new TextField();
+            // Tooltip
+            habitTextField.setTooltip(new Tooltip("Choose a name for your habit/skill"));
             // adds habitLabel to habitCreationButtonHbox2
             habitCreationButtonHbox2.getChildren().add(habitLabel);
             // adds habitTextField to habitCreationButtonHbox2
@@ -976,9 +1003,10 @@ public class SkillBlazer extends Application {
             goalLabel.setText("Goal to Reach:");
             // initializes numTextField
             numTextField = new TextField();
+            // Tooltip
+            numTextField.setTooltip(new Tooltip("Enter a numeric goal to reach (e.g. 5 miles to run)"));
             // sets max size of numTextField
             numTextField.setMaxSize(80, 80);
-            // initializes goalComboBox
             // initializes goalComboBox
             goalComboBox = new ComboBox();
             // adds metrics to goalComboBox
@@ -1009,6 +1037,8 @@ public class SkillBlazer extends Application {
             habitCreationButtonHbox5.getStyleClass().add("habitCreationButtonHboxes");
             // initializes dailyRB
             dailyRB = new RadioButton();
+            // Tooltip
+            dailyRB.setTooltip(new Tooltip("A daily goal is expected to be completed each day"));
             // sets text of dailyRB
             dailyRB.setText("Daily");
             // adds dailyRB to toggle group rbGroup
@@ -1026,6 +1056,8 @@ public class SkillBlazer extends Application {
             weeklyRB = new RadioButton();
             // sets text of weeklyRB
             weeklyRB.setText("Weekly");
+            // Tooltip
+            weeklyRB.setTooltip(new Tooltip("A weekly goal is expected to be completed once a week"));
             // adds weeklyRB to toggle group rbGroup
             weeklyRB.setToggleGroup(rbGroup);
             // adds weeklyRB to habitCreationButtonHbox6
@@ -1039,6 +1071,8 @@ public class SkillBlazer extends Application {
             customRB = new RadioButton();
             // sets text for customRB
             customRB.setText("Custom");
+            // Tooltip
+            customRB.setTooltip(new Tooltip("A custom goal is to be completed on the day(s) in which you set"));
             // adds customRB to toggle group rbGroup
             customRB.setToggleGroup(rbGroup);
             // adds customRB to habitCreationButtonHbox7
@@ -1107,6 +1141,8 @@ public class SkillBlazer extends Application {
             cumulativeRB = new RadioButton();
             // sets text for cumulativeRB
             cumulativeRB.setText("Cumulative");
+            // Tooltip
+            cumulativeRB.setTooltip(new Tooltip("A cumulative goal is to be completed by a specific end date"));
             // adds cumulativeRB to toggle group rbGroup
             cumulativeRB.setToggleGroup(rbGroup);
             // adds cumulativeRB to habitCreationButtonHbox9
@@ -1122,6 +1158,8 @@ public class SkillBlazer extends Application {
             goalDateLabel.setText("Date to Complete Goal:");
             // initializes datePicker
             datePicker = new DatePicker();
+            // Tooltip
+            datePicker.setTooltip(new Tooltip("Select a deadline for reaching your cumulative goal"));
 
             // adds goalDateLabel to habitCreationButtonHbox10
             habitCreationButtonHbox10.getChildren().add(goalDateLabel);
@@ -1192,6 +1230,8 @@ public class SkillBlazer extends Application {
             notesLabel.setText("Notes:");
             // initializes notesTextArea
             notesTextArea = new TextArea();
+            // Tooltip
+            notesTextArea.setTooltip(new Tooltip("Add any notes you would like to record pertaining to your goal"));
             // sets preferred size of notesTextArea
             notesTextArea.setPrefSize(350, 350);
             // adds notesLabel to habitCreationButtonHbox11
@@ -1211,7 +1251,7 @@ public class SkillBlazer extends Application {
             submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    // ****TO DO: Save to JSON file
+                                                                        // ****TO DO: Save to JSON file
                     habitEntryStage.close();    // closes window
                 }
             }); // end event handler
@@ -1284,10 +1324,8 @@ public class SkillBlazer extends Application {
             habitLabel.setText("Habit/Skill:");
             // initializes habitComboBox
             habitComboBox = new ComboBox();
-            // adds items to habitComboBox
-            habitComboBox.getItems().add("minutes");
-            habitComboBox.getItems().add("hours");
-            habitComboBox.getItems().add("miles");
+            // Tooltip
+            habitComboBox.setTooltip(new Tooltip("Select a habit/skill"));
             // adds habitLabel to progressButtonHbox1
             progressButtonHbox1.getChildren().add(habitLabel);
             // adds habitComboBox to progressButtonHbox1
@@ -1303,7 +1341,9 @@ public class SkillBlazer extends Application {
             goalLabel.setText("Goal:");
             // initializes goalComboBox
             goalComboBox = new ComboBox();
-            // ****TO DO: populate goals in goalComboBox
+            // Tooltip
+            goalComboBox.setTooltip(new Tooltip("Select one of your goals for this habit/skill"));
+                                                                    // ****TO DO: populate goals in goalComboBox
             // adds goalLabel to progressButtonHbox2                                
             progressButtonHbox2.getChildren().add(goalLabel);
             // adds goalComboBox to progressButtonHbox2     
@@ -1319,11 +1359,17 @@ public class SkillBlazer extends Application {
             progressMadeLabel.setText("Progress Made:");
             // initializes progressMadeTextField
             progressMadeTextField = new TextField();
+            // Tooltip
+            progressMadeTextField.setTooltip(new Tooltip("Enter a numeric value representing progress made towards habit/skill (e.g. 10 books read)"));
             // sets max size of progressMadeTextField
             progressMadeTextField.setMaxSize(80, 80);
             // initializes progressMetrics
             progressMetricsComboBox = new ComboBox();
-            // ****TO DO: populate goals in progressMetricsComboBox
+            // adds items to progressMetricsComboBox
+            progressMetricsComboBox.getItems().add("minutes");
+            progressMetricsComboBox.getItems().add("hours");
+            progressMetricsComboBox.getItems().add("miles");
+                                                                // ****TO DO: populate goals in progressMetricsComboBox
             // adds components to progressButtonHbox3                                    
             progressButtonHbox3.getChildren().add(progressMadeLabel);
             progressButtonHbox3.getChildren().add(progressMadeTextField);
@@ -1339,6 +1385,8 @@ public class SkillBlazer extends Application {
             notesLabel.setText("Notes:");
             // initializes notesTextArea
             notesTextArea = new TextArea();
+            // Tooltip
+            notesTextArea.setTooltip(new Tooltip("Add any notes pertaining to progress"));
             // sets preferred size of notesTextArea
             notesTextArea.setPrefSize(350, 350);
             // adds notesLabel to progressButtonHbox4                                    
@@ -1359,7 +1407,7 @@ public class SkillBlazer extends Application {
                 @Override
                 public void handle(Event event) {
 
-                    // ****TO DO: Save to JSON file
+                                                                            // ****TO DO: Save to JSON file
                     progressStage.close();      // closes window
 
                 }
