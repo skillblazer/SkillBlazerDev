@@ -40,6 +40,7 @@ import java.util.GregorianCalendar;
 public class SkillBlazer extends Application {
 
     // primary GUI interface fields
+    private Stage window;
     private Button optionsButton;                                                                       // options button
     private Label appTitle;                                                                             // application title
     private Button lifetimeMetricsButton;                                                               // lifetime metrics button
@@ -72,11 +73,12 @@ public class SkillBlazer extends Application {
             // adds testTask to taskList
             taskList.add(testTask);
         } // end 'for' loop
-
+        // window = primaryStage
+        window = primaryStage;
         // sets title of main window (primaryStage)
-        primaryStage.setTitle("Skillblazer Habit Tracker");
+        window.setTitle("Skillblazer Habit Tracker");
         // adds Icon to primaryStage
-        primaryStage.getIcons().add(new Image("/llama.jpg"));
+        window.getIcons().add(new Image("/llama.jpg"));
 
         // dropshadow effect for buttons
         DropShadow dropShadow = new DropShadow();
@@ -252,14 +254,14 @@ public class SkillBlazer extends Application {
         borderPaneMain.getStyleClass().add("vboxMain");
         // creates a new scene and adds borderPaneMain
         Scene scene = new Scene(borderPaneMain, 1000, 800);
+        // event handler for big red 'X' to close program; calls method closeProgram()
+        window.setOnCloseRequest(e -> closeProgram());
         // adds scene to stage
-        primaryStage.setScene(scene);
-
+        window.setScene(scene);
         // pulls css style sheet
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
         // shows the stage; actually displays the scen
-        primaryStage.show();
+        window.show();
 
     } // end start() method
 
@@ -1440,6 +1442,12 @@ public class SkillBlazer extends Application {
         } // end constructor
 
     } // end class ProgressButton
+    
+    // method to close the program
+    private void closeProgram() {
+                                                // **TO DO: Add call to method to handle JSON writing
+        window.close();
+    }
 
     // main method
     public static void main(String[] args) {
