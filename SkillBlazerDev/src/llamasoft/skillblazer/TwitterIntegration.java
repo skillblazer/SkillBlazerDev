@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/16/2018
+ * Date: 4/23/2018
  * 
  * Description:
  * 
@@ -12,7 +12,7 @@
  * Twitter and tweet out accomplishments that they have met
  * or when they have completed a task. The functionality 
  * will be available to them from the start using the Options
- * menu and selecting the "Tweet" button.
+ * menu and selecting the "Submit Tweet" button.
  ***********************************************************/
 
 package llamasoft.skillblazer;
@@ -24,14 +24,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -64,7 +61,7 @@ public class TwitterIntegration {
 		Label instructLabel; // label for "Instructions"
 		Label instructions; // "Instructions"
 		Label urlLabel; // label for "Auth URL"
-		Label authURL; // "Auth URL"
+		TextArea authURL; // "Auth URL"
 		Label pinLabel; // label for "PIN"
 		TextField pinTextField; // text field for "PIN"
 		Label tweetLabel; // label for "Tweet" area
@@ -81,9 +78,12 @@ public class TwitterIntegration {
 
 		if (exists == false) {
 
+			// creates Twitter instance and sets consumer auth tokens for skillblazer
 			Twitter twitter = new TwitterFactory().getInstance();
 			twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
+			// creates request for token from twitter for user
 			RequestToken requestToken = twitter.getOAuthRequestToken();
+			// creates auth URL that user will use to obtain PIN to authorize skillblazer to post
 			String authorizationURL = requestToken.getAuthorizationURL();
 
 			// hbox for instructions row
@@ -117,10 +117,13 @@ public class TwitterIntegration {
 			// sets text for urlLabel
 			urlLabel.setText("Auth URL:");
 			// initializes authURL
-			authURL = new Label(authorizationURL);
-			authURL.setTextFill(Color.web("#f5fffa"));
-			// sets text for URL for user to use - EXAMPLE WILL REPLACE
-			authURL.setText("https://twitter.auth.url.example565333424545234234.com");
+			authURL = new TextArea(authorizationURL);
+			// sets preferential size of text area
+			authURL.setPrefSize(350, 75);
+			// sets authURL to non-editable
+			authURL.setEditable(false);
+			// makes the authURL text area wrap text
+			authURL.setWrapText(true);
 			// adds components to urlHbox
 			urlHbox.getChildren().add(urlLabel);
 			urlHbox.getChildren().add(authURL);
@@ -201,22 +204,30 @@ public class TwitterIntegration {
 				@Override
 				public void handle(Event event) {
 
-					String pin = pinTextField.getText();
-
 					try {
+						// creates access token to use in authenticating user credentials
 						AccessToken accessToken = null;
+						// pulls PIN from pin text field
+						String pin = pinTextField.getText();
+						// sets access token to equal full user token given by Twitter with the PIN
 						accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+						// creates and updates current user status on Twitter
 						String tweet = tweetTextArea.getText();
 						twitter.updateStatus(tweet);
 
-						// PLACE tokens in FILE!
+						// pulls access token and access secret token from user accessToken
 						String aToken = accessToken.getToken();
 						String aSToken = accessToken.getTokenSecret();
-						
+						// records user home directory
 						String homePath = System.getProperty("user.home");
+						// writes user's access token and access secret token to twitterAccessFile.txt
+						// for later use
 						BufferedWriter writeKeys = new BufferedWriter(
 								new FileWriter(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
-
+						writeKeys.write(aToken + "," + aSToken);
+						
+						// closes BufferedWriter
+						writeKeys.close();
 					} catch (TwitterException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -248,7 +259,7 @@ public class TwitterIntegration {
 			twitterVbox.getChildren().add(pinHbox);
 			twitterVbox.getChildren().add(tweetHbox);
 			twitterVbox.getChildren().add(submitTweetButtonHbox);
-
+			
 			// adds twitterVbox to twitterScene
 			Scene twitterScene = new Scene(twitterVbox, 500, 450);
 			// adds twitterScene to twitterWindow
@@ -317,23 +328,31 @@ public class TwitterIntegration {
 				public void handle(Event event) {
 
 					try {
-
+						
+						// records user home directory
 						String homePath = System.getProperty("user.home");
-
+						
+						// reads user access keys from twitterAccessFile.txt to authenticate to Twitter
 						BufferedReader readKeys = new BufferedReader(
 								new FileReader(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
 						String keys = readKeys.readLine();
+						// splits string pulled from file to separate both keys
 						String[] arOfKeys = keys.split(",");
 
+						// creates Twitter instance and sets consumer access keys for skillblazer
 						Twitter twitterReuse = new TwitterFactory().getInstance();
 						twitterReuse.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
+						// sets user access keys from string array pulled earlier
 						final String accessKey = arOfKeys[0];
 						final String accessSKey = arOfKeys[1];
+						// creates auth token to be used to authenticate to Twitter servers
 						AccessToken oathAccessToken = new AccessToken(accessKey, accessSKey);
 						twitterReuse.setOAuthAccessToken(oathAccessToken);
+						// sends tweet using twitter instance with auth token
 						String tweet = tweetTextArea.getText();
 						twitterReuse.updateStatus(tweet);
-
+						
+						// close BufferedReader
 						readKeys.close();
 					} catch (IOException e) {
 						// TODO ADD ERROR WINDOW
@@ -384,40 +403,4 @@ public class TwitterIntegration {
 
 		return exists;
 	} // end of determineFileExists method
-
-	/*
-	 * 
-	 */
-	private void twitterInt() throws TwitterException, IOException {
-
-		Twitter twitter = new TwitterFactory().getInstance();
-		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
-		RequestToken requestToken = twitter.getOAuthRequestToken();
-		System.out.println("Authorization URL: \n" + requestToken.getAuthorizationURL());
-
-		AccessToken accessToken = null;
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		while (null == accessToken) {
-			try {
-				System.out.print("Input PIN here: ");
-				String pin = br.readLine();
-
-				accessToken = twitter.getOAuthAccessToken(requestToken, pin);
-
-			} catch (TwitterException te) {
-
-				System.out.println("Failed to get access token, caused by: " + te.getMessage());
-
-				System.out.println("Retry input PIN");
-
-			}
-		}
-
-		System.out.println("Access Token: " + accessToken.getToken());
-		System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
-
-		twitter.updateStatus("First Tweet using skillblazer application #LlamasForLife");
-
-	}
 } // end of TwitterIntegration class
