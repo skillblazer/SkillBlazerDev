@@ -105,6 +105,18 @@ public class UserProfile {
     } //end determineOSFilePath method
     
     /*
+     * Increments taskNumber by one to provide
+     * correct file names for JSON data files.
+     */
+    public long incrementTaskNumber(long taskNum) {
+    	long taskNumber = taskNum;
+    	
+    	taskNumber += taskNumber;
+    	
+    	return taskNumber;
+    }
+    
+    /*
      * Determines username of user accessing skillblazer
      * application and presents it.
      */
