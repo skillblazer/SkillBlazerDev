@@ -60,18 +60,21 @@ class SkillBlazerInitializer {
                 createSkillBlazerDirectory();
             }
             if (!file.exists()) {
-                // if the file doesn't exist, go ahead and create it for later
+                // if the SBinit.txt file doesn't exist, go ahead and create it for later
                 // (usually occurs when the user runs the program for the very
-                // first time.
+                // first time).
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
                 output.close();  // close the file
-            } else {
+            }
+            if (file.exists()) {  // SBinit.txt already exists on disk
                 Scanner input = new Scanner(file);
+
                 while (input.hasNext()) {
                     java.io.File tempFile = new java.io.File(userFileLocation + input.next());
+
                     if (tempFile.exists()) { // is the file still in the SkillBlazer directory?
                         // take the contents of SBinit.txt and ADD them to the ArrayList
-                        listOfJsonFiles.add(userFileLocation + input.nextLine());
+                        listOfJsonFiles.add(tempFile.toString());
                     }
                 }
                 input.close();

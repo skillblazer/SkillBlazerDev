@@ -1270,8 +1270,13 @@ public class SkillBlazer extends Application {
 
         UserProfile skbUserProfile = jsonLoader.getUserProfile();
 
-//        UserProfile skbUserProfile = new UserProfile("Jason", now, 1);
-//
+        while (taskIterator.hasNext()) {
+            System.out.println("PRINTING OUT A USER FILE IN main() !!!");
+            System.out.println(taskIterator.next().toString());
+        }
+
+        System.out.println(skbUserProfile.toString());
+
 //        ArrayList<String> days = new ArrayList<>();
 //        days.add("monday");
 //        days.add("tuesday");
@@ -1281,7 +1286,7 @@ public class SkillBlazer extends Application {
 //
 //        arrayOfTasks.add(cTask);
 
-        JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);
+       JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);
 
         //launch(args);               // opens the JavaFX Stage
     } // end main method
