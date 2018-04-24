@@ -1,41 +1,50 @@
 package llamasoft.skillblazer;
+
 /*
 import com.dropbox.core.*;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.ListFolderResult;
-import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.v2.users.FullAccount;
-
-import java.util.List;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
+import static com.dropbox.core.DbxWriteMode.add;
+import java.io.*;
+import java.util.Locale;
 */
 public class DropBoxIntegration {
 
     private boolean isEnabled;
-   /* private static final String APP_KEY= "y5wmn7bg5743dhl";
-    private static final String APP_SECRET= "f3llcjq4dy8g4i7";
-    private static final String ACCESS_TOKEN="Pg2oCQ8Y26AAAAAAAAAACjqC1eIg9hNMHBhz1hxder9K6SMLUQZVRVuDfhvj1VQ3";
-    private DbxRequestConfig config=null;
-    DbxClientV2 client = null;
-    FullAccount account =null;
-    //create dbx client
-    DbxRequestConfig config = new DbxRequestConfig("");
-    DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+    /*
+    private static final String APP_KEY = "j8zcubrvrth9i1l";
+    private static final String APP_SECRET = "2jacqpbzpj5p56f";
+    private static final String ACCESS_TOKEN = "Pg2oCQ8Y26AAAAAAAAAAC2Xp1oFMkDCUonjkgRXQ4SwRtlp-LHFeY5JVtjTuXCeB";
+
+    DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
+
+    DbxReqsuestConfig config = new DbxRequestConfig("https://www.dropbox.com/home/Apps/skillblazer_destination", Locale.getDefault().toString());
+    DbxWebAuthNoREdirect webAuth = new DbxWebAuthNoRedirect(config, appInfo);
+
+    //authorize app via sign in
+    String authorizeUrl = webAuth.start();
+    String code = new BufferedReader(new InputStreamReader(System.in)).readerLine().trim();
     
-    //create new window
-    Stage dropboxWindow = new Stage();
-    dropboxWindow.setTitle("Dropbox Integration");
-    //get account info
-    FullAccount account = client.users().getCurrentAccount();
+    //fail if input auth. is invalid
+    DbxAuthFinish authFinish = webAuth.finish(code);
+    String accessToken = authFinish.accessToken;
+
+    DbxClient client = new DbxClient(config, ACCESS_TOKEN);
+
+    //allow file input to upload
+    File inputFile = new File("test.txt");
+    FileInputStream inputStream = new FileInputStream(inputFile);
+
+    try{
+    DbxEntry.File uploadFile = client.uploadFile("test.txt"), DbxWriteMode.add(), inputFile.lenght(), inputStream);
+    System.out.println("UPloaded " + uploadedFile.toString());
+    } finally {
+    inputStream.close();
+    }
     
-    
+   
+}
     
     */
-    
+
     public void enableDropBoxIntegration(Boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
