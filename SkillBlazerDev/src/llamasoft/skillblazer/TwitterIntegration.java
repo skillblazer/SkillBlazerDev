@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/16/2018
+ * Date: 4/22/2018
  * 
  * Description:
  * 
@@ -12,7 +12,7 @@
  * Twitter and tweet out accomplishments that they have met
  * or when they have completed a task. The functionality 
  * will be available to them from the start using the Options
- * menu and selecting the "Tweet" button.
+ * menu and selecting the "Submit Tweet" button.
  ***********************************************************/
 
 package llamasoft.skillblazer;
@@ -24,14 +24,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -64,7 +61,7 @@ public class TwitterIntegration {
 		Label instructLabel; // label for "Instructions"
 		Label instructions; // "Instructions"
 		Label urlLabel; // label for "Auth URL"
-		Label authURL; // "Auth URL"
+		TextArea authURL; // "Auth URL"
 		Label pinLabel; // label for "PIN"
 		TextField pinTextField; // text field for "PIN"
 		Label tweetLabel; // label for "Tweet" area
@@ -117,10 +114,13 @@ public class TwitterIntegration {
 			// sets text for urlLabel
 			urlLabel.setText("Auth URL:");
 			// initializes authURL
-			authURL = new Label(authorizationURL);
-			authURL.setTextFill(Color.web("#f5fffa"));
-			// sets text for URL for user to use - EXAMPLE WILL REPLACE
-			authURL.setText("https://twitter.auth.url.example565333424545234234.com");
+			authURL = new TextArea(authorizationURL);
+			//sets preferential size of text area
+			authURL.setPrefSize(350, 75);
+			//sets authURL to non-editable
+			authURL.setEditable(false);
+			//makes the authURL text area wrap text
+			authURL.setWrapText(true);
 			// adds components to urlHbox
 			urlHbox.getChildren().add(urlLabel);
 			urlHbox.getChildren().add(authURL);
@@ -201,22 +201,21 @@ public class TwitterIntegration {
 				@Override
 				public void handle(Event event) {
 
-					String pin = pinTextField.getText();
-
 					try {
 						AccessToken accessToken = null;
+						String pin = pinTextField.getText();
 						accessToken = twitter.getOAuthAccessToken(requestToken, pin);
 						String tweet = tweetTextArea.getText();
 						twitter.updateStatus(tweet);
 
-						// PLACE tokens in FILE!
 						String aToken = accessToken.getToken();
 						String aSToken = accessToken.getTokenSecret();
-						
 						String homePath = System.getProperty("user.home");
 						BufferedWriter writeKeys = new BufferedWriter(
 								new FileWriter(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
-
+						writeKeys.write(aToken + "," + aSToken);
+						
+						writeKeys.close();
 					} catch (TwitterException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -248,7 +247,7 @@ public class TwitterIntegration {
 			twitterVbox.getChildren().add(pinHbox);
 			twitterVbox.getChildren().add(tweetHbox);
 			twitterVbox.getChildren().add(submitTweetButtonHbox);
-
+			
 			// adds twitterVbox to twitterScene
 			Scene twitterScene = new Scene(twitterVbox, 500, 450);
 			// adds twitterScene to twitterWindow
@@ -388,7 +387,7 @@ public class TwitterIntegration {
 	/*
 	 * 
 	 */
-	private void twitterInt() throws TwitterException, IOException {
+	/*private void twitterInt() throws TwitterException, IOException {
 
 		Twitter twitter = new TwitterFactory().getInstance();
 		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
@@ -419,5 +418,5 @@ public class TwitterIntegration {
 
 		twitter.updateStatus("First Tweet using skillblazer application #LlamasForLife");
 
-	}
+	}*/
 } // end of TwitterIntegration class
