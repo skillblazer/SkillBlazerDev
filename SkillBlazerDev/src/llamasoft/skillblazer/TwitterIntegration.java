@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/24/2018
+ * Date: 4/23/2018
  * 
  * Description:
  * 
@@ -48,45 +48,14 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
-public class TwitterIntegration extends Application {
+public class TwitterIntegration {
 
 	// Consumer key token for allowing application to access Twitter
 	private final static String CONSUMER_KEY = "34d1J2WyuSLYbvu4zeGLVmGRv";
 	// Consumer secret token for allowing application to access Twitter
 	private final static String CONSUMER_KEY_SECRET = "rmHY2LIUzvMVjGn2AGMx54rAGPx9zKSzlNpY0DSNl05mmqPjzW";
 
-	Stage window;
-	Button button;
-
-	public static void main(String[] args) throws IOException {
-		launch(args);
-	} //end of main method
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		window = primaryStage;
-		window.setTitle("Test Window");
-
-		button = new Button("Click me");
-
-		button.setOnAction(e -> {
-			try {
-				display();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
-
-		StackPane layout = new StackPane();
-		layout.getChildren().add(button);
-		Scene scene = new Scene(layout, 300, 250);
-		window.setScene(scene);
-		window.show();
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-
 	public void display() throws IOException, TwitterException {
 
 		Label instructLabel; // label for "Instructions"
@@ -131,10 +100,7 @@ public class TwitterIntegration extends Application {
 			instructions = new Label();
 			instructions.setTextFill(Color.web("#f5fffa"));
 			// sets text for instructions
-			instructions.setText("Please copy and paste the auth URL provided into a"
-					+ "\nbrowser window. Authorize skillblazer to access your Twitter page."
-					+ "\nCopy and paste the PIN given to you in the PIN text box."
-					+ "\nWrite your Tweet and then click the Submit button.");
+			instructions.setText("These are the instructions.");
 			// adds instructLabel to instructHbox
 			instructHbox.getChildren().add(instructLabel);
 			// adds instructions to instructHbox
@@ -425,10 +391,6 @@ public class TwitterIntegration extends Application {
 
 	} // end of display method
 
-	/*
-	 * Determine if user access token file exists and if not, 
-	 * it creates the file in the Skillblazer directory.
-	 */
 	private static boolean determineFileExists() throws IOException {
 		// read user tokens from designated file
 		String homePath = System.getProperty("user.home");

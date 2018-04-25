@@ -18,14 +18,11 @@ package llamasoft.skillblazer;
 
 // imports
 import java.io.IOException;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import java.util.Date;
-
 import java.util.Iterator;
 import javafx.application.*;
 import javafx.scene.*;
@@ -36,9 +33,6 @@ import twitter4j.TwitterException;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
-
-import javafx.scene.image.Image;
-
 import java.util.GregorianCalendar;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
@@ -81,7 +75,7 @@ public class SkillBlazer extends Application {
 
         window.setTitle("Skillblazer Habit Tracker");
         // adds Icon to primaryStage
-        window.getIcons().add(new Image("/llama.jpg"));
+        //window.getIcons().add(new Image("/llama.jpg"));
 
         // dropshadow effect for buttons
         DropShadow dropShadow = new DropShadow();
@@ -616,10 +610,8 @@ public class SkillBlazer extends Application {
             optionsStage = new Stage();
             // sets title
             optionsStage.setTitle("Options");
-
             // add skillblazer icon
-            optionsStage.getIcons().add(new Image("/llama.jpg"));
-
+            //optionsStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
             HBox optionsButtonHbox1 = new HBox();
             // sets alignment for hbox
@@ -684,7 +676,6 @@ public class SkillBlazer extends Application {
                     notificationsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
                     // shows the stage; actually displays the scene
                     notificationsStage.show();
-
                 }
             }); // end event handler
             // adds notificationsButton to optionsButtonHbox1
@@ -907,6 +898,7 @@ public class SkillBlazer extends Application {
             // creates new regions (for layout/alignment purposes)
             Region emptyRegion1 = new Region();
             Region emptyRegion2 = new Region();
+            Region emptyRegion3 = new Region();
 
             // adds all hboxes and regions to optionsVBox
             optionsVBox.getChildren().add(optionsButtonHbox1);
@@ -914,6 +906,8 @@ public class SkillBlazer extends Application {
             optionsVBox.getChildren().add(optionsButtonHbox2);
             optionsVBox.getChildren().add(emptyRegion2);
             optionsVBox.getChildren().add(optionsButtonHbox3);
+            optionsVBox.getChildren().add(emptyRegion3);
+            optionsVBox.getChildren().add(optionsButtonHbox4);
 
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVBox, 350, 350);
@@ -953,10 +947,8 @@ public class SkillBlazer extends Application {
             // creates new stage
             lifetimeMetricsStage = new Stage();
             // sets title
-
             lifetimeMetricsStage.setTitle("Lifetime Metrics");
-            lifetimeMetricsStage.getIcons().add(new Image("/llama.jpg"));
-
+           // lifetimeMetricsStage.getIcons().add(new Image("/llama.jpg"));
             // new vbox layout
             VBox lifeMetricsVbox = new VBox();
             // necessary to pull css specs from style sheet
@@ -971,17 +963,22 @@ public class SkillBlazer extends Application {
             lifetimeMetricsStage.setOnCloseRequest(e -> hideLifetimeMetrics());
         }
         
+        // method to show lifetimeMetricsStage
         public void showLifetimeMetrics() {
             lifetimeMetricsStage.show();
             lifetimeMetricsStage.toFront();
-        }
-                
-    public void hideLifetimeMetrics() {
+        } // end showLifetimeMetrics() method
+        
+        // method to hide lifetimeMetricsStage
+        public void hideLifetimeMetrics() {
             lifetimeMetricsStage.hide();
-        }
-    public void closeLifetimeMetrics() {
+        } // end hideLifetimeMetrics() method
+        
+        // method to close lifetimeMetricsStage
+        public void closeLifetimeMetrics() {
             lifetimeMetricsStage.close();
-        }
+        } // end closeLifetimeMetrics() method
+        
     } // end class LifetimeMetrics
 
     // inner class for handling when user clicks on a calendar button
@@ -1022,9 +1019,8 @@ public class SkillBlazer extends Application {
             habitEntryStage = new Stage();
             // sets title for habitEntryStage
             habitEntryStage.setTitle("Habit/Skill Creation");
-
             // adds skillblazer icon
-            habitEntryStage.getIcons().add(new Image("/llama.jpg"));
+//            habitEntryStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
             HBox habitCreationButtonHbox1 = new HBox();
             // pulls css specs from style sheet
@@ -1203,11 +1199,13 @@ public class SkillBlazer extends Application {
             numTextField.setTooltip(new Tooltip("Enter a numeric goal to reach (e.g. 5 miles to run)"));
             // sets max size of numTextField
             numTextField.setMaxSize(80, 80);
-            // initializes goalComboBox
+            // initializes goalUnitsField
             goalUnitsField = new TextField();
-            // adds metrics to goalComboBox
+            // sets text for goalUnitsField
             goalUnitsField.setText("units");
+            // sets max size of goalUnitsField
             goalUnitsField.setMaxSize(80, 80);
+            // sets tooltip for goalUnitsField
             goalUnitsField.setTooltip(new Tooltip("Enter the units for the goal (e.g. miles)"));
             // adds goalLabel to habitCreationButtonHbox3
             habitCreationButtonHbox3.getChildren().add(goalLabel);
@@ -1215,8 +1213,9 @@ public class SkillBlazer extends Application {
             habitCreationButtonHbox3.getChildren().add(numTextField);
             // adds goalUnitsField to habitCreationButtonHbox3
             habitCreationButtonHbox3.getChildren().add(goalUnitsField);
-            
+            // sets numTextField as disabled 
             numTextField.setDisable(true);
+            // sets goalUnitsField as disabled
             goalUnitsField.setDisable(true);
             
             // hbox for 9th vbox row
@@ -1388,6 +1387,8 @@ public class SkillBlazer extends Application {
             satRB.setSelected(false);
             sunRB.setSelected(false);
             datePicker.setValue(null);   
+            // sets text for goalUnitsField
+            goalUnitsField.setText("units");
         } // end resetHabitEntry() method
         
         // method to show habitEntryStage and bring to front
@@ -1463,13 +1464,9 @@ public class SkillBlazer extends Application {
                 CumulativeTask newTask = new CumulativeTask(taskName,taskId,startDate,false,notes,endDate,goalValue,goalUnits);
                 taskList.add(newTask);
             }
-            
-            
-            
+                  
         } // end createTaskObject() method
         
-        
-
     } // end class HabitCreationButton
 
     // inner class for handling when user clicks on the "+" button to add progress
@@ -1479,7 +1476,7 @@ public class SkillBlazer extends Application {
         private Label habitLabel;                       // label for habitComboBox
         private ComboBox habitComboBox;                 // comboBox for list of populated habits/skills of user
         private CheckBox completedCheckBox;             // check box to mark completion
-        private Label completedLabel;                // label for "Completion" TextBox
+        private Label completedLabel;                   // label for "Completion" TextBox
         private Label progressMadeLabel;                // label for "Progress Made" TextField
         private TextField progressMadeTextField;        // textField for "Progress Made"; user can enter progress metrics  
         private Label unitsLabel;                       // label for units
@@ -1509,9 +1506,7 @@ public class SkillBlazer extends Application {
                 // add object to combo box displayed string is objects toString Method
                 habitComboBox.getItems().add(mt);
             }
-            
-            
-            
+                  
             // adds habitLabel to progressButtonHbox1
             progressButtonHbox1.getChildren().add(habitLabel);
             // adds habitComboBox to progressButtonHbox1
@@ -1627,15 +1622,12 @@ public class SkillBlazer extends Application {
                                 mt.setDateCompleted(progressDay.getTaskDate());
                             } else {
                                 mt.removeDateCompleted(progressDay.getTaskDate());
-                            }
-                                
+                            }                               
                         }
-
-                                                                            // ****TO DO: Save to JSON file
+                                                             // ****TO DO: Save to JSON file
                     }
                     progressStage.close();      // closes window
                     drawCalendar();
-
                 }
             }); // end event handler
 
@@ -1683,8 +1675,8 @@ public class SkillBlazer extends Application {
          * that were loaded from disk.
          */
         ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
+        Iterator<Task> taskIterator = arrayOfTasks.iterator();
         UserProfile skbUserProfile = jsonLoader.parseAndReturnUserProfile();
-
 
 
         launch(args);               // opens the JavaFX Stage
