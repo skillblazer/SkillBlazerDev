@@ -100,7 +100,10 @@ public class TwitterIntegration {
 			instructions = new Label();
 			instructions.setTextFill(Color.web("#f5fffa"));
 			// sets text for instructions
-			instructions.setText("These are the instructions.");
+			instructions.setText("Please copy and paste the auth URL provided into a"
+					+ "\nbrowser window. Authorize skillblazer to access your Twitter page."
+					+ "\nCopy and paste the PIN given to you in the PIN text box."
+					+ "\nWrite your Tweet and then click the Submit button.");
 			// adds instructLabel to instructHbox
 			instructHbox.getChildren().add(instructLabel);
 			// adds instructions to instructHbox
