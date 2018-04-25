@@ -129,7 +129,18 @@
     -fx-font-family: "cambria";
     -fx-font-size: 12px;
 }
-
+.labelFinalCumulative
+{
+    -fx-text-fill: #ff0000;
+}
+.labelCompletedTask
+{
+    -fx-text-fill: #55C505;
+}
+.labelDefaultTask
+{
+    -fx-text-fill: #000000;
+}
 /* style specification for buttons */
 .button2 {
     /* sets background color */

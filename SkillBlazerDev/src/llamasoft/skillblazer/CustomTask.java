@@ -82,16 +82,24 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     *  Fully qualified constructor (needed for initializing objects stored on disk
+     *  Old Fully qualified constructor (needed for initializing objects stored on disk
      */
     public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, int currentStreak,
             int bestStreak, ArrayList<String> daysInTask) {
-        super(taskName, taskId, startDate, isCompleted, "custom");
+        super(taskName, taskId, startDate, isCompleted, "custom", "");
         this.actualDaysInTask.addAll(daysInTask);
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end CustomTask constructor
-
+     /*
+     *  New Fully qualified constructor (needed for initializing objects stored on disk
+     */
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<String> daysInTask) {
+        super(taskName, taskId, startDate, isCompleted, "custom", notes);
+        this.actualDaysInTask.addAll(daysInTask);
+    } //end CustomTask constructor
+    
+    
     /*
      * Accessor Method - actualDaysInTask
      */

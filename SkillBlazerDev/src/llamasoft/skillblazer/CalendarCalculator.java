@@ -93,7 +93,7 @@ public class CalendarCalculator {
         * to view all tasks
         */
         for (int dates = 0; dates < daysThisMonth; dates++) {
-            GregorianCalendar thisDate = new GregorianCalendar(getCurrentYearInt(), getCurrentMonthInt(), dates);
+            GregorianCalendar thisDate = new GregorianCalendar(getCurrentYearInt(), getCurrentMonthInt(), dates+1);
             thisMonthsDayObjects[dates] = new Day(thisDate);                    // ****TO DO: finish this constructor call (JSON)
 //            for (int i = 0; i < (dates + 1); i++) {
 //                DailyTask testTask = new DailyTask("Test " + dates + " " + i, i, thisDate, false, 0, 0);

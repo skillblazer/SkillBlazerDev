@@ -32,12 +32,22 @@ public class WeeklyTask extends Task {
         super(taskName);
         this.type = "weekly";
     }
-    
+    /*
+     *  Old Fully qualified constructor (needed for initializing objects stored on disk
+     */
     public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, int currentStreak, int bestStreak) {
-        super(taskName, taskId, startDate, isCompleted, "weekly");
+        super(taskName, taskId, startDate, isCompleted, "weekly", "");
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end WeeklyTask constructor
+    
+     /*
+     *  New Fully qualified constructor (needed for initializing objects stored on disk
+     */
+    public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes) {
+        super(taskName, taskId, startDate, isCompleted, "weekly", notes);
+    } //end WeeklyTask constructor
+
 
     public int getCurrentStreak() {
         return this.currentStreak;

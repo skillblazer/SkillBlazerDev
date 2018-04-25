@@ -19,8 +19,10 @@ package llamasoft.skillblazer;
 // imports
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import javafx.application.*;
 import javafx.scene.*;
@@ -67,15 +69,7 @@ public class SkillBlazer extends Application {
     public void start(Stage primaryStage) throws Exception {
         // instantiates taskList
         taskList = new ArrayList<Task>();
-        // 'for' loop
-        for (int i = 0; i < 5; i++) {
-            // GregorianCalendar object
-            GregorianCalendar testStartDate = new GregorianCalendar(2018, 4, 1 + 2 * i);
-            // DailyTask object
-            DailyTask testTask = new DailyTask("Test " + i, i, testStartDate, false, 0, 0);
-            // adds testTask to taskList
-            taskList.add(testTask);
-        } // end 'for' loop
+
         // window = primaryStage
         window = primaryStage;
         // sets title of main window (primaryStage)
@@ -320,9 +314,12 @@ public class SkillBlazer extends Application {
                 } else if (mt instanceof CumulativeTask) {
                     // Calendar object representing task end date
                     Calendar taskEndDate = ((CumulativeTask) mt).getEndDate();
-                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskEndDate) == 0) {
-                        // adds Task objects to Day objects of calCalc
-                        calCalc.getDayObject(i).addTask(mt);
+                    Calendar taskStartDate = ((CumulativeTask) mt).getStartDate();
+                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
+                        if (calCalc.getDayObject(i).getTaskDate().compareTo(taskEndDate) <= 0) {
+                            // adds Task objects to Day objects of calCalc
+                            calCalc.getDayObject(i).addTask(mt);
+                        }
                     }
                 }
             }
@@ -343,9 +340,6 @@ public class SkillBlazer extends Application {
         int numberDaysCurrentMonth = calCalc.getDaysInCurrentMonth();
         // iterator
         int j = 0;
-        // string array holding days
-        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday",
-            "Thursday", "Friday", "Saturday", "Sunday"};
 
         // clears calendar interface
         calendarPane.getChildren().clear();
@@ -357,7 +351,7 @@ public class SkillBlazer extends Application {
             // creates and initializes hboxCal
             HBox hboxCal = new HBox();
             // creates and initializes; fills it with string value from daysOfWeek
-            Label vboxLabel = new Label(daysOfWeek[i]);
+            Label vboxLabel = new Label(dayNamesOfWeek[i]);
             // pulls css specs from style sheet
             vboxLabel.getStyleClass().add("dayOfWeekLabels");
             // creates new region (for layout/alignment purposes)
@@ -421,7 +415,7 @@ public class SkillBlazer extends Application {
                     @Override
                     public void handle(Event event) {
                         // instantiates progressButton
-                        ProgressButton progressButton = new ProgressButton();
+                        ProgressButton progressButton = new ProgressButton(todayDayOb);
                     }
                 }); // end event handler
                 // adds vboxButton to hboxCal
@@ -439,6 +433,32 @@ public class SkillBlazer extends Application {
                 for (Task mt : todayDayOb.tasksThisDay) {
                     // label for each Task
                     Label taskLabel = new Label(mt.getTaskName());
+                    if (mt instanceof CumulativeTask) {
+                        // Tool Tip for Cumulative Task
+                        taskLabel.setTooltip(new Tooltip("Cumulative Task"));
+                        if (todayDayOb.getTaskDate().compareTo(((CumulativeTask)mt).getEndDate())==0) {
+                            taskLabel.getStyleClass().add("labelFinalCumulative");
+                        }
+                    } else {
+                        // Color Completed Tasks Green
+                        if (mt.checkDateCompleted(todayDayOb.getTaskDate())) {
+                            taskLabel.getStyleClass().add("labelCompletedTask");
+                        } else {
+                            taskLabel.getStyleClass().add("labelDefaultTask");
+                        }
+                        
+                        if (mt instanceof DailyTask) {
+                            // Tool Tip for Daily Task
+                            taskLabel.setTooltip(new Tooltip("Daily Task"));
+                        } else if (mt instanceof WeeklyTask) {
+                            // Tool Tip for Weekly Task
+                            taskLabel.setTooltip(new Tooltip("Weekly Task"));
+                        } else {
+                            // Tool Tip for Custom Task
+                            taskLabel.setTooltip(new Tooltip("Custom Task"));
+                        }
+                    }
+                        
                     // hbox for each task
                     taskHboxArray[k] = new HBox();
                     // adds taskHbox to vboxArray
@@ -966,7 +986,7 @@ public class SkillBlazer extends Application {
         private TextField habitTextField;                       // textfield for habit name
         private Label goalLabel;                                // label for 'Goal'
         private TextField numTextField;                         // textfield for goal number
-        private ComboBox goalComboBox;                          // combobox for goal metric
+        private TextField goalUnitsField;                          // textfield for goal units
         private Label freqLabel;                                // label for 'Frequency'
         private ToggleGroup rbGroup = new ToggleGroup();        // togglegroup for radio button group
         private RadioButton dailyRB;                            // radio button for 'Daily' option
@@ -1175,20 +1195,20 @@ public class SkillBlazer extends Application {
             // sets max size of numTextField
             numTextField.setMaxSize(80, 80);
             // initializes goalComboBox
-            goalComboBox = new ComboBox();
+            goalUnitsField = new TextField();
             // adds metrics to goalComboBox
-            goalComboBox.getItems().add("minutes");
-            goalComboBox.getItems().add("hours");
-            goalComboBox.getItems().add("miles");
+            goalUnitsField.setText("units");
+            goalUnitsField.setMaxSize(80, 80);
+            goalUnitsField.setTooltip(new Tooltip("Enter the units for the goal (e.g. miles)"));
             // adds goalLabel to habitCreationButtonHbox3
             habitCreationButtonHbox3.getChildren().add(goalLabel);
             // adds numTextField to habitCreationButtonHbox3
             habitCreationButtonHbox3.getChildren().add(numTextField);
-            // adds goalComboBox to habitCreationButtonHbox3
-            habitCreationButtonHbox3.getChildren().add(goalComboBox);
+            // adds goalUnitsField to habitCreationButtonHbox3
+            habitCreationButtonHbox3.getChildren().add(goalUnitsField);
             
             numTextField.setDisable(true);
-            goalComboBox.setDisable(true);
+            goalUnitsField.setDisable(true);
             
             // hbox for 9th vbox row
             HBox habitCreationButtonHbox10 = new HBox();
@@ -1222,7 +1242,7 @@ public class SkillBlazer extends Application {
                 sunRB.setDisable(false);
                 datePicker.setDisable(true);
                 numTextField.setDisable(true);
-                goalComboBox.setDisable(true);
+                goalUnitsField.setDisable(true);
             }); // end event handler
 
             // event handler for weeklyRB
@@ -1237,7 +1257,7 @@ public class SkillBlazer extends Application {
                 sunRB.setDisable(true);
                 datePicker.setDisable(true);
                 numTextField.setDisable(true);
-                goalComboBox.setDisable(true);
+                goalUnitsField.setDisable(true);
             }); // end event handler
 
             // event handler for dailyRB
@@ -1252,7 +1272,7 @@ public class SkillBlazer extends Application {
                 sunRB.setDisable(true);
                 datePicker.setDisable(true);
                 numTextField.setDisable(true);
-                goalComboBox.setDisable(true);
+                goalUnitsField.setDisable(true);
             }); // end event handler
 
             // event handler for cumulativeRB
@@ -1267,7 +1287,7 @@ public class SkillBlazer extends Application {
                 sunRB.setDisable(true);
                 datePicker.setDisable(false);
                 numTextField.setDisable(false);
-                goalComboBox.setDisable(false);
+                goalUnitsField.setDisable(false);
             }); // end event handler
 
             // hbox for 10th vbox row
@@ -1302,8 +1322,12 @@ public class SkillBlazer extends Application {
                 @Override
                 public void handle(Event event) {
                                                                         // ****TO DO: Save to JSON file
+                    
+                                                                        
+                    createTaskObject();
                     habitEntryStage.hide();    // hides window
                     resetHabitEntry();
+                    drawCalendar();
                 }
             }); // end event handler
 
@@ -1372,6 +1396,70 @@ public class SkillBlazer extends Application {
         public void closeHabitEntry() {
             habitEntryStage.close();
         } // end closeHabitEntry() method
+        
+        // method createTaskObject
+        public void createTaskObject() {
+            String taskName = habitTextField.getText();
+            String notes = notesTextArea.getText();
+            GregorianCalendar startDate = new GregorianCalendar();
+            startDate.setTime(Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            long taskId = 0;
+            if (dailyRB.isSelected()) {
+                // Create DailyTask object
+                DailyTask newTask = new DailyTask(taskName,taskId,startDate,false,notes);
+                taskList.add(newTask);
+            } else if (weeklyRB.isSelected()) {
+                // Create WeeklyTask object
+                WeeklyTask newTask = new WeeklyTask(taskName,taskId,startDate,false,notes);
+                taskList.add(newTask);
+            } else if (customRB.isSelected()) {
+                ArrayList<String> dateList = new ArrayList();
+                // populate array list of days of week
+                if (monRB.isSelected()) {
+                    dateList.add("Monday");
+                }
+                if (tuesRB.isSelected()) {
+                    dateList.add("Tuesday");
+                }
+                if (wedRB.isSelected()) {
+                    dateList.add("Wednesday");
+                }
+                if (thursRB.isSelected()) {
+                    dateList.add("Thursday");
+                }
+                if (friRB.isSelected()) {
+                    dateList.add("Friday");
+                }
+                if (satRB.isSelected()) {
+                    dateList.add("Saturday");
+                }
+                if (sunRB.isSelected()) {
+                    dateList.add("Sunday");
+                }
+                // Create CustomTask object
+                CustomTask newTask = new CustomTask(taskName,taskId,startDate,false,notes,dateList);
+                taskList.add(newTask);
+            } else {
+                double goalValue;
+                try{
+                    goalValue = Double.parseDouble(numTextField.getText());
+                } catch (NumberFormatException e) {
+                    // TO DO: Gracefully Catch Exception
+                    goalValue =0.0;
+                }
+                GregorianCalendar endDate = new GregorianCalendar();
+                endDate.setTime(Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                String goalUnits = goalUnitsField.getText();
+                // Create CumulativeTask object
+                CumulativeTask newTask = new CumulativeTask(taskName,taskId,startDate,false,notes,endDate,goalValue,goalUnits);
+                taskList.add(newTask);
+            }
+            
+            
+            
+        } // end createTaskObject() method
+        
+        
 
     } // end class HabitCreationButton
 
@@ -1381,17 +1469,15 @@ public class SkillBlazer extends Application {
         // member fields - GUI elements
         private Label habitLabel;                       // label for habitComboBox
         private ComboBox habitComboBox;                 // comboBox for list of populated habits/skills of user
-        private Label goalLabel;                        // label for goalComboBox
-        private ComboBox goalComboBox;                  // comboBox for list of goals pertaining to chosen habit/skill
+        private CheckBox completedCheckBox;             // check box to mark completion
+        private Label completedLabel;                // label for "Completion" TextBox
         private Label progressMadeLabel;                // label for "Progress Made" TextField
         private TextField progressMadeTextField;        // textField for "Progress Made"; user can enter progress metrics  
-        private ComboBox progressMetricsComboBox;       // comboBox for list of metrics when user updates progress
-        private Label notesLabel;                       // label for "Notes" area
-        private TextArea notesTextArea;                 // textArea for "Notes" area
+        private Label unitsLabel;                       // label for units
         private Button submitButton;                    // button for user to submit progress information
-
+        
         // constructor
-        ProgressButton() {
+        ProgressButton(Day progressDay) {
 
             // creates new stage
             Stage progressStage = new Stage();
@@ -1410,33 +1496,22 @@ public class SkillBlazer extends Application {
             habitComboBox = new ComboBox();
             // Tooltip
             habitComboBox.setTooltip(new Tooltip("Select a habit/skill"));
+            for (Task mt : progressDay.tasksThisDay) {
+                // add object to combo box displayed string is objects toString Method
+                habitComboBox.getItems().add(mt);
+            }
+            
+            
+            
             // adds habitLabel to progressButtonHbox1
             progressButtonHbox1.getChildren().add(habitLabel);
             // adds habitComboBox to progressButtonHbox1
             progressButtonHbox1.getChildren().add(habitComboBox);
 
-            // hbox for 2nd vbox row
-            HBox progressButtonHbox2 = new HBox();
-            // pulls css styling information
-            progressButtonHbox2.getStyleClass().add("progressButtonHboxes");
-            // initializes goalLabel
-            goalLabel = new Label();
-            // sets text for goalLabel
-            goalLabel.setText("Goal:");
-            // initializes goalComboBox
-            goalComboBox = new ComboBox();
-            // Tooltip
-            goalComboBox.setTooltip(new Tooltip("Select one of your goals for this habit/skill"));
-                                                                    // ****TO DO: populate goals in goalComboBox
-            // adds goalLabel to progressButtonHbox2                                
-            progressButtonHbox2.getChildren().add(goalLabel);
-            // adds goalComboBox to progressButtonHbox2     
-            progressButtonHbox2.getChildren().add(goalComboBox);
-
             // hbox for 3rd vbox row
-            HBox progressButtonHbox3 = new HBox();
+            HBox progressButtonHboxCumulative = new HBox();
             // pulls css styling information
-            progressButtonHbox3.getStyleClass().add("progressButtonHboxes");
+            progressButtonHboxCumulative.getStyleClass().add("progressButtonHboxes");
             // initializes progressMadeLabel
             progressMadeLabel = new Label();
             // sets text for progressMadeLabel
@@ -1448,36 +1523,73 @@ public class SkillBlazer extends Application {
             // sets max size of progressMadeTextField
             progressMadeTextField.setMaxSize(80, 80);
             // initializes progressMetrics
-            progressMetricsComboBox = new ComboBox();
-            // adds items to progressMetricsComboBox
-            progressMetricsComboBox.getItems().add("minutes");
-            progressMetricsComboBox.getItems().add("hours");
-            progressMetricsComboBox.getItems().add("miles");
-                                                                // ****TO DO: populate goals in progressMetricsComboBox
+            unitsLabel  = new Label();
+            completedCheckBox = new CheckBox();
+            completedLabel = new Label("Completed");
+
             // adds components to progressButtonHbox3                                    
-            progressButtonHbox3.getChildren().add(progressMadeLabel);
-            progressButtonHbox3.getChildren().add(progressMadeTextField);
-            progressButtonHbox3.getChildren().add(progressMetricsComboBox);
-
-            // hbox for 4th vbox row
-            HBox progressButtonHbox4 = new HBox();
-            // pulls css styling information
-            progressButtonHbox4.getStyleClass().add("progressButtonHboxes");
-            // initializes notesLabel
-            notesLabel = new Label();
-            // sets text for notesLabel
-            notesLabel.setText("Notes:");
-            // initializes notesTextArea
-            notesTextArea = new TextArea();
-            // Tooltip
-            notesTextArea.setTooltip(new Tooltip("Add any notes pertaining to progress"));
-            // sets preferred size of notesTextArea
-            notesTextArea.setPrefSize(350, 350);
-            // adds notesLabel to progressButtonHbox4                                    
-            progressButtonHbox4.getChildren().add(notesLabel);
-            // adds notesTextArea to progressButtonHbox4    
-            progressButtonHbox4.getChildren().add(notesTextArea);
-
+            progressButtonHboxCumulative.getChildren().add(progressMadeLabel);
+            progressButtonHboxCumulative.getChildren().add(progressMadeTextField);
+            progressButtonHboxCumulative.getChildren().add(unitsLabel);
+            
+            HBox progressButtonHboxOtherTasks = new HBox();
+            progressButtonHboxOtherTasks.getStyleClass().add("progressButtonHboxes");
+            progressButtonHboxOtherTasks.getChildren().add(completedLabel);
+            progressButtonHboxOtherTasks.getChildren().add(completedCheckBox);
+            
+            habitComboBox.setOnAction(e -> {
+                Task mt = (Task)habitComboBox.getSelectionModel().getSelectedItem();
+                if (mt instanceof CumulativeTask) {
+                    unitsLabel.setText(((CumulativeTask)mt).getTaskUnits());
+                    double progressCurr = ((CumulativeTask)mt).getProgress(progressDay.getTaskDate());
+                    if (progressCurr >0.0) {
+                        progressMadeTextField.setText(Double.toString(progressCurr));
+                    } else {
+                        progressMadeTextField.setText("");
+                    }
+                    progressButtonHboxCumulative.setVisible(true);
+                    progressButtonHboxCumulative.setManaged(true);
+                    progressButtonHboxOtherTasks.setVisible(false);
+                    progressButtonHboxOtherTasks.setManaged(false);
+                } else {
+                    boolean dateCompleted = mt.checkDateCompleted(progressDay.getTaskDate());
+                    completedCheckBox.setSelected(dateCompleted);
+                    progressButtonHboxOtherTasks.setVisible(true);
+                    progressButtonHboxOtherTasks.setManaged(true);
+                    progressButtonHboxCumulative.setVisible(false);
+                    progressButtonHboxCumulative.setManaged(false);
+                }
+            });
+            if (!habitComboBox.getItems().isEmpty()) {
+                habitComboBox.getSelectionModel().select(0);
+                Task mt = (Task)habitComboBox.getSelectionModel().getSelectedItem();
+                if (mt instanceof CumulativeTask) {
+                    unitsLabel.setText(((CumulativeTask)mt).getTaskUnits());
+                    double progressCurr = ((CumulativeTask)mt).getProgress(progressDay.getTaskDate());
+                    if (progressCurr >0.0) {
+                        progressMadeTextField.setText(Double.toString(progressCurr));
+                    } else {
+                        progressMadeTextField.setText("");
+                    }
+                    progressButtonHboxCumulative.setVisible(true);
+                    progressButtonHboxCumulative.setManaged(true);
+                    progressButtonHboxOtherTasks.setVisible(false);
+                    progressButtonHboxOtherTasks.setManaged(false);
+                } else {
+                    boolean dateCompleted = mt.checkDateCompleted(progressDay.getTaskDate());
+                    completedCheckBox.setSelected(dateCompleted);
+                    progressButtonHboxOtherTasks.setVisible(true);
+                    progressButtonHboxOtherTasks.setManaged(true);
+                    progressButtonHboxCumulative.setVisible(false);
+                    progressButtonHboxCumulative.setManaged(false);
+                }
+            } else {
+                progressButtonHboxCumulative.setVisible(false);
+                progressButtonHboxCumulative.setManaged(false);
+                progressButtonHboxOtherTasks.setVisible(false);
+                progressButtonHboxOtherTasks.setManaged(false);
+            }
+            
             // hbox for 5th vbox row
             HBox progressButtonHbox5 = new HBox();
             // pulls css styling information
@@ -1490,9 +1602,30 @@ public class SkillBlazer extends Application {
             submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
+                    if (!habitComboBox.getItems().isEmpty()) {
+                        Task mt = (Task)habitComboBox.getSelectionModel().getSelectedItem();
+                        if (mt instanceof CumulativeTask) {
+                            double progressValue;
+                            try{
+                                progressValue = Double.parseDouble(progressMadeTextField.getText());
+                            } catch (NumberFormatException e) {
+                                // TO DO: Gracefully Catch Exception
+                                progressValue =0.0;
+                            }
+                            ((CumulativeTask)mt).addProgress(progressDay.getTaskDate(), progressValue);
+                        } else {
+                            if (completedCheckBox.isSelected()) {
+                                mt.setDateCompleted(progressDay.getTaskDate());
+                            } else {
+                                mt.removeDateCompleted(progressDay.getTaskDate());
+                            }
+                                
+                        }
 
                                                                             // ****TO DO: Save to JSON file
+                    }
                     progressStage.close();      // closes window
+                    drawCalendar();
 
                 }
             }); // end event handler
@@ -1508,9 +1641,8 @@ public class SkillBlazer extends Application {
             progressVbox.getStyleClass().add("secondaryWindow");
             // adds all of the hboxes to progressVbox
             progressVbox.getChildren().add(progressButtonHbox1);
-            progressVbox.getChildren().add(progressButtonHbox2);
-            progressVbox.getChildren().add(progressButtonHbox3);
-            progressVbox.getChildren().add(progressButtonHbox4);
+            progressVbox.getChildren().add(progressButtonHboxCumulative);
+            progressVbox.getChildren().add(progressButtonHboxOtherTasks);
             progressVbox.getChildren().add(progressButtonHbox5);
 
             // adds progressVbox to progressScene

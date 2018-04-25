@@ -26,12 +26,15 @@ package llamasoft.skillblazer;
 import org.json.simple.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CumulativeTask extends Task {
 
     private Calendar endDate; //end date for cumulative task
-
+    private String goalUnits;
+    private double goalToReach;
+    private ArrayList<CumulativeHistoryStruct> cumulativeHistory;
     /*
      * Default Class Constructor - calls parent constructor
      */
@@ -41,8 +44,8 @@ public class CumulativeTask extends Task {
     } //end CumulativeTask constructor
 
     @Override
-    public String toString() {
-        return super.toString() + "EndDate is: " + endDate;
+    public String infoString() {
+        return super.infoString() + "EndDate is: " + endDate;
     }
 
     /*
@@ -61,6 +64,8 @@ public class CumulativeTask extends Task {
     public CumulativeTask(String taskName, Calendar startDate) {
         super(taskName, startDate);
         this.type = "cumulative";
+        this.goalToReach = 0.0;
+        this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
 
     /*
@@ -71,16 +76,31 @@ public class CumulativeTask extends Task {
         super(taskName, startDate);
         this.endDate = endDate;
         this.type = "cumulative";
+        this.goalToReach = 0.0;
+        this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
 
-    
+    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, Calendar endDate) {
+        super(taskName, taskId, startDate, isCompleted, "cumulative","");
+        this.endDate = endDate;
+        this.goalToReach = 0.0;
+        this.cumulativeHistory = new ArrayList(); 
+    } //end CumulativeTask constructor
     /*
      * Fully qualified constructor
      */
-    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, Calendar endDate) {
-        super(taskName, taskId, startDate, isCompleted, "cumulative");
+    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate, double goalToReach, String goalUnits) {
+        super(taskName, taskId, startDate, isCompleted, "cumulative", notes);
         this.endDate = endDate;
+        this.goalToReach = goalToReach;
+        this.goalUnits = goalUnits;
+        this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
+    
+    
+    public String getTaskUnits () {
+        return goalUnits;
+    }
     
     /*
      * Mutator method - endDate
@@ -96,15 +116,37 @@ public class CumulativeTask extends Task {
         return this.endDate;
     } //end getEndDate method
 
+        // method to add to the ArrayList CumulativeHistory
+    public void addProgress(Calendar dateCompleted, double progress) {
+        CumulativeHistoryStruct newEntry = new CumulativeHistoryStruct(dateCompleted,progress);
+        if (cumulativeHistory.contains(newEntry)) {
+            int oldIndex = cumulativeHistory.indexOf(newEntry);
+            cumulativeHistory.get(oldIndex).progress = progress;
+        } else {
+            cumulativeHistory.add(new CumulativeHistoryStruct(dateCompleted,progress));
+        }
+    } // end addProgress() method
+    
+            // method to add to the ArrayList CumulativeHistory
+    public double getProgress(Calendar dateProgress) {
+        CumulativeHistoryStruct checkEntry = new CumulativeHistoryStruct(dateProgress,0.0);
+        if (cumulativeHistory.contains(checkEntry)) {
+            int checkIndex = cumulativeHistory.indexOf(checkEntry);
+            return cumulativeHistory.get(checkIndex).progress;
+        } else {
+            return 0.0;
+        }
+    } // end addProgress() method
+    
     /*
      * This method will return the percentage of the user's goal
      * that has been completed (e.g. 50% of books read for
      * overall goal). 
      */
-    public String checkStatus(double numCompleted, double goalToReach) {
+    public String checkStatus(double numCompleted) {
     	
     	double tempCompleted = numCompleted; //number completed toward goal
-    	double tempGoal = goalToReach; //goal to reach for task
+        double tempGoal = goalToReach;
     	double percentageDone = 0.0; //percentage completed
     	
     	//if number completed > 0, then calculate percentage
@@ -152,6 +194,29 @@ public class CumulativeTask extends Task {
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
 
+    }
+    
+    class CumulativeHistoryStruct {
+        public Calendar date;
+        public double progress;
+        
+        CumulativeHistoryStruct() {
+            date = null;
+            progress = 0.0;
+        }
+        CumulativeHistoryStruct(Calendar date,double progress) {
+            this.date = date;
+            this.progress = progress;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof CumulativeHistoryStruct) {
+                return date.equals(((CumulativeHistoryStruct)o).date);
+            } else {
+                return false;
+            }
+        }
     }
 
 }//end CumulativeTask class
