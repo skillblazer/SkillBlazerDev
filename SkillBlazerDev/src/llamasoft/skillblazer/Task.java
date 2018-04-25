@@ -21,7 +21,18 @@ import java.util.Calendar;
 
 public class Task {
 
-    // member fields
+  /* including for now @Override
+    public String toString() {
+        return "Taskname is: " + taskName + "TaskID is: " + taskId +
+                "StartDate is: " + startDate + "isCompleted is: " +
+                isCompleted + "Type is: " + type;
+    }
+
+    Calendar getStartDate() {
+        return this.startDate; // placeholder return statement -> needs real code!
+    } */
+
+   // member fields
     protected String taskName;                                          // string holding task name
     protected long taskId;                                              // long holding task ID
     protected Calendar startDate;                                       // Calendar object holding start date

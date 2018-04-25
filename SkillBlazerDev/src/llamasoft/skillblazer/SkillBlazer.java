@@ -18,11 +18,14 @@ package llamasoft.skillblazer;
 
 // imports
 import java.io.IOException;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import java.util.Date;
+
 import java.util.Iterator;
 import javafx.application.*;
 import javafx.scene.*;
@@ -33,7 +36,9 @@ import twitter4j.TwitterException;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
+
 import javafx.scene.image.Image;
+
 import java.util.GregorianCalendar;
 // uncomment for Macintosh style
 //import com.aquafx_project.*;
@@ -62,7 +67,7 @@ public class SkillBlazer extends Application {
 
     // These objects will conduct the startup routine
     static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
-    static JSONWriter jsonWriter = new JSONWriter(); // may not be necessary
+
 
     // sets up the main stage, scenes and such
     @Override
@@ -73,6 +78,7 @@ public class SkillBlazer extends Application {
         // window = primaryStage
         window = primaryStage;
         // sets title of main window (primaryStage)
+
         window.setTitle("Skillblazer Habit Tracker");
         // adds Icon to primaryStage
         window.getIcons().add(new Image("/llama.jpg"));
@@ -597,6 +603,7 @@ public class SkillBlazer extends Application {
     class Options {
 
         // member fields - GUI elements
+
         private Button notificationsButton;                     // button for notifications screen
         private Button deleteSkillHistoryButton;                // button for deleting skill history screen
         private Button deleteGoalButton;                        // button for deleting goal from calendar screen
@@ -609,8 +616,10 @@ public class SkillBlazer extends Application {
             optionsStage = new Stage();
             // sets title
             optionsStage.setTitle("Options");
+
             // add skillblazer icon
             optionsStage.getIcons().add(new Image("/llama.jpg"));
+
             // hbox for 1st vbox row
             HBox optionsButtonHbox1 = new HBox();
             // sets alignment for hbox
@@ -898,7 +907,6 @@ public class SkillBlazer extends Application {
             // creates new regions (for layout/alignment purposes)
             Region emptyRegion1 = new Region();
             Region emptyRegion2 = new Region();
-            Region emptyRegion3 = new Region();
 
             // adds all hboxes and regions to optionsVBox
             optionsVBox.getChildren().add(optionsButtonHbox1);
@@ -906,8 +914,6 @@ public class SkillBlazer extends Application {
             optionsVBox.getChildren().add(optionsButtonHbox2);
             optionsVBox.getChildren().add(emptyRegion2);
             optionsVBox.getChildren().add(optionsButtonHbox3);
-            optionsVBox.getChildren().add(emptyRegion3);
-            optionsVBox.getChildren().add(optionsButtonHbox4);
 
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVBox, 350, 350);
@@ -947,8 +953,10 @@ public class SkillBlazer extends Application {
             // creates new stage
             lifetimeMetricsStage = new Stage();
             // sets title
+
             lifetimeMetricsStage.setTitle("Lifetime Metrics");
             lifetimeMetricsStage.getIcons().add(new Image("/llama.jpg"));
+
             // new vbox layout
             VBox lifeMetricsVbox = new VBox();
             // necessary to pull css specs from style sheet
@@ -1014,6 +1022,7 @@ public class SkillBlazer extends Application {
             habitEntryStage = new Stage();
             // sets title for habitEntryStage
             habitEntryStage.setTitle("Habit/Skill Creation");
+
             // adds skillblazer icon
             habitEntryStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
@@ -1483,7 +1492,7 @@ public class SkillBlazer extends Application {
             Stage progressStage = new Stage();
             // sets title for progressStage
             progressStage.setTitle("Habit Progress");
-            progressStage.getIcons().add(new Image("/llama.jpg"));
+
             // hbox for 1st vbox row
             HBox progressButtonHbox1 = new HBox();
             // pulls css styling information
@@ -1669,13 +1678,14 @@ public class SkillBlazer extends Application {
     // main method
     public static void main(String[] args) {
         /*
-         * These three objects need to be invoked in main so the rest of the
+         * These two objects need to be invoked in main so the rest of the
          * application can access the UserProfile and the list of Task objects
          * that were loaded from disk.
          */
         ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
-        Iterator<Task> taskIterator = arrayOfTasks.iterator();
-        UserProfile skbUserProfile = jsonLoader.getProfileFromLoader();
+        UserProfile skbUserProfile = jsonLoader.parseAndReturnUserProfile();
+
+
 
         launch(args);               // opens the JavaFX Stage
     } // end main method

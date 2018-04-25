@@ -174,6 +174,7 @@ public class CustomTask extends Task {
         // add the JSONArray to the JSONObject, name the array "days"
         jsonObject.put("days", jsonArray);
 
+        System.out.println("In the custom task writeToJSON() method");
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
 
