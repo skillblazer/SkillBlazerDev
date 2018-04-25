@@ -3,7 +3,7 @@
  * File Name: UserProfile.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/16/2018
+ * Date: 4/24/2018
  * 
  * Description:
  * 
@@ -116,6 +116,20 @@ public class UserProfile {
 
     /*
      * Accessor Method - type
+     * Increments taskNumber by one to provide
+     * correct file names for JSON data files.
+     */
+    public long incrementTaskNumber(long taskNum) {
+    	long taskNumber = taskNum;
+    	
+    	taskNumber += taskNumber;
+    	
+    	return taskNumber;
+    }
+    
+    /*
+     * Determines username of user accessing skillblazer
+     * application and presents it.
      */
     public String getType() {
         return this.type;

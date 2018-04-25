@@ -22,21 +22,9 @@ public class DailyTask extends Task {
     private int currentStreak;
     private int bestStreak;
 
-    public boolean getIsCompleted() {
-        return isCompleted;
-    }
-
-    protected void setCompleted() {
-        isCompleted = true;
-    }
-
-    public String getTaskName() {
-        return this.taskName;
-    }
-
     @Override
-    public String toString() {
-        return super.toString() + "CurrentStreak is: " + currentStreak +
+    public String infoString() {
+        return super.infoString() + "CurrentStreak is: " + currentStreak +
                 "BestStreak is: " + bestStreak;
     }
 
@@ -59,15 +47,24 @@ public class DailyTask extends Task {
     }
     
      /*
-     *  Fully qualified constructor (needed for initializing objects stored on disk
+     *  Old Fully qualified constructor (needed for initializing objects stored on disk
      */
     public DailyTask(String taskName, long taskId, Calendar startDate,
                      boolean isCompleted, int currentStreak, int bestStreak) {
-        super(taskName, taskId, startDate, isCompleted, "daily");
+        super(taskName, taskId, startDate, isCompleted, "daily", "");
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end DailyTask constructor
+    
+     /*
+     *  New Fully qualified constructor (needed for initializing objects stored on disk
+     */
+    public DailyTask(String taskName, long taskId, Calendar startDate,
+                     boolean isCompleted, String notes) {
+        super(taskName, taskId, startDate, isCompleted, "daily", notes);
 
+    } //end DailyTask constructor
+    
 
     @Override
     public void writeTaskToJSON() {
