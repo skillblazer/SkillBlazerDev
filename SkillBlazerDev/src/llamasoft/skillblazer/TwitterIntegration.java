@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/23/2018
+ * Date: 4/24/2018
  * 
  * Description:
  * 
@@ -391,6 +391,10 @@ public class TwitterIntegration {
 
 	} // end of display method
 
+	/*
+	 * Determine if user access token file exists and if not, 
+	 * it creates the file in the Skillblazer directory.
+	 */
 	private static boolean determineFileExists() throws IOException {
 		// read user tokens from designated file
 		String homePath = System.getProperty("user.home");

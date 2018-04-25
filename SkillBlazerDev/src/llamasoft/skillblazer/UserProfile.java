@@ -3,7 +3,7 @@
  * File Name: UserProfile.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/16/2018
+ * Date: 4/24/2018
  * 
  * Description:
  * 
