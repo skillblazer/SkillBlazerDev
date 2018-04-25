@@ -26,7 +26,7 @@ public class UserProfile {
     private String preferredSaveLocation; //custom preferred save location if user wants
 	private String userName = ""; //username for user
     Calendar userStartDate = new GregorianCalendar(); //start date that user began using skillblazer
-    public long taskNumber = 0; //increment number for task ID available
+    long taskNumber; //increment number for task ID available
 
     /*
      * Default Class Constructor
@@ -59,6 +59,10 @@ public class UserProfile {
         this.userStartDate = userStartDate;
         this.taskNumber = taskNumber;
     } //end UserProfile constructor
+
+    public void setUserName(String newName) {
+        this.userName = newName;
+    }
 
     @Override
     public String toString() {
@@ -137,7 +141,8 @@ public class UserProfile {
     public long getTaskNumber() {
     	return taskNumber;
     } //end getTaskNumber method
-    
+
+
     /*
      * Mutator Method - taskNumber
      */

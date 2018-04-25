@@ -45,6 +45,7 @@ class SkillBlazerInitializer {
     /*
      * Read the contents of the SBinit.txt file from the disk
      * Return the contents as an ArrayList<String>
+     * NOTE: This will return a raw list of the contents of \\SkillBlazer\\
      */
     ArrayList<String> getFileList() {
         ArrayList<String> listOfJsonFiles = new ArrayList<>();
@@ -54,30 +55,36 @@ class SkillBlazerInitializer {
         java.io.File file = new java.io.File(userFileLocation + initFile);
 
         try {
-            if (!directory.exists()) {
-                // create the directory if it doesn't already exists or was
-                // deleted
-                createSkillBlazerDirectory();
-            }
-            if (!file.exists()) {
-                // if the SBinit.txt file doesn't exist, go ahead and create it for later
-                // (usually occurs when the user runs the program for the very
-                // first time).
-                java.io.PrintWriter output = new java.io.PrintWriter(file);
-                output.close();  // close the file
-            }
             if (file.exists()) {  // SBinit.txt already exists on disk
                 Scanner input = new Scanner(file);
 
                 while (input.hasNext()) {
                     java.io.File tempFile = new java.io.File(userFileLocation + input.next());
 
-                    if (tempFile.exists()) { // is the file still in the SkillBlazer directory?
-                        // take the contents of SBinit.txt and ADD them to the ArrayList
+                    if(tempFile.exists()) {
                         listOfJsonFiles.add(tempFile.toString());
                     }
                 }
                 input.close();
+            }
+            else if (!directory.exists()) {
+                // create the directory if it doesn't already exists or was
+                // deleted
+                createSkillBlazerDirectory();  // create the directory on disk
+                java.io.PrintWriter output = new java.io.PrintWriter(file);  // create the file
+                output.flush();
+                output.close();
+
+
+            }
+            else if (!file.exists()) {
+                // if the SBinit.txt file doesn't exist, go ahead and create it for later
+                // (usually occurs when the user runs the program for the very
+                // first time).
+                java.io.PrintWriter output = new java.io.PrintWriter(file);
+                output.flush();
+                output.close();  // close the file
+
             }
         }
         catch (IOException e) {

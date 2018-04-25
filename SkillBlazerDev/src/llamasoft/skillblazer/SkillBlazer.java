@@ -36,7 +36,7 @@ public class SkillBlazer extends Application {
 
     // These objects will conduct the startup routine
     static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
-    static JSONWriter jsonWriter = new JSONWriter(); // may not be necessary
+
 
     // sets up the main stage, scenes and such
     @Override
@@ -1260,35 +1260,16 @@ public class SkillBlazer extends Application {
     // main method
     public static void main(String[] args) {
         /*
-         * These three objects need to be invoked in main so the rest of the
+         * These two objects need to be invoked in main so the rest of the
          * application can access the UserProfile and the list of Task objects
          * that were loaded from disk.
          */
-        Calendar now = new GregorianCalendar();
         ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
-        Iterator<Task> taskIterator = arrayOfTasks.iterator();
+        UserProfile skbUserProfile = jsonLoader.parseAndReturnUserProfile();
 
-        UserProfile skbUserProfile = jsonLoader.getUserProfile();
 
-        while (taskIterator.hasNext()) {
-            System.out.println("PRINTING OUT A USER FILE IN main() !!!");
-            System.out.println(taskIterator.next().toString());
-        }
 
-        System.out.println(skbUserProfile.toString());
-
-//        ArrayList<String> days = new ArrayList<>();
-//        days.add("monday");
-//        days.add("tuesday");
-//        days.add("friday");
-//        CustomTask cTask = new CustomTask("test the code erryday",
-//                1, now, false, 2, 3, days );
-//
-//        arrayOfTasks.add(cTask);
-
-       JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);
-
-        //launch(args);               // opens the JavaFX Stage
+        launch(args);               // opens the JavaFX Stage
     } // end main method
 
 } // end class Skillblazer

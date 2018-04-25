@@ -104,79 +104,72 @@ public class JSONWriter {
     /*
      * addFileToInit(String fileName) will be used by all objects
      * that need to persist in .json files to carefully ensure they are
-     * listed in SBinit.txt WITHOUT overwriting existing file contents
+     * listed in SBinit.txt
      *
-     * This class will also create SBinit.txt at the location given by
-     * SkillBlazerInitializer.getLastJSONFilePath() if is not found!
+     * addFileToInit() will get the full list of existing files from SBinit.txt
+     * via a call to getFileContents().  If the filename the caller needs to add
+     * is not already listed, the string will be added to the same arraylist
+     * and an iterator will re-write the entire contents of SBinit.txt
+     * so existing filenames not lost
      *
      * */
     static void addFileToInit(String fileName) {
-        boolean isListed = false;
-        // get the contents of SBinit.txt, create the file if it doesn't exist
+        // getFileContents() will populate the ArrayList from the
+        // SBinit.txt file contents on disk,
+        // and create the file if it doesn't already exist
         ArrayList<String> contents = getFileContents();
-        Iterator<String> iterator = contents.iterator();
 
-        try {
-            java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() + "SBinit.txt");
-            PrintWriter output = new PrintWriter(file);
+        if(!contents.contains(fileName)) { //if the arraylist doesn't already contain 'fileName'
+            contents.add(fileName); // add it to the arraylist
 
-            // prep the contents arraylist for writing
-            // ensure that empty doesn't stay in the arraylist
-            // place new fileName into ArrayList
-            while(iterator.hasNext()) {
-                if (iterator.next().equals("empty")) {
-                    contents.remove("empty");
-                    contents.add(fileName); // list was empty - add the fileName
-                    output.close();
-                    break; // exit the loop now that the fileName is listed
-                }
-                if (iterator.hasNext() && iterator.next().equals(fileName)) {
-                    isListed = true;  //method will exit if isListed == true
-                    output.close();
-                }
-            } //end while loop
-            if (!isListed) { // fileName not already in SBinit.txt
-                contents.add(fileName); // add fileName to contents (ArrayList)
+            try {
+                java.io.File file = new java.io.File(SkillBlazerInitializer.getAbsoluteInitFilePath());
+                PrintWriter output = new PrintWriter(file);
+                Iterator<String> contentIterator = contents.iterator();
 
-                for (String item : contents) {
-                    output.println(item); // write the fileName to SBinit.txt
+                // fileName was not already in the ArrayList populated from disk
+                // rewrite the SBinit.txt file with the UPDATED ArrayList of filenames
+                while(contentIterator.hasNext()) { // if the contents ArrayList has another filename
+                    output.println(contentIterator.next()); // add the filename to SBinit.txt
                 }
                 output.flush();
                 output.close();
             }
-        }
-        catch (IOException e) {
-            System.out.println("SBinit.txt not accessible when attempting to write " + SkillBlazerInitializer.getLastJSONFilePath() +
-                    fileName + " info to disk.");
-        }
+            catch (IOException e) {
+                System.out.println("Could not access SBinit.txt to add filename to disk");
+                e.printStackTrace();
+            }
+        }//end if selection
     } //end method addFileToInit()
 
 
     static ArrayList<String> getFileContents() {
-        ArrayList<String> contents = new ArrayList<>();
+        ArrayList<String> listOfFiles = new ArrayList<>();
 
         try {
-            java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() + "SBinit.txt");
-            Scanner input = new Scanner(file);
+            java.io.File file = new java.io.File(SkillBlazerInitializer.getAbsoluteInitFilePath());
 
-            if(!file.exists()) { // SBinit.txt doesn't already exist
-                java.io.PrintWriter output = new java.io.PrintWriter(file);  // create the file
-                output.println("empty");
+            if (file.exists()) { // SBinit.txt is present on disk
+                Scanner input = new Scanner(file);
+
+                while (input.hasNext()) {
+                    listOfFiles.add(input.next());
+                } //end while loop
+                input.close();
+            }
+            else { // SBinit.txt doesn't exist, create it and return an empty list
+                java.io.PrintWriter output = new java.io.PrintWriter(file);
                 output.flush();
                 output.close();
-            } else { // file exists, read its contents and add to ArrayList<String>
-                while (input.hasNext()) {
-                    contents.add(input.next());
-                }
+                return listOfFiles;
             }
         }
         catch (IOException e) {
-            System.out.println("Error while trying to determine SBinit.txt " +
-                    "file contents");
+            System.out.println("Could not access SBinit.txt to get file contents!");
             e.printStackTrace();
         }
-        // pass the ArrayList<String> back to caller
-        return contents;
-    } //end method getFileContents()
+        return listOfFiles;
+    } //end method getFileContents();
+
 
 }

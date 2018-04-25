@@ -27,9 +27,7 @@ public class JSONLoader {
     // At startup you should be calling loadFromJSON()
     public ArrayList<Task> getTasks() { return this.userTasks; }
 
-    public UserProfile getUserProfile() {
-        return userProfile;
-    }
+    public UserProfile getUserProfile() { return userProfile; }
 
     protected ArrayList<Task> loadFromJSON() {
         String temp;
@@ -62,15 +60,11 @@ public class JSONLoader {
                 System.out.println("\nIOException error thrown\n");
                 e.printStackTrace();
             }
-            if (temp.contains("userProfile")) {
-                // call the method to instantiate the UserProfile object
-                userProfile = parseAndReturnUserProfile(jsonUserObject);
-            } else {
+            if (temp.contains("skbl")) {
                 // call the method to instantiate a Task-subclass object and
                 // add it to the arraylist of tasks
                 parseCreateAndAddTaskToList(jsonUserObject, userTasks);
             }
-
         } //end while loop
         return userTasks;
     }
@@ -78,18 +72,18 @@ public class JSONLoader {
 
     /*
      * Method to screen for files with skillblazer filenames and place them in
-     * an iterator for later use
+     * an ArrayList<String> for later use
      */
     private ArrayList<String> addActualFileNames() {
         String tempFileName;
         // get the list of all files in the "user.home" + "\\SkillBlazer\\"
         // home directory
         ArrayList<String> allFileNames = skillBlazerInit.getFileList();
-        // generate Iterator for all the (un filtered) files in the directory
+        // generate Iterator for all the (un-filtered) files in the directory
         Iterator<String> allFileIterator = allFileNames.iterator();
         // generate an Iterator that will reference the ArrayList<String>
         // that contains files we want to work with
-        ArrayList<String> actualFilenames = new ArrayList<>();
+        ArrayList<String> validatedFileNames = new ArrayList<>();
         /*
          * look for SkillBlazer files in the directory
          */
@@ -102,13 +96,12 @@ public class JSONLoader {
                     // not a task file?  is it the UserProfile data? :
                 tempFileName.contains("userProfile.json")) {
                 // if the filename has a skillblazer format add it to the list
-                actualFilenames.add(tempFileName);
+                validatedFileNames.add(tempFileName);
             }
         } //end while loop
 
-        // return an Iterator<String> instantiated on
-        // ArrayList<String> actualFilenames
-        return actualFilenames;
+        // return ArrayList<String> validatedFileNames
+        return validatedFileNames;
     }
 
 
@@ -117,18 +110,42 @@ public class JSONLoader {
      * a UserProfile object
      * @return UserProfile object
      */
-    private UserProfile parseAndReturnUserProfile(JSONObject jsonObject) {
-        String userName = (String) jsonObject.get("userName");
-        long taskNumber = (long) jsonObject.get("taskNumber");
-        int year = convertInt((long) (jsonObject.get("year")));
-        int month = convertInt((long) jsonObject.get("month"));
-        int day = convertInt((long) jsonObject.get("date"));
+    public UserProfile parseAndReturnUserProfile() {
+        try {
+            FileReader fileReader = new FileReader(SkillBlazerInitializer.getLastJSONFilePath() +
+                                                            "userProfile.json");
 
-        Calendar userStartDate = new GregorianCalendar();
-        userStartDate.set(year, month, day);
+            JSONObject jsonObject = (JSONObject)(jsonParser.parse(fileReader));
 
-        JSONLoader.userProfile = (new UserProfile(userName, userStartDate, taskNumber));
+            java.io.File profileFile = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() +
+                                                            "userProfile.json");
 
+            if (profileFile.exists()) {
+                String userName = (String) jsonObject.get("userName");
+                long taskNumber = (long) jsonObject.get("taskNumber");
+                int year = convertInt((long) (jsonObject.get("year")));
+                int month = convertInt((long) jsonObject.get("month"));
+                int day = convertInt((long) jsonObject.get("date"));
+
+                Calendar userStartDate = new GregorianCalendar();
+                userStartDate.set(year, month, day);
+
+                userProfile = (new UserProfile(userName, userStartDate, taskNumber));
+            }
+            else if (!profileFile.exists()) { // if the userprofile doesn't exist, create a default one
+                userProfile = new UserProfile("New User", (new GregorianCalendar()), 0);
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Unable to ACCESS userProfile from: " +
+                    SkillBlazerInitializer.getLastJSONFilePath());
+            userProfile = (new UserProfile("New User", (new GregorianCalendar()), 0));
+        }
+        catch (ParseException e) {
+            System.out.println("Unable to PARSE json file: " +
+                    SkillBlazerInitializer.getLastJSONFilePath() + " userProfile.json");
+            userProfile = (new UserProfile("New User", (new GregorianCalendar()), 0));
+        }
         return userProfile;
     }
 

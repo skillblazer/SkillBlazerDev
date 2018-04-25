@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5acd183e-8273-463c-a396-4f70d515ec15" name="Default" comment="Various changes to improve ability to save Tasks to disk.  Added toString() and getType() methods to UserProfile.java.  Created method convertInt() to JSONLoader.java.  Removed tons of unnecessary values for parsing numerics from JSON files in the parseCreateAndAddTaskToList and parseAndReturnUserProfile methods in JSONLoader.java.  Added method getFileContents() to JSONWriter to make an arraylist of existing file contents that is passed back to addFileToInit() in JSONWriter, which intelligently addes filenames to SBinit.txt.  (Refactored JSONWriter to correct the behavior of adding files to this list).  Removed TODOs in a couple places, made updates to commenting throughout the JSONWriter, JSONLoader and SkillBlazerInitializer files.  Added functionality to getFileList() in SkillBlazerInitializer so that it makes sure that files listed in SBinit.txt are still present in the SkillBlazer folder on disk.">
+    <list default="true" id="5acd183e-8273-463c-a396-4f70d515ec15" name="Default" comment="Rewrote">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazerInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazerInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,16 +19,16 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6588995">
+    <splitter split-orientation="horizontal" split-proportion="0.62577206">
       <split-first>
-        <splitter split-orientation="horizontal" split-proportion="0.4306891">
+        <splitter split-orientation="horizontal" split-proportion="0.43804392">
           <split-first>
             <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
               <file leaf-file-name="CumulativeTask.java" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="819">
-                      <caret line="63" column="38" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
+                    <state relative-caret-position="-42">
+                      <caret line="33" selection-start-line="33" selection-end-line="33" />
                       <folding>
                         <element signature="n#!!doc" expanded="true" />
                       </folding>
@@ -32,11 +36,11 @@
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="CustomTask.java" pinned="false" current-in-tab="false">
+              <file leaf-file-name="CustomTask.java" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1344">
-                      <caret line="88" column="66" selection-start-line="88" selection-start-column="66" selection-end-line="88" selection-end-column="66" />
+                    <state relative-caret-position="231">
+                      <caret line="35" column="6" lean-forward="true" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
                     </state>
                   </provider>
                 </entry>
@@ -44,8 +48,8 @@
               <file leaf-file-name="DailyTask.java" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1449">
-                      <caret line="81" selection-start-line="81" selection-end-line="81" />
+                    <state relative-caret-position="567">
+                      <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
                     </state>
                   </provider>
                 </entry>
@@ -53,7 +57,7 @@
               <file leaf-file-name="WeeklyTask.java" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="945">
+                    <state relative-caret-position="987">
                       <caret line="54" selection-start-line="54" selection-end-line="54" />
                       <folding>
                         <element signature="e#1527#1528#0" expanded="true" />
@@ -63,14 +67,16 @@
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="UserProfile.java" pinned="false" current-in-tab="true">
+              <file leaf-file-name="UserProfile.java" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="709">
-                      <caret line="60" column="35" lean-forward="true" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
+                    <state relative-caret-position="259">
+                      <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
                       <folding>
                         <element signature="n#!!doc" expanded="true" />
                         <element signature="imports" expanded="true" />
+                        <element signature="e#2041#2042#0" expanded="true" />
+                        <element signature="e#2080#2081#0" expanded="true" />
                       </folding>
                     </state>
                   </provider>
@@ -79,8 +85,8 @@
               <file leaf-file-name="Task.java" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="588">
-                      <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+                    <state relative-caret-position="882">
+                      <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
                     </state>
                   </provider>
                 </entry>
@@ -92,8 +98,17 @@
               <file leaf-file-name="JSONWriter.java" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="987">
-                      <caret line="52" column="49" lean-forward="true" selection-start-line="52" selection-start-column="49" selection-end-line="52" selection-end-column="49" />
+                    <state relative-caret-position="903">
+                      <caret line="102" selection-start-line="102" selection-end-line="102" />
+                      <folding>
+                        <element signature="docComment;class#JSONWriter#0" />
+                        <element signature="e#731#774#0" />
+                        <element signature="method#saveHistoryToFile#0;class#JSONWriter#0" />
+                        <element signature="e#1073#1103#0" />
+                        <element signature="method#saveUser#0;class#JSONWriter#0" />
+                        <element signature="method#writeUserProfileToDisk#0;class#JSONWriter#0" />
+                        <element signature="method#writeJSON#0;class#JSONWriter#0" />
+                      </folding>
                     </state>
                   </provider>
                 </entry>
@@ -101,13 +116,8 @@
               <file leaf-file-name="JSONLoader.java" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="966">
-                      <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
-                      <folding>
-                        <element signature="imports" expanded="true" />
-                        <element signature="e#932#933#0" expanded="true" />
-                        <element signature="e#966#967#0" expanded="true" />
-                      </folding>
+                    <state relative-caret-position="441">
+                      <caret line="157" selection-start-line="157" selection-end-line="157" />
                     </state>
                   </provider>
                 </entry>
@@ -118,24 +128,69 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="SkillBlazer.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="SkillBlazer.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1528">
-                  <caret line="1279" column="46" selection-start-line="1279" selection-start-column="46" selection-end-line="1279" selection-end-column="46" />
+                <state relative-caret-position="1281">
+                  <caret line="1273" lean-forward="true" selection-start-line="1273" selection-end-line="1273" />
+                  <folding>
+                    <element signature="method#start#0;class#SkillBlazer#0" />
+                    <element signature="class#2787:2984" />
+                    <element signature="method#handle#0;class#2787:2984" />
+                    <element signature="class#4385:4804" />
+                    <element signature="method#handle#0;class#4385:4804" />
+                    <element signature="class#5128:5548" />
+                    <element signature="method#handle#0;class#5128:5548" />
+                    <element signature="class#6038:6267" />
+                    <element signature="method#handle#0;class#6038:6267" />
+                    <element signature="method#drawCalendar#0;class#SkillBlazer#0" />
+                    <element signature="class#13855:14128" />
+                    <element signature="method#handle#0;class#13855:14128" />
+                    <element signature="e#16334#16375#0" />
+                    <element signature="e#16620#16659#0" />
+                    <element signature="class#16826:18008" />
+                    <element signature="method#handle#0;class#16826:18008" />
+                    <element signature="class#18103:19201" />
+                    <element signature="method#handle#0;class#18103:19201" />
+                    <element signature="class#21155:21436" />
+                    <element signature="method#handle#0;class#21155:21436" />
+                    <element signature="class#Options#0;class#SkillBlazer#0" />
+                    <element signature="method#Options#0;class#Options#0;class#SkillBlazer#0" />
+                    <element signature="class#22861:25605" />
+                    <element signature="method#handle#0;class#22861:25605" />
+                    <element signature="class#26409:29640" />
+                    <element signature="method#handle#0;class#26409:29640" />
+                    <element signature="class#30505:35095" />
+                    <element signature="method#handle#0;class#30505:35095" />
+                    <element signature="class#LifetimeMetrics#0;class#SkillBlazer#0" />
+                    <element signature="method#LifetimeMetrics#0;class#LifetimeMetrics#0;class#SkillBlazer#0" />
+                    <element signature="class#HabitCreationButton#0;class#SkillBlazer#0" />
+                    <element signature="method#HabitCreationButton#0;class#HabitCreationButton#0;class#SkillBlazer#0" />
+                    <element signature="e#42373#42400#0" />
+                    <element signature="e#49444#49852#0" />
+                    <element signature="e#49952#50354#0" />
+                    <element signature="e#50452#50854#0" />
+                    <element signature="e#50962#51365#0" />
+                    <element signature="class#52715:52956" />
+                    <element signature="method#handle#0;class#52715:52956" />
+                    <element signature="class#ProgressButton#0;class#SkillBlazer#0" />
+                    <element signature="method#ProgressButton#0;class#ProgressButton#0;class#SkillBlazer#0" />
+                    <element signature="e#57598#57642#0" />
+                    <element signature="e#58640#58695#0" />
+                    <element signature="class#60306:60549" />
+                    <element signature="method#handle#0;class#60306:60549" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="SkillBlazerInitializer.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="SkillBlazerInitializer.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazerInitializer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="798">
-                  <caret line="78" column="17" lean-forward="true" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
+                <state relative-caret-position="702">
+                  <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
                   <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1172#1173#0" expanded="true" />
-                    <element signature="e#1211#1212#0" expanded="true" />
+                    <element signature="method#getFileList#0;class#SkillBlazerInitializer#0" />
                   </folding>
                 </state>
               </provider>
@@ -181,16 +236,16 @@
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/TwitterIntegration.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Day.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CalendarCalculator.java" />
-        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java" />
-        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java" />
-        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java" />
-        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" />
-        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" />
+        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazerInitializer.java" />
+        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java" />
+        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java" />
+        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java" />
+        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" />
       </list>
     </option>
   </component>
@@ -202,8 +257,8 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
-    <option name="width" value="2372" />
-    <option name="height" value="1704" />
+    <option name="width" value="2765" />
+    <option name="height" value="2137" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -228,8 +283,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -252,6 +305,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -426,13 +481,10 @@
       <workItem from="1524362346460" duration="3666000" />
       <workItem from="1524373621304" duration="1201000" />
       <workItem from="1524380749124" duration="13633000" />
-    </task>
-    <task id="LOCAL-00016" summary="Adding everything from Design document into the Class files. - Added super() keywords to constructors">
-      <created>1523026827898</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1523026827898</updated>
+      <workItem from="1524580345568" duration="1182000" />
+      <workItem from="1524604149873" duration="1705000" />
+      <workItem from="1524654098638" duration="31000" />
+      <workItem from="1524654286041" duration="13248000" />
     </task>
     <task id="LOCAL-00017" summary="added TilePane calendarPane to CalendarCalculator.java">
       <created>1523027014843</created>
@@ -770,11 +822,18 @@
       <option name="project" value="LOCAL" />
       <updated>1524371976138</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="fixed maddening bug in SkillBlazerInitializer.java method getFileList() that was not returning file names from SBinit.txt correctly, thus causing items to never get parsed.  Now the bug is that SBinit.txt is not being updated correctly.">
+      <created>1524576696421</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1524576696421</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255240000" />
+    <option name="totallyTimeSpent" value="275083000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -798,72 +857,49 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32988676" />
       <window_info anchor="right" id="Maven Projects" order="4" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.18069917" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.28360415" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4997538" visible="true" weight="0.07239583" />
-      <window_info anchor="right" id="Database" order="5" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32988676" />
-      <window_info id="Structure" order="1" sideWeight="0.50024617" side_tool="true" visible="true" weight="0.07239583" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info id="Designer" order="3" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.329581" />
-      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.18073796" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28360415" />
-      <window_info id="Image Layers" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="2" />
-      <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="right" id="Theme Preview" order="7" />
+      <window_info id="Designer" order="3" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.07239583" />
       <window_info anchor="right" id="Database" order="5" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32988676" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32987142" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info id="UI Designer" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="7" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32998115" />
-      <window_info anchor="bottom" id="Messages" order="8" weight="0.32791728" />
-      <window_info anchor="right" id="Maven Projects" order="4" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.07239583" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32998115" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.28455284" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.18073796" />
       <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09049479" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.28455284" />
       <window_info id="Image Layers" order="6" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Database" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.18073796" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32998115" />
       <window_info id="Capture Tool" order="2" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -879,7 +915,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Completed the parseAndCreateTask(JSONObject jsonObject, ArrayList&lt;Task&gt; taskArrayList).  This method follows the fully defined constructors I added to Task, DailyTask, WeeklyTask, CustomTask and CumulativeTask earlier" />
     <MESSAGE value="added method private UserProfile parseAndReturnUserProfile(JSONObject jsonObject() to instantiate the UserProfile object using the contents of a userProfile.json file saved to disk" />
     <MESSAGE value="completed method JSONLoader.loadFromJSON()&#10;added and completed ArrayList&lt;Task&gt; JSONLoader.getTasks() for use during runtime&#10;refactored member fields and methods in CustomTask.java so that ArrayList&lt;String&gt; actualDaysInTask COMPLETELY REPLACES String[] daysOfWeek to avoid issues with uninstantiated (null) strings in String[] daysOfWeek {includes replacing .clone() with Iterators to copy state}" />
     <MESSAGE value="removed test method prior to commit for Phase 1 merges" />
@@ -904,11 +939,12 @@
     <MESSAGE value="Fixed a ton of cast issues once I had json files that were generated by json-simple and not by hand.&#10;Fixed the getStartDate() method in Task.java so it doesn't (literally) return null;&#10;This is working, but I think there are some possible bugs I need to test through before I push" />
     <MESSAGE value="added method convertInt(Long value) to JSONLoader.java to significantly reduce assignment statements in the parsing methods" />
     <MESSAGE value="Various changes to improve ability to save Tasks to disk.  Added toString() and getType() methods to UserProfile.java.  Created method convertInt() to JSONLoader.java.  Removed tons of unnecessary values for parsing numerics from JSON files in the parseCreateAndAddTaskToList and parseAndReturnUserProfile methods in JSONLoader.java.  Added method getFileContents() to JSONWriter to make an arraylist of existing file contents that is passed back to addFileToInit() in JSONWriter, which intelligently addes filenames to SBinit.txt.  (Refactored JSONWriter to correct the behavior of adding files to this list).  Removed TODOs in a couple places, made updates to commenting throughout the JSONWriter, JSONLoader and SkillBlazerInitializer files.  Added functionality to getFileList() in SkillBlazerInitializer so that it makes sure that files listed in SBinit.txt are still present in the SkillBlazer folder on disk." />
-    <option name="LAST_COMMIT_MESSAGE" value="Various changes to improve ability to save Tasks to disk.  Added toString() and getType() methods to UserProfile.java.  Created method convertInt() to JSONLoader.java.  Removed tons of unnecessary values for parsing numerics from JSON files in the parseCreateAndAddTaskToList and parseAndReturnUserProfile methods in JSONLoader.java.  Added method getFileContents() to JSONWriter to make an arraylist of existing file contents that is passed back to addFileToInit() in JSONWriter, which intelligently addes filenames to SBinit.txt.  (Refactored JSONWriter to correct the behavior of adding files to this list).  Removed TODOs in a couple places, made updates to commenting throughout the JSONWriter, JSONLoader and SkillBlazerInitializer files.  Added functionality to getFileList() in SkillBlazerInitializer so that it makes sure that files listed in SBinit.txt are still present in the SkillBlazer folder on disk." />
+    <MESSAGE value="fixed maddening bug in SkillBlazerInitializer.java method getFileList() that was not returning file names from SBinit.txt correctly, thus causing items to never get parsed.  Now the bug is that SBinit.txt is not being updated correctly." />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed maddening bug in SkillBlazerInitializer.java method getFileList() that was not returning file names from SBinit.txt correctly, thus causing items to never get parsed.  Now the bug is that SBinit.txt is not being updated correctly." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="6" />
+      <option name="time" value="8" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -1332,28 +1368,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1449">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
+        <state relative-caret-position="987">
           <caret line="54" selection-start-line="54" selection-end-line="54" />
           <folding>
             <element signature="e#1527#1528#0" expanded="true" />
             <element signature="e#1565#1566#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -1368,69 +1390,134 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="882">
+          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="819">
-          <caret line="63" column="38" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
+        <state relative-caret-position="-42">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#2041#2042#0" expanded="true" />
+            <element signature="e#2080#2081#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1344">
-          <caret line="88" column="66" selection-start-line="88" selection-start-column="66" selection-end-line="88" selection-end-column="66" />
+        <state relative-caret-position="231">
+          <caret line="35" column="6" lean-forward="true" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="987">
-          <caret line="52" column="49" lean-forward="true" selection-start-line="52" selection-start-column="49" selection-end-line="52" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="966">
-          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+        <state relative-caret-position="1281">
+          <caret line="1273" lean-forward="true" selection-start-line="1273" selection-end-line="1273" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#932#933#0" expanded="true" />
-            <element signature="e#966#967#0" expanded="true" />
+            <element signature="method#start#0;class#SkillBlazer#0" />
+            <element signature="class#2787:2984" />
+            <element signature="method#handle#0;class#2787:2984" />
+            <element signature="class#4385:4804" />
+            <element signature="method#handle#0;class#4385:4804" />
+            <element signature="class#5128:5548" />
+            <element signature="method#handle#0;class#5128:5548" />
+            <element signature="class#6038:6267" />
+            <element signature="method#handle#0;class#6038:6267" />
+            <element signature="method#drawCalendar#0;class#SkillBlazer#0" />
+            <element signature="class#13855:14128" />
+            <element signature="method#handle#0;class#13855:14128" />
+            <element signature="e#16334#16375#0" />
+            <element signature="e#16620#16659#0" />
+            <element signature="class#16826:18008" />
+            <element signature="method#handle#0;class#16826:18008" />
+            <element signature="class#18103:19201" />
+            <element signature="method#handle#0;class#18103:19201" />
+            <element signature="class#21155:21436" />
+            <element signature="method#handle#0;class#21155:21436" />
+            <element signature="class#Options#0;class#SkillBlazer#0" />
+            <element signature="method#Options#0;class#Options#0;class#SkillBlazer#0" />
+            <element signature="class#22861:25605" />
+            <element signature="method#handle#0;class#22861:25605" />
+            <element signature="class#26409:29640" />
+            <element signature="method#handle#0;class#26409:29640" />
+            <element signature="class#30505:35095" />
+            <element signature="method#handle#0;class#30505:35095" />
+            <element signature="class#LifetimeMetrics#0;class#SkillBlazer#0" />
+            <element signature="method#LifetimeMetrics#0;class#LifetimeMetrics#0;class#SkillBlazer#0" />
+            <element signature="class#HabitCreationButton#0;class#SkillBlazer#0" />
+            <element signature="method#HabitCreationButton#0;class#HabitCreationButton#0;class#SkillBlazer#0" />
+            <element signature="e#42373#42400#0" />
+            <element signature="e#49444#49852#0" />
+            <element signature="e#49952#50354#0" />
+            <element signature="e#50452#50854#0" />
+            <element signature="e#50962#51365#0" />
+            <element signature="class#52715:52956" />
+            <element signature="method#handle#0;class#52715:52956" />
+            <element signature="class#ProgressButton#0;class#SkillBlazer#0" />
+            <element signature="method#ProgressButton#0;class#ProgressButton#0;class#SkillBlazer#0" />
+            <element signature="e#57598#57642#0" />
+            <element signature="e#58640#58695#0" />
+            <element signature="class#60306:60549" />
+            <element signature="method#handle#0;class#60306:60549" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazerInitializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="798">
-          <caret line="78" column="17" lean-forward="true" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
+        <state relative-caret-position="702">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1172#1173#0" expanded="true" />
-            <element signature="e#1211#1212#0" expanded="true" />
+            <element signature="method#getFileList#0;class#SkillBlazerInitializer#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="709">
-          <caret line="60" column="35" lean-forward="true" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
+        <state relative-caret-position="903">
+          <caret line="102" selection-start-line="102" selection-end-line="102" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#JSONWriter#0" />
+            <element signature="e#731#774#0" />
+            <element signature="method#saveHistoryToFile#0;class#JSONWriter#0" />
+            <element signature="e#1073#1103#0" />
+            <element signature="method#saveUser#0;class#JSONWriter#0" />
+            <element signature="method#writeUserProfileToDisk#0;class#JSONWriter#0" />
+            <element signature="method#writeJSON#0;class#JSONWriter#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1528">
-          <caret line="1279" column="46" selection-start-line="1279" selection-start-column="46" selection-end-line="1279" selection-end-column="46" />
+        <state relative-caret-position="441">
+          <caret line="157" selection-start-line="157" selection-end-line="157" />
         </state>
       </provider>
     </entry>
