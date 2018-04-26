@@ -1731,7 +1731,9 @@ public class SkillBlazer extends Application {
                 if (mt instanceof DailyTask) {
                     System.out.println(((DailyTask)mt).getCurrentStreak(dateProgress) + " - " + ((DailyTask)mt).getBestStreak() );
                 }
-                    
+                if (mt instanceof WeeklyTask) {
+                    System.out.println(((WeeklyTask)mt).getCurrentStreak(dateProgress) + " - " + ((WeeklyTask)mt).getBestStreak() );
+                }    
                                                      // ****TO DO: Save to JSON file
             }
             return true;

@@ -60,8 +60,8 @@ public class DailyTask extends Task {
         }
         Collections.sort(datesCompleted);
         for (i=1;i<datesCompleted.size();i++) {
-            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH),datesCompleted.get(i).get(Calendar.DATE));
-            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH),datesCompleted.get(i-1).get(Calendar.DATE));
+            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH)+1,datesCompleted.get(i-1).get(Calendar.DATE));
             long numDaysBetween = DAYS.between(compare2,compare1);
             if (numDaysBetween==1) {
                 currentStreak += 1;
@@ -80,8 +80,8 @@ public class DailyTask extends Task {
             i=datesCompleted.size()-1;
         }  
         // Catch for current streak not making it to today or yesterday
-        LocalDate compare1 = LocalDate.of(todaysDate.get(Calendar.YEAR),todaysDate.get(Calendar.MONTH),todaysDate.get(Calendar.DATE));
-        LocalDate compare2 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH),datesCompleted.get(i).get(Calendar.DATE));
+        LocalDate compare1 = LocalDate.of(todaysDate.get(Calendar.YEAR),todaysDate.get(Calendar.MONTH)+1,todaysDate.get(Calendar.DATE));
+        LocalDate compare2 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
         long numDaysBetween = DAYS.between(compare2,compare1);
         if (numDaysBetween > 1) {
             currentStreak = 0;
@@ -105,8 +105,8 @@ public class DailyTask extends Task {
         }
         Collections.sort(datesCompleted);
         for (i=1;i<datesCompleted.size();i++) {
-            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH),datesCompleted.get(i).get(Calendar.DATE));
-            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH),datesCompleted.get(i-1).get(Calendar.DATE));
+            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH)+1,datesCompleted.get(i-1).get(Calendar.DATE));
             long numDaysBetween = DAYS.between(compare2,compare1);
             if (numDaysBetween==1) {
                 currentStreak += 1;

@@ -13,15 +13,16 @@ package llamasoft.skillblazer;
  * pertains to the number of weeks in a row (as opposed to days in  row).
  */
 
+import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
 import org.json.simple.JSONObject;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 
 public class WeeklyTask extends Task {
 
-    private int currentStreak;
-    private int bestStreak;
 
     public WeeklyTask() {
         super();
@@ -37,8 +38,6 @@ public class WeeklyTask extends Task {
      */
     public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, int currentStreak, int bestStreak) {
         super(taskName, taskId, startDate, isCompleted, "weekly", "");
-        this.currentStreak = currentStreak;
-        this.bestStreak = bestStreak;
     } //end WeeklyTask constructor
     
      /*
@@ -49,12 +48,74 @@ public class WeeklyTask extends Task {
     } //end WeeklyTask constructor
 
 
-    public int getCurrentStreak() {
-        return this.currentStreak;
+    public int getCurrentStreak(Calendar todaysDate) {
+        int i;
+        int currentStreak=0;
+        if (datesCompleted.size() > 0) {
+            currentStreak = 1;
+        } else {
+            return 0;
+        }
+        Collections.sort(datesCompleted);
+        for (i=1;i<datesCompleted.size();i++) {
+            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH)+1,datesCompleted.get(i-1).get(Calendar.DATE));
+            long numDaysBetween = DAYS.between(compare2,compare1);
+            if (numDaysBetween==7) {
+                currentStreak += 1;
+            } else {
+                currentStreak = 1;
+            }  
+            // stop once reaching todays date
+            if (todaysDate.compareTo(datesCompleted.get(i)) == 0) {
+                break;
+            } else if (todaysDate.compareTo(datesCompleted.get(i)) < 0) {
+                // passed date without hitting date -- no streak
+                currentStreak = 0;
+            }
+        }
+        if (i>(datesCompleted.size()-1)) {
+            i=datesCompleted.size()-1;
+        }  
+        // Catch for current streak not making it to today or yesterday
+        LocalDate compare1 = LocalDate.of(todaysDate.get(Calendar.YEAR),todaysDate.get(Calendar.MONTH)+1,todaysDate.get(Calendar.DATE));
+        LocalDate compare2 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+        long numDaysBetween = DAYS.between(compare2,compare1);
+        if (numDaysBetween > 7) {
+            currentStreak = 0;
+        }
+        
+        
+
+        return currentStreak;
     }
 
     public int getBestStreak() {
-        return this.bestStreak;
+        Collections.sort(datesCompleted);
+        int bestStreak = 0;
+        int i;
+        int currentStreak=0;
+        if (datesCompleted.size() > 0) {
+            currentStreak = 1;
+            bestStreak = 1;
+        } else {
+            return bestStreak;
+        }
+        Collections.sort(datesCompleted);
+        for (i=1;i<datesCompleted.size();i++) {
+            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH)+1,datesCompleted.get(i-1).get(Calendar.DATE));
+            long numDaysBetween = DAYS.between(compare2,compare1);
+            if (numDaysBetween==7) {
+                currentStreak += 1;
+            } else {
+                currentStreak = 1;
+            }  
+            if (currentStreak>bestStreak) {
+                bestStreak = currentStreak;
+            }
+        }
+        return bestStreak;
     }
 
 
@@ -75,7 +136,7 @@ public class WeeklyTask extends Task {
         jsonObject.put("year", year);
         jsonObject.put("month", month);
         jsonObject.put("date", date);
-        jsonObject.put("currentStreak", this.getCurrentStreak());
+        jsonObject.put("currentStreak",0);
         jsonObject.put("bestStreak", this.getBestStreak());
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
