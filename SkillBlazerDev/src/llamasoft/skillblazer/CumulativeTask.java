@@ -31,10 +31,11 @@ import java.util.Calendar;
 
 public class CumulativeTask extends Task {
 
-    private Calendar endDate; //end date for cumulative task
-    private String goalUnits;
-    private double goalToReach;
-    private ArrayList<CumulativeHistoryStruct> cumulativeHistory;
+    private Calendar endDate;                                           // calendar object representing end date for cumulative task
+    private String goalUnits;                                           // string field for goal units (e.g. miles, hours, books, etc.) to be entered by user
+    private double goalToReach;                                         // double field to represent numeric amount for goal to reach (e.g. 5 miles); entered by user
+    private ArrayList<CumulativeHistoryStruct> cumulativeHistory;       // arraylist of CumulativeHistoryStruct inner class type - custom data structure
+    
     /*
      * Default Class Constructor - calls parent constructor
      */
@@ -42,11 +43,6 @@ public class CumulativeTask extends Task {
         super();
         this.type = "cumulative";
     } //end CumulativeTask constructor
-
-    @Override
-    public String infoString() {
-        return super.infoString() + "EndDate is: " + endDate;
-    }
 
     /*
      * Overloaded Class Constructor - calls parent constructor with taskName
@@ -79,15 +75,19 @@ public class CumulativeTask extends Task {
         this.goalToReach = 0.0;
         this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
-
+    
+      /*
+     * Old Fully qualified constructor
+     */
     public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, Calendar endDate) {
         super(taskName, taskId, startDate, isCompleted, "cumulative","");
         this.endDate = endDate;
         this.goalToReach = 0.0;
         this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
+    
     /*
-     * Fully qualified constructor
+     * New Fully qualified constructor
      */
     public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate, double goalToReach, String goalUnits) {
         super(taskName, taskId, startDate, isCompleted, "cumulative", notes);
@@ -97,6 +97,11 @@ public class CumulativeTask extends Task {
         this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
     
+       @Override
+    public String infoString() {
+        return super.infoString() + "EndDate is: " + endDate;
+    }
+
     
     public String getTaskUnits () {
         return goalUnits;
@@ -116,7 +121,7 @@ public class CumulativeTask extends Task {
         return this.endDate;
     } //end getEndDate method
 
-        // method to add to the ArrayList CumulativeHistory
+        // method to add to the ArrayList cumulativeHistory
     public void addProgress(Calendar dateCompleted, double progress) {
         CumulativeHistoryStruct newEntry = new CumulativeHistoryStruct(dateCompleted,progress);
         if (cumulativeHistory.contains(newEntry)) {
@@ -127,7 +132,7 @@ public class CumulativeTask extends Task {
         }
     } // end addProgress() method
     
-            // method to add to the ArrayList CumulativeHistory
+    // method to get progress from the ArrayList cumulativeHistory
     public double getProgress(Calendar dateProgress) {
         CumulativeHistoryStruct checkEntry = new CumulativeHistoryStruct(dateProgress,0.0);
         if (cumulativeHistory.contains(checkEntry)) {
@@ -136,28 +141,28 @@ public class CumulativeTask extends Task {
         } else {
             return 0.0;
         }
-    } // end addProgress() method
+    } // end getProgress() method
     
-    /*
-     * This method will return the percentage of the user's goal
-     * that has been completed (e.g. 50% of books read for
-     * overall goal). 
-     */
-    public String checkStatus(double numCompleted) {
-    	
-    	double tempCompleted = numCompleted; //number completed toward goal
-        double tempGoal = goalToReach;
-    	double percentageDone = 0.0; //percentage completed
-    	
-    	//if number completed > 0, then calculate percentage
-    	if (tempCompleted > 0) {
-    		percentageDone = tempCompleted / tempGoal;
-    		percentageDone = percentageDone * 100;
-    	}
-    	
-    	DecimalFormat dFormat = new DecimalFormat(".00");
-        return dFormat.format(percentageDone);
-    } //end checkStatus method
+    
+    public boolean checkCompleted() {
+        if (getTotalProgress()>=goalToReach) {
+            return true;
+        } else {
+            return false;
+        }  
+    }
+    
+    public double getTotalProgress() {
+        double progressSum = 0.0;
+        for (CumulativeHistoryStruct mh : cumulativeHistory) {
+            progressSum += mh.progress;
+        }
+        return progressSum;
+    }
+    
+    public double getGoalToReach() {
+        return this.goalToReach;
+    }
 
 
     @Override
@@ -196,19 +201,24 @@ public class CumulativeTask extends Task {
 
     }
     
+    // inner class; custom data structure
     class CumulativeHistoryStruct {
-        public Calendar date;
-        public double progress;
+        public Calendar date;               // calendar object holding the date
+        public double progress;             // double field holding progress made toward goal
         
+        // constructor
         CumulativeHistoryStruct() {
             date = null;
             progress = 0.0;
         }
+        
+        // constructor
         CumulativeHistoryStruct(Calendar date,double progress) {
             this.date = date;
             this.progress = progress;
         }
-
+        
+        // Overriding equals() method to compare dates
         @Override
         public boolean equals(Object o) {
             if (o instanceof CumulativeHistoryStruct) {
@@ -216,7 +226,7 @@ public class CumulativeTask extends Task {
             } else {
                 return false;
             }
-        }
+        } // end equals() method
     }
 
 }//end CumulativeTask class

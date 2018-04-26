@@ -35,11 +35,12 @@ public class Task {
    // member fields
     protected String taskName;                                          // string holding task name
     protected long taskId;                                              // long holding task ID
-    protected Calendar startDate;                                       // Calendar object holding start date
+    protected Calendar startDate;                                       // calendar object holding start date
     protected boolean isCompleted;                                      // boolean holding whether task is completed
     protected String type;                                              // string holidng task type
     protected ArrayList<Calendar> datesCompleted = new ArrayList();     // arrayList to hold the dates a particular habit/task has been completed
-    protected String notes;
+    protected String notes;                                             // string field to hold contents in notes text area
+    
     // default, no-argument constructor
     public Task() {
     } // end constructor
@@ -77,6 +78,7 @@ public class Task {
     }
     // printString() method
     
+    // replaces old toString() method
     public String infoString() {
         return "Taskname is: " + taskName + "TaskID is: " + taskId
                 + "StartDate is: " + startDate + "isCompleted is: "
@@ -92,6 +94,10 @@ public class Task {
     public String getTaskName() {
         return this.taskName;
     } // end getTaskName() method
+    
+    public String getNotes() {
+        return this.notes;
+    }
 
     // method to initialize task after user input
     public void startTask() {

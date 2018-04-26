@@ -24,7 +24,7 @@ public class UserProfile {
 
     private final String type = "userProfile"; //type of file
     private String preferredSaveLocation; //custom preferred save location if user wants
-	private String userName = ""; //username for user
+    private String userName = ""; //username for user
     Calendar userStartDate = new GregorianCalendar(); //start date that user began using skillblazer
     long taskNumber; //increment number for task ID available
 
@@ -120,7 +120,8 @@ public class UserProfile {
      * correct file names for JSON data files.
      */
     public long incrementTaskNumber(long taskNum) {
-    	long taskNumber = taskNum;
+    	
+        long taskNumber = taskNum;
     	
     	taskNumber += taskNumber;
     	

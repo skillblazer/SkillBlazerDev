@@ -29,9 +29,9 @@ import java.util.Calendar;
 
 public class CustomTask extends Task {
 	
-    private ArrayList<String> actualDaysInTask = new ArrayList<>(); //days picked by user
-    private int currentStreak; //current streak of completions
-    private int bestStreak; //best streak of completions
+    private ArrayList<String> actualDaysInTask = new ArrayList<>();         //days picked by user
+    private int currentStreak;                                              //current streak of completions
+    private int bestStreak;                                                 //best streak of completions
 
     /*
      * Default Class Constructor - calls parent constructor
@@ -82,7 +82,7 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     *  Old Fully qualified constructor (needed for initializing objects stored on disk
+     *  Old Fully qualified constructor (needed for initializing objects stored on disk)
      */
     public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, int currentStreak,
             int bestStreak, ArrayList<String> daysInTask) {
@@ -91,8 +91,9 @@ public class CustomTask extends Task {
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end CustomTask constructor
+    
      /*
-     *  New Fully qualified constructor (needed for initializing objects stored on disk
+     *  New Fully qualified constructor (needed for initializing objects stored on disk)
      */
     public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<String> daysInTask) {
         super(taskName, taskId, startDate, isCompleted, "custom", notes);

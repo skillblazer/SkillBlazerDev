@@ -16,6 +16,21 @@ public class Day {
     VBox currentDayView;
 
     ArrayList<Task> tasksThisDay = new ArrayList<>();
+    
+    // Constructor that will accept a date from the calling method
+    // This is important for creating FUTURE dates that will go
+    // into a monthly calendar
+    public Day(Calendar taskDate) {
+        this.taskDate = taskDate;
+    }
+
+    // Constructor that will create its own date upon creation
+    // not sure if a use case exists for 'today's date'
+    // since we should be looking at a month at a time
+    public Day() {
+        this.taskDate = new GregorianCalendar();
+    }
+
 
     public boolean getHasTranspired() {
         return hasTranspired;
@@ -39,18 +54,5 @@ public class Day {
         tasksThisDay.add(newTask);
     }
 
-    // Constructor that will accept a date from the calling method
-    // This is important for creating FUTURE dates that will go
-    // into a monthly calendar
-    public Day(Calendar taskDate) {
-        this.taskDate = taskDate;
-    }
-
-    // Constructor that will create its own date upon creation
-    // not sure if a use case exists for 'today's date'
-    // since we should be looking at a month at a time
-    public Day() {
-        this.taskDate = new GregorianCalendar();
-    }
 
 }
