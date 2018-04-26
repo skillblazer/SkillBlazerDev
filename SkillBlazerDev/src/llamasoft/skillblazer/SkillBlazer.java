@@ -33,6 +33,8 @@ import twitter4j.TwitterException;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
+import javafx.scene.image.Image;
+
 import java.util.GregorianCalendar;
 import javafx.scene.control.Alert.AlertType;
 // uncomment for Macintosh style
@@ -76,7 +78,7 @@ public class SkillBlazer extends Application {
 
         window.setTitle("Skillblazer Habit Tracker");
         // adds Icon to primaryStage
-        //window.getIcons().add(new Image("/llama.jpg"));
+        window.getIcons().add(new Image("/llama.jpg"));
 
         // dropshadow effect for buttons
         DropShadow dropShadow = new DropShadow();
@@ -616,7 +618,7 @@ public class SkillBlazer extends Application {
             // sets title
             optionsStage.setTitle("Options");
             // add skillblazer icon
-            //optionsStage.getIcons().add(new Image("/llama.jpg"));
+            optionsStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
             HBox optionsButtonHbox1 = new HBox();
             // sets alignment for hbox
@@ -635,6 +637,8 @@ public class SkillBlazer extends Application {
                 public void handle(Event event) {
                     // creates a new stage
                     Stage notificationsStage = new Stage();
+                    // add skillblazer icon
+                    notificationsStage.getIcons().add(new Image("/llama.jpg"));
                     // label for enable notifications message
                     Label enableNotifications = new Label("Enable Notifications?");
                     // button for user to select yes
@@ -704,6 +708,8 @@ public class SkillBlazer extends Application {
                 public void handle(Event event) {
                     // creates a new stage
                     Stage deleteSkillStage = new Stage();
+                    // add skillblazer icon
+                    deleteSkillStage.getIcons().add(new Image("/llama.jpg"));
                     // label for enable notifications message
                     Label skillLabel = new Label("Choose which skill you would like to delete:");
                     // combobox for user to select skill from list
@@ -781,6 +787,8 @@ public class SkillBlazer extends Application {
                 public void handle(Event event) {
                     // creates a new stage
                     Stage deleteGoalStage = new Stage();
+                    // add skillblazer icon
+                    deleteGoalStage.getIcons().add(new Image("/llama.jpg"));
                     // label for enable notifications message
                     Label skillLabel = new Label("Choose a skill:");
                     // combobox for user to select skill from list
@@ -953,7 +961,8 @@ public class SkillBlazer extends Application {
             lifetimeMetricsStage = new Stage();
             // sets title
             lifetimeMetricsStage.setTitle("Lifetime Metrics");
-           // lifetimeMetricsStage.getIcons().add(new Image("/llama.jpg"));
+            // add skillblazer icon
+            lifetimeMetricsStage.getIcons().add(new Image("/llama.jpg"));
             // new vbox layout
             VBox lifeMetricsVbox = new VBox();
             // necessary to pull css specs from style sheet
@@ -1025,7 +1034,7 @@ public class SkillBlazer extends Application {
             // sets title for habitEntryStage
             habitEntryStage.setTitle("Habit/Skill Creation");
             // adds skillblazer icon
-//            habitEntryStage.getIcons().add(new Image("/llama.jpg"));
+            habitEntryStage.getIcons().add(new Image("/llama.jpg"));
             // hbox for 1st vbox row
             HBox habitCreationButtonHbox1 = new HBox();
             // pulls css specs from style sheet
@@ -1522,9 +1531,10 @@ public class SkillBlazer extends Application {
 
             // creates new stage
             Stage progressStage = new Stage();
+            // add skillblazer icon
+            progressStage.getIcons().add(new Image("/llama.jpg"));
             // sets title for progressStage
             progressStage.setTitle("Habit Progress");
-
             // hbox for 1st vbox row
             HBox progressButtonHbox1 = new HBox();
             // pulls css styling information
