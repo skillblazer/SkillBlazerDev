@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javafx.scene.control.Label;
+
 public class UserProfile {
 
     private final String type = "userProfile"; //type of file
@@ -115,7 +117,6 @@ public class UserProfile {
     } //end determineOSFilePath method
 
     /*
-     * Accessor Method - type
      * Increments taskNumber by one to provide
      * correct file names for JSON data files.
      */
@@ -131,6 +132,21 @@ public class UserProfile {
     /*
      * Determines username of user accessing skillblazer
      * application and presents it.
+     */
+    public Label determineUsername() {
+    	  	
+       	Label userNameLabel;
+    	String userName;		
+    	String homePath = System.getProperty("user.home"); //pulls home directory
+    	String[] arOfKeys = homePath.split(":?\\\\"); //parses folder path
+    	userName = arOfKeys[2]; //takes username from desktop path
+    	userNameLabel = new Label(userName); 
+    	
+    	return userNameLabel; //returns Label with user name 
+    } //end determineOSFilePath method
+    
+    /*
+     * Accessor method - type
      */
     public String getType() {
         return this.type;
