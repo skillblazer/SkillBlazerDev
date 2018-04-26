@@ -32,14 +32,7 @@ public class DailyTask extends Task {
         super(taskName);
         this.type = "daily";
     }
-    
-     /*
-     *  Old Fully qualified constructor (needed for initializing objects stored on disk
-     */
-    public DailyTask(String taskName, long taskId, Calendar startDate,
-                     boolean isCompleted, int currentStreak, int bestStreak) {
-        super(taskName, taskId, startDate, isCompleted, "daily", "");
-    } //end DailyTask constructor
+
     
      /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk
@@ -137,10 +130,9 @@ public class DailyTask extends Task {
         jsonObject.put("year", year);
         jsonObject.put("month", month);
         jsonObject.put("date", date);
-        jsonObject.put("currentStreak", 0); // TO DO: remove this from JSON
-        jsonObject.put("bestStreak", this.getBestStreak()); // TO DO: remove this from JSON
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
+        jsonObject.put("notes", this.notes);
 
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);

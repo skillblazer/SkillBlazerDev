@@ -81,17 +81,7 @@ public class CustomTask extends Task {
         this.type = "custom";
     } //end CustomTask constructor
 
-    /*
-     *  Old Fully qualified constructor (needed for initializing objects stored on disk)
-     */
-    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, int currentStreak,
-            int bestStreak, ArrayList<String> daysInTask) {
-        super(taskName, taskId, startDate, isCompleted, "custom", "");
-        this.actualDaysInTask.addAll(daysInTask);
-        this.currentStreak = currentStreak;
-        this.bestStreak = bestStreak;
-    } //end CustomTask constructor
-    
+
      /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk)
      */
@@ -160,10 +150,9 @@ public class CustomTask extends Task {
         jsonObject.put("year", year);
         jsonObject.put("month", month);
         jsonObject.put("date", date);
-        jsonObject.put("currentStreak", this.getCurrentStreak());
-        jsonObject.put("bestStreak", this.getBestStreak());
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
+        jsonObject.put("notes", this.notes);
 
         JSONArray jsonArray = new JSONArray();
 

@@ -1761,7 +1761,6 @@ public class SkillBlazer extends Application {
          * that were loaded from disk.
          */
         arrayOfTasks = jsonLoader.loadFromJSON();
-        Iterator<Task> taskIterator = arrayOfTasks.iterator();
         skbUserProfile = jsonLoader.parseAndReturnUserProfile();
 
         launch(args);               // opens the JavaFX Stage

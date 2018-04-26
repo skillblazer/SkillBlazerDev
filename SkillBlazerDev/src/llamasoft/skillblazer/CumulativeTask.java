@@ -76,16 +76,7 @@ public class CumulativeTask extends Task {
         this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
     
-      /*
-     * Old Fully qualified constructor
-     */
-    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, Calendar endDate) {
-        super(taskName, taskId, startDate, isCompleted, "cumulative","");
-        this.endDate = endDate;
-        this.goalToReach = 0.0;
-        this.cumulativeHistory = new ArrayList(); 
-    } //end CumulativeTask constructor
-    
+
     /*
      * New Fully qualified constructor
      */
@@ -195,6 +186,9 @@ public class CumulativeTask extends Task {
 
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
+        jsonObject.put("notes", this.notes);
+        jsonObject.put("goalToReach", this.goalToReach);
+        jsonObject.put("goalUnits", this.goalUnits);
 
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
