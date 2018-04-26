@@ -130,6 +130,27 @@
     -fx-font-size: 12px;
 }
 
+/* style specification for labelFinalCumulativeUncompleted */
+.labelFinalCumulativeUncompleted {
+    -fx-text-fill: #ff0000;
+    -fx-font-weight: bold;
+}
+
+/* style specification for labelFinalCumulativeFinished */
+.labelFinalCumulativeCompleted {
+    -fx-text-fill: #55C505;
+    -fx-font-weight: bold;
+}
+
+/* style specification for labelCompletedTask */
+.labelCompletedTask {
+    -fx-text-fill: #55C505;
+}
+
+/* style specification for labelDefaultTask */
+.labelDefaultTask {
+    -fx-text-fill: #000000;
+}
 /* style specification for buttons */
 .button2 {
     /* sets background color */

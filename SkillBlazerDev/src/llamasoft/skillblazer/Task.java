@@ -21,14 +21,26 @@ import java.util.Calendar;
 
 public class Task {
 
-    // member fields
+  /* including for now @Override
+    public String toString() {
+        return "Taskname is: " + taskName + "TaskID is: " + taskId +
+                "StartDate is: " + startDate + "isCompleted is: " +
+                isCompleted + "Type is: " + type;
+    }
+
+    Calendar getStartDate() {
+        return this.startDate; // placeholder return statement -> needs real code!
+    } */
+
+   // member fields
     protected String taskName;                                          // string holding task name
     protected long taskId;                                              // long holding task ID
-    protected Calendar startDate;                                       // Calendar object holding start date
+    protected Calendar startDate;                                       // calendar object holding start date
     protected boolean isCompleted;                                      // boolean holding whether task is completed
     protected String type;                                              // string holidng task type
     protected ArrayList<Calendar> datesCompleted = new ArrayList();     // arrayList to hold the dates a particular habit/task has been completed
-
+    protected String notes;                                             // string field to hold contents in notes text area
+    
     // default, no-argument constructor
     public Task() {
     } // end constructor
@@ -45,26 +57,33 @@ public class Task {
     } // end constructor
 
     // fully-qualified constructor
-    public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type) {
+    public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes) {
         this.taskName = taskName;
         this.taskId = taskId;
         this.startDate = startDate;
         this.isCompleted = isCompleted;
         this.type = type;
+        this.notes = notes;
     } // end constructor
 
     // method to get task ID
     long getTaskId() {
         return this.taskId;
     } // end getTaskId() method
-
-    // toString() method
-    @Override
-    public String toString() {
+    
+    // toString printing only name so object can be placed in label
+    public String toString()
+    {
+        return taskName;
+    }
+    // printString() method
+    
+    // replaces old toString() method
+    public String infoString() {
         return "Taskname is: " + taskName + "TaskID is: " + taskId
                 + "StartDate is: " + startDate + "isCompleted is: "
                 + isCompleted + "Type is: " + type;
-    } // end toString() method
+    } // end infoString() method
 
     // method to get start date
     Calendar getStartDate() {
@@ -75,6 +94,10 @@ public class Task {
     public String getTaskName() {
         return this.taskName;
     } // end getTaskName() method
+    
+    public String getNotes() {
+        return this.notes;
+    }
 
     // method to initialize task after user input
     public void startTask() {
@@ -113,9 +136,25 @@ public class Task {
 
     // method to add to the ArrayList datesCompleted
     public void setDateCompleted(Calendar dateCompleted) {
-        datesCompleted.add(dateCompleted);
+        if (!datesCompleted.contains(dateCompleted)) {
+            datesCompleted.add(dateCompleted);
+        }
     } // end setDateCompleted() method
-
+    
+    // method to remove from the ArrayList datesCompleted
+    public void removeDateCompleted(Calendar dateRemove) {
+        if (datesCompleted.contains(dateRemove)) {
+            datesCompleted.remove(dateRemove);
+        }
+    } // end setDateCompleted() method
+    
+    
+    // method to check if a date was completed
+    public boolean checkDateCompleted(Calendar dateCheck) {
+        return datesCompleted.contains(dateCheck);
+    } // end checkDateCompleted() method
+    
+    
     // method get the ArrayList datesCompleted
     public ArrayList<Calendar> getDatesCompleted() {
         return datesCompleted;

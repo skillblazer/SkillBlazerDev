@@ -29,9 +29,9 @@ import java.util.Calendar;
 
 public class CustomTask extends Task {
 	
-    private ArrayList<String> actualDaysInTask = new ArrayList<>(); //days picked by user
-    private int currentStreak; //current streak of completions
-    private int bestStreak; //best streak of completions
+    private ArrayList<String> actualDaysInTask = new ArrayList<>();         //days picked by user
+    private int currentStreak;                                              //current streak of completions
+    private int bestStreak;                                                 //best streak of completions
 
     /*
      * Default Class Constructor - calls parent constructor
@@ -82,16 +82,25 @@ public class CustomTask extends Task {
     } //end CustomTask constructor
 
     /*
-     *  Fully qualified constructor (needed for initializing objects stored on disk
+     *  Old Fully qualified constructor (needed for initializing objects stored on disk)
      */
     public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, int currentStreak,
             int bestStreak, ArrayList<String> daysInTask) {
-        super(taskName, taskId, startDate, isCompleted, "custom");
+        super(taskName, taskId, startDate, isCompleted, "custom", "");
         this.actualDaysInTask.addAll(daysInTask);
         this.currentStreak = currentStreak;
         this.bestStreak = bestStreak;
     } //end CustomTask constructor
-
+    
+     /*
+     *  New Fully qualified constructor (needed for initializing objects stored on disk)
+     */
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<String> daysInTask) {
+        super(taskName, taskId, startDate, isCompleted, "custom", notes);
+        this.actualDaysInTask.addAll(daysInTask);
+    } //end CustomTask constructor
+    
+    
     /*
      * Accessor Method - actualDaysInTask
      */
@@ -166,6 +175,7 @@ public class CustomTask extends Task {
         // add the JSONArray to the JSONObject, name the array "days"
         jsonObject.put("days", jsonArray);
 
+        System.out.println("In the custom task writeToJSON() method");
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
 
