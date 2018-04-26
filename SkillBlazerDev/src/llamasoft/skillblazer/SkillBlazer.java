@@ -582,6 +582,7 @@ public class SkillBlazer extends Application {
         private Button deleteGoalButton;                        // button for deleting goal from calendar screen
         private Button twitterButton;                           // button for Twitter option
         private Stage optionsStage;                             // Stage for Options
+        private Button dbxButton;
         
         // constructor
         public Options() {
@@ -870,6 +871,38 @@ public class SkillBlazer extends Application {
             // adds twitterButton to optionsButtonHbox4
             optionsButtonHbox4.getChildren().add(twitterButton);
 
+            //create upload to dropbox 
+             // hbox for 5th vbox row
+            HBox optionsButtonHbox5 = new HBox();
+            // sets alignment for hbox
+            optionsButtonHbox5.setAlignment(Pos.CENTER);
+            // pulls css specs from style sheet
+            optionsButtonHbox5.getStyleClass().add("optionsButtonHboxes");
+            // initializes twitterButton
+            dbxButton = new Button();
+            //set dropbox text
+            dbxButton.setText("Upload to Dropbox");
+            // Tooltip
+            dbxButton.setTooltip(new Tooltip("Upload task file to Dropbox!"));
+            // sets alignment for both
+            dbxButton.setAlignment(Pos.CENTER);
+            // event handler for twitterButton
+            /*dbxButton.setOnAction(new EventHandler() {
+               @Override
+                public void handle(Event event) {
+                   if (enableDropBoxIntegration !=true){
+                   System.out.println("please enable dropbox");
+            }
+            
+            else{
+            DropBoxIntegration dropbox = new DropBoxIntegration();
+            }
+            }); 
+            // end event handler */
+            // adds dbxButton to optionsButtonHbox5
+            optionsButtonHbox5.getChildren().add(dbxButton);
+            
+            
             // new vbox layout
             VBox optionsVBox = new VBox();
             // necessary to pull css specs from style sheet
@@ -879,6 +912,7 @@ public class SkillBlazer extends Application {
             Region emptyRegion1 = new Region();
             Region emptyRegion2 = new Region();
             Region emptyRegion3 = new Region();
+            Region emptyRegion4 = new Region();
 
             // adds all hboxes and regions to optionsVBox
             optionsVBox.getChildren().add(optionsButtonHbox1);
@@ -888,7 +922,9 @@ public class SkillBlazer extends Application {
             optionsVBox.getChildren().add(optionsButtonHbox3);
             optionsVBox.getChildren().add(emptyRegion3);
             optionsVBox.getChildren().add(optionsButtonHbox4);
-
+            optionsVBox.getChildren().add(emptyRegion4);
+            optionsVBox.getChildren().add(optionsButtonHbox5);
+            
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVBox, 350, 350);
             // adds scene to stage 
