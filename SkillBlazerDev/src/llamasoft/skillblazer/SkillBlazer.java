@@ -64,7 +64,8 @@ public class SkillBlazer extends Application {
 
     // these objects will conduct the startup routine
     static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
-
+    static ArrayList<Task> arrayOfTasks;
+    static UserProfile skbUserProfile;
 
     // sets up the main stage, scenes and such
     @Override
@@ -1744,7 +1745,8 @@ public class SkillBlazer extends Application {
     
     // method to close the program
     private void closeProgram() {
-                                                // **TO DO: Add call to method to handle JSON writing
+        JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);
+
         habitCreationMenu.closeHabitEntry();
         lifetimeMetrics.closeLifetimeMetrics();                                        
         optionsMenu.closeOptions();
@@ -1758,10 +1760,9 @@ public class SkillBlazer extends Application {
          * application can access the UserProfile and the list of Task objects
          * that were loaded from disk.
          */
-        ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
+        arrayOfTasks = jsonLoader.loadFromJSON();
         Iterator<Task> taskIterator = arrayOfTasks.iterator();
-        UserProfile skbUserProfile = jsonLoader.parseAndReturnUserProfile();
-
+        skbUserProfile = jsonLoader.parseAndReturnUserProfile();
 
         launch(args);               // opens the JavaFX Stage
     } // end main method
