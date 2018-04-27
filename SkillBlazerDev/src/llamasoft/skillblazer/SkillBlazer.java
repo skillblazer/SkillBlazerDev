@@ -922,19 +922,13 @@ public class SkillBlazer extends Application {
             // sets alignment for both
             dbxButton.setAlignment(Pos.CENTER);
             // event handler for twitterButton
-            /*dbxButton.setOnAction(new EventHandler() {
+        /*    dbxButton.setOnAction(new EventHandler() {
                @Override
                 public void handle(Event event) {
-                   if (enableDropBoxIntegration !=true){
-                   System.out.println("please enable dropbox");
-            }
-            
-            else{
-            DropBoxIntegration dropbox = new DropBoxIntegration();
-            }
+              }
             }); 
-            // end event handler */
-            // adds dbxButton to optionsButtonHbox5
+            // end event handler
+            // adds dbxButton to optionsButtonHbox5 */
             optionsButtonHbox5.getChildren().add(dbxButton);
             
             
