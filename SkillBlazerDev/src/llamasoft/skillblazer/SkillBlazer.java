@@ -1706,7 +1706,7 @@ public class SkillBlazer extends Application {
             String notes = notesTextArea.getText();
             GregorianCalendar startDate = new GregorianCalendar();
             startDate.setTime(Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            long taskId = 0;
+            long taskId = skbUserProfile.incrementTaskNumber();
             if (dailyRB.isSelected()) {
                 // Create DailyTask object
                 DailyTask newTask = new DailyTask(taskName,taskId,startDate,false,notes);
@@ -1716,7 +1716,7 @@ public class SkillBlazer extends Application {
                 WeeklyTask newTask = new WeeklyTask(taskName,taskId,startDate,false,notes);
                 taskList.add(newTask);
             } else if (customRB.isSelected()) {
-                ArrayList<String> dateList = new ArrayList();
+                ArrayList<String> dateList = new ArrayList<>();
                 // populate array list of days of week
                 if (monRB.isSelected()) {
                     dateList.add("Monday");

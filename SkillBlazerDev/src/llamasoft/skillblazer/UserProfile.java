@@ -128,6 +128,13 @@ public class UserProfile {
     	
     	return taskNumber;
     }
+
+    /*
+     * Overloaded version with no parameter
+     */
+    public long incrementTaskNumber() {
+        return ++taskNumber;
+    }
     
     /*
      * Determines username of user accessing skillblazer
