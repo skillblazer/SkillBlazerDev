@@ -124,9 +124,16 @@ public class UserProfile {
     	
         long taskNumber = taskNum;
     	
-    	taskNumber += taskNumber;
+    	taskNumber = taskNumber + 1;
     	
     	return taskNumber;
+    }
+
+    /*
+     * Overloaded version with no parameter
+     */
+    public long incrementTaskNumber() {
+        return ++taskNumber;
     }
     
     /*

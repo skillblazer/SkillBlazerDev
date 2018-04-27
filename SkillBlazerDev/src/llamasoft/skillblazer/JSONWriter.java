@@ -38,15 +38,6 @@ public class JSONWriter {
 
 
     /*
-     * FUTURE IMPLEMENTATION
-     * */
-    public void saveHistoryToFile() {
-        // writes task history to file
-        // this is for completed and expired tasks only
-        // filename format should be [userName]history.json
-    }
-
-    /*
     * Ensure that the SBinit.txt file exists and that userProfile.json
     * is listed in SBinit.txt
     *

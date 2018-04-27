@@ -21,24 +21,13 @@ import java.util.Calendar;
 
 public class Task {
 
-  /* including for now @Override
-    public String toString() {
-        return "Taskname is: " + taskName + "TaskID is: " + taskId +
-                "StartDate is: " + startDate + "isCompleted is: " +
-                isCompleted + "Type is: " + type;
-    }
-
-    Calendar getStartDate() {
-        return this.startDate; // placeholder return statement -> needs real code!
-    } */
-
    // member fields
     protected String taskName;                                          // string holding task name
     protected long taskId;                                              // long holding task ID
     protected Calendar startDate;                                       // calendar object holding start date
     protected boolean isCompleted;                                      // boolean holding whether task is completed
     protected String type;                                              // string holidng task type
-    protected ArrayList<Calendar> datesCompleted = new ArrayList();     // arrayList to hold the dates a particular habit/task has been completed
+    protected ArrayList<Calendar> datesCompleted = new ArrayList<>();     // arrayList to hold the dates a particular habit/task has been completed
     protected Calendar endDate;                                           // calendar object representing end date for cumulative task
     protected String notes;                                             // string field to hold contents in notes text area
     
@@ -97,11 +86,23 @@ public class Task {
         return this.taskName;
     } // end getTaskName() method
     
+        // method to set task name
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    } // end setTaskName() method
+    
+    
     // method to return notes
     public String getNotes() {
         return this.notes;
     } // end getNotes() method
-
+    
+// method to set notes
+    public void setNotes(String notes) {
+        this.notes = notes;
+    } // end setNotes() method
+    
+    
     // method to end a task
     public void endTask(Calendar endDate) {
         this.isCompleted = true;
@@ -120,6 +121,15 @@ public class Task {
         return this.endDate;
     } // end getEndDate() method
 
+        
+    /*
+     * Mutator method - endDate
+     */
+    public void setEndDate(Calendar endDate) {
+    	this.endDate = endDate;
+    } //end setEndDate method
+    
+    
     
     // method to get the total amount completed
     public int getNumCompleted() {

@@ -23,7 +23,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
+
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -36,9 +36,8 @@ import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 
 import java.util.GregorianCalendar;
+import java.util.Optional;
 import javafx.scene.control.Alert.AlertType;
-// uncomment for Macintosh style
-//import com.aquafx_project.*;
 
 // main class; extends Application
 public class SkillBlazer extends Application {
@@ -47,6 +46,8 @@ public class SkillBlazer extends Application {
     private Stage window;
     private Button optionsButton;                                                                       // options button
     private Label appTitle;                                                                             // application title
+    
+    private Label usernameLabel;                                                                        // username label
     private Button lifetimeMetricsButton;                                                               // lifetime metrics button
     private Label currentMonthYearLabel;                                                                // label for current month and year
     private Button forwardMonthButton;                                                                  // button to move month forward
@@ -55,7 +56,7 @@ public class SkillBlazer extends Application {
     private TilePane calendarPane;                                                                      // tilepane object for calendar
     private VBox[] vboxArray = new VBox[49];                                                            // vbox array for main calendar interface
     private Button habitCreationButton;                                                                 // button for habit creation
-    private ArrayList<Task> taskList;                                                                   // arraylist holding tasks  
+    private static ArrayList<Task> taskList;                                                                   // arraylist holding tasks
     private Options optionsMenu;                                                                        // Options object
     private LifetimeMetrics lifetimeMetrics;                                                            // LifetimeMetrics object
     private HabitCreationButton habitCreationMenu;                                                      // HabitCreationButton object
@@ -64,14 +65,12 @@ public class SkillBlazer extends Application {
 
     // these objects will conduct the startup routine
     static JSONLoader jsonLoader = new JSONLoader();     // also provides an instance of SkillBlazerInitializer skillBlazerInit
-    static ArrayList<Task> arrayOfTasks;
     static UserProfile skbUserProfile;          
 
     // sets up the main stage, scenes and such
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // instantiates taskList
-        taskList = new ArrayList<Task>();
+        
 
         // window = primaryStage
         window = primaryStage;
@@ -115,6 +114,11 @@ public class SkillBlazer extends Application {
         appTitle.getStyleClass().add("appTitle");
         // sets text of appTitle
         appTitle.setText("Skillblazer Habit Tracker");
+        
+        usernameLabel = new Label();
+        usernameLabel.setText("Hello, " + skbUserProfile.getUserName() + "!");
+        usernameLabel.getStyleClass().add("usernameLabel");
+        
         // creates new region (for layout/alignment purposes)
         Region region1 = new Region();
         // for layout/alignment purposes
@@ -123,7 +127,14 @@ public class SkillBlazer extends Application {
         Region region2 = new Region();
         // for layout/alignment purposes
         HBox.setHgrow(region2, Priority.ALWAYS);
-
+// creates new region (for layout/alignment purposes)
+        Region region3 = new Region();
+        // for layout/alignment purposes
+        HBox.setHgrow(region3, Priority.ALWAYS);
+        // creates new region (for layout/alignment purposes)
+        Region region4 = new Region();
+        // for layout/alignment purposes
+        HBox.setHgrow(region4, Priority.ALWAYS);
         // initializes currentMonthYearLabel
         currentMonthYearLabel = new Label();
         // pulls css specs from style sheet
@@ -203,10 +214,22 @@ public class SkillBlazer extends Application {
         hboxTop.getChildren().add(region1);
         // adds appTitle to hboxTop
         hboxTop.getChildren().add(appTitle);
-        // adds appTitle to region2
+        // adds region2 to hboxTop
         hboxTop.getChildren().add(region2);
         // adds lifetimeMetricsButton to hbox
         hboxTop.getChildren().add(lifetimeMetricsButton);
+        
+        HBox hboxUsername = new HBox();
+        hboxUsername.getStyleClass().add("vboxMain");
+        // adds region1 to hboxUsername
+        hboxUsername.getChildren().add(region3);
+        // adds appTitle to hboxUsername
+        hboxUsername.getChildren().add(usernameLabel);
+        // adds appTitle to hboxUsername
+        hboxUsername.getChildren().add(region4);
+
+        // adds hbox to vboxMain
+        vboxMain.getChildren().add(hboxUsername);
 
         // hbox layout for current month/year and back/forward buttons
         HBox hboxMonthYear = new HBox();
@@ -434,6 +457,7 @@ public class SkillBlazer extends Application {
                 for (Task mt : todayDayOb.tasksThisDay) {
                     // label for each Task
                     Label taskLabel = new Label(mt.getTaskName());
+                    
                     if (mt instanceof CumulativeTask) {
                         // tool tip for Cumulative Task
                         taskLabel.setTooltip(new Tooltip("Cumulative Task"));
@@ -447,16 +471,18 @@ public class SkillBlazer extends Application {
                                 taskLabel.setText(mt.getTaskName()+"(!)");
                                 taskLabel.getStyleClass().add("labelFinalCumulativeUncompleted");
                             }
+                        } else {
+                            taskLabel.getStyleClass().add("labelDefaultTask");
                         }
                     } else {
-                        // color completed tasks Green
+                        // color completed tasks green
                         if (mt.checkDateCompleted(todayDayOb.getTaskDate())) {
                             // marks completed task with checkmark
                             taskLabel.setText(mt.getTaskName()+ "   ✔");  
                             taskLabel.getStyleClass().add("labelCompletedTask");
                         } else {
                             taskLabel.getStyleClass().add("labelDefaultTask");
-                        }                       
+                        }             
                         if (mt instanceof DailyTask) {
                             // tool tip for Daily Task
                             taskLabel.setTooltip(new Tooltip("Daily Task"));
@@ -608,16 +634,55 @@ public class SkillBlazer extends Application {
 
         // member fields - GUI elements
         private Button notificationsButton;                     // button for notifications screen
-        private Button deleteSkillHistoryButton;                // button for deleting skill history screen
+        private Button editUsernameButton;                     // button for notifications screen
         private Button deleteGoalButton;                        // button for deleting goal from calendar screen
         private Button twitterButton;                           // button for Twitter option
-        private Stage optionsStage;                             // Stage for Options
-        private Button dbxButton;
+        private Stage optionsStage;                             // stage for Options
+        private Button dbxButton;                               // button for Dropbox
         
+        
+        
+        private Stage editUsernameStage;
+        private Label editUsernameLabel;
+        private TextField editUsernameTextField;
+        private Button editUsernameApplyButton;
+        private Button editUsernameCloseButton;
+        
+        
+        
+        private Label editHabitLabel;                           // label for editHabitComboBox
+        private Stage editTasksStage;                           // stage for EditTasks
+        private ComboBox editHabitComboBox;                     // comboBox for list of populated habits/skills of user
+        private Label editTaskNameLabel;
+        private TextField editTaskNameTextField;
+        private Label editGoalLabel;
+        private TextField editGoalTextField;
+        private Label editGoalUnitsLabel;
+        private TextField editGoalUnitsTextField;
+        private Label editEndDateLabel;
+        private DatePicker editEndDate;
+        
+        private Label editNotesLabel;
+        private TextArea editNotesTextArea;
+        private Button editTaskApplyButton;
+        private Button editTaskCloseButton;
+        private Button editTaskEndTaskButton;
+        private Button editTaskDeleteButton;
+        
+        private HBox editTasksHbox1;
+        private HBox editTasksHbox2;
+        private HBox editTasksHbox3;
+        private HBox editTasksHbox4;
+        private HBox editTasksHbox5;
+        private HBox editTasksHbox6;
+        private HBox editTasksHbox7;
+        // constructor
         // constructor
         public Options() {
             // creates new stage
             optionsStage = new Stage();
+            createEditTasksWindow();
+            
             // sets title
             optionsStage.setTitle("Options");
             // add skillblazer icon
@@ -693,83 +758,31 @@ public class SkillBlazer extends Application {
             // adds notificationsButton to optionsButtonHbox1
             optionsButtonHbox1.getChildren().add(notificationsButton);
 
-            // hbox for 2nd vbox row
+            
+                        // hbox for 3rd vbox row
             HBox optionsButtonHbox2 = new HBox();
             // sets alignment for hbox
             optionsButtonHbox2.setAlignment(Pos.CENTER);
             // pulls css specs from style sheet
             optionsButtonHbox2.getStyleClass().add("optionsButtonHboxes");
-            // initializes deleteSkillHistoryButton
-            deleteSkillHistoryButton = new Button();
-            // sets text for deleteSkillHistoryButton
-            deleteSkillHistoryButton.setText("Delete Skill History");
+            // initializes deleteGoalButton
+            editUsernameButton = new Button();
+            // sets text for deleteGoalButton
+            editUsernameButton.setText("Edit Username");
             // Tooltip
-            deleteSkillHistoryButton.setTooltip(new Tooltip("Delete history for a habit/skill"));
-            // event handler for deleteSkillHistoryButton
-            deleteSkillHistoryButton.setOnAction(new EventHandler() {
+            editUsernameButton.setTooltip(new Tooltip("Edit your username"));
+            // sets alignment for both
+            editUsernameButton.setAlignment(Pos.CENTER);
+            // event handler for deleteGoalButton
+            editUsernameButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    // creates a new stage
-                    Stage deleteSkillStage = new Stage();
-                    // add skillblazer icon
-                    deleteSkillStage.getIcons().add(new Image("/llama.jpg"));
-                    // label for enable notifications message
-                    Label skillLabel = new Label("Choose which skill you would like to delete:");
-                    // combobox for user to select skill from list
-                    ComboBox skillsComboBox = new ComboBox();                   // ****TO DO: populate user's skills
-                    // button for user to delete skill history
-                    Button deleteButton = new Button("Delete");
-
-                    // hbox for 1st vbox row
-                    HBox deleteSkillHbox1 = new HBox();
-                    // sets alignment of hbox to center
-                    deleteSkillHbox1.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteSkillHbox1.getStyleClass().add("optionsButtonHboxes");
-                    // adds skillLabel to deleteSkillsHbox1
-                    deleteSkillHbox1.getChildren().add(skillLabel);
-
-                    // hbox for 2nd vbox row
-                    HBox deleteSkillHbox2 = new HBox();
-                    // sets alignment of hbox to center
-                    deleteSkillHbox2.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteSkillHbox2.getStyleClass().add("optionsButtonHboxes");
-                    // adds skillsComboBox to deleteSkillsHbox2
-                    deleteSkillHbox2.getChildren().add(skillsComboBox);
-
-                    // hbox for 3rd vbox row
-                    HBox deleteSkillHbox3 = new HBox();
-                    // sets alignment of hbox to center
-                    deleteSkillHbox3.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteSkillHbox3.getStyleClass().add("optionsButtonHboxes");
-                    // adds deleteButton to deleteSkillsHbox3
-                    deleteSkillHbox3.getChildren().add(deleteButton);
-
-                    // new vbox layout
-                    VBox deleteSkillVBox = new VBox();
-                    // pulls css specs from style sheet
-                    deleteSkillVBox.getStyleClass().add("secondaryWindow");
-                    // adds all hboxes to deleteSkillVBox
-                    deleteSkillVBox.getChildren().add(deleteSkillHbox1);
-                    deleteSkillVBox.getChildren().add(deleteSkillHbox2);
-                    deleteSkillVBox.getChildren().add(deleteSkillHbox3);
-
-                    // adds deleteSkillsVBox to the deleteSkillScene
-                    Scene deleteSkillScene = new Scene(deleteSkillVBox, 450, 450);
-                    // adds deleteSkillScene to deleteSkillStage 
-                    deleteSkillStage.setScene(deleteSkillScene);
-                    // gets css style sheet
-                    deleteSkillScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-                    // shows the stage; actually displays the scene
-                    deleteSkillStage.show();
-
+                    showEditUsername();
                 }
             }); // end event handler
-            // adds deleteSkillHistoryButton to optionsButtonHbox2
-            optionsButtonHbox2.getChildren().add(deleteSkillHistoryButton);
-
+            // adds deleteGoalButton to optionsButtonHbox3
+            optionsButtonHbox2.getChildren().add(editUsernameButton);
+            
             // hbox for 3rd vbox row
             HBox optionsButtonHbox3 = new HBox();
             // sets alignment for hbox
@@ -779,98 +792,23 @@ public class SkillBlazer extends Application {
             // initializes deleteGoalButton
             deleteGoalButton = new Button();
             // sets text for deleteGoalButton
-            deleteGoalButton.setText("Delete Goal from Calendar");
+            deleteGoalButton.setText("Edit, Delete, or End a Habit");
             // Tooltip
-            deleteGoalButton.setTooltip(new Tooltip("Delete a goal for a given habit/skill"));
+            deleteGoalButton.setTooltip(new Tooltip("Edit, Delete, or End a Habit"));
             // sets alignment for both
             deleteGoalButton.setAlignment(Pos.CENTER);
             // event handler for deleteGoalButton
             deleteGoalButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    // creates a new stage
-                    Stage deleteGoalStage = new Stage();
-                    // add skillblazer icon
-                    deleteGoalStage.getIcons().add(new Image("/llama.jpg"));
-                    // label for enable notifications message
-                    Label skillLabel = new Label("Choose a skill:");
-                    // combobox for user to select skill from list
-                    ComboBox skillsComboBox = new ComboBox();                   // ****TO DO: populate user's skills
-                    // label for delete goal message
-                    Label goalLabel = new Label("Choose which goal you would like to delete:");
-                    // combobox for user to select goal from list
-                    ComboBox goalsComboBox = new ComboBox();                    // ****TO DO: populate user's goals
-                    // button for user to delete skill history
-                    Button deleteButton = new Button("Delete");
-
-                    // hbox for 1st vbox row
-                    HBox deleteGoalHbox1 = new HBox();
-                    // sets alignment for hbox
-                    deleteGoalHbox1.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteGoalHbox1.getStyleClass().add("optionsButtonHboxes");
-                    // adds skillLabel to deleteGoalHbox1
-                    deleteGoalHbox1.getChildren().add(skillLabel);
-
-                    // hbox for 2nd vbox row
-                    HBox deleteGoalHbox2 = new HBox();
-                    // sets alignment of hbox to center
-                    deleteGoalHbox2.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteGoalHbox2.getStyleClass().add("optionsButtonHboxes");
-                    // adds skillsComboBox to deleteGoalHbox2
-                    deleteGoalHbox2.getChildren().add(skillsComboBox);
-
-                    // hbox for 3rd vbox row
-                    HBox deleteGoalHbox3 = new HBox();
-                    // sets alignment of hbox to center
-                    deleteGoalHbox3.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteGoalHbox3.getStyleClass().add("optionsButtonHboxes");
-                    // adds goalLabel to deleteGoalHbox3
-                    deleteGoalHbox3.getChildren().add(goalLabel);
-
-                    // hbox for 4th vbox row
-                    HBox deleteGoalHbox4 = new HBox();
-                    // sets alignment of hbox to center
-                    deleteGoalHbox4.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteGoalHbox4.getStyleClass().add("optionsButtonHboxes");
-                    // adds goalsComboBox to deleteGoalHbox4
-                    deleteGoalHbox4.getChildren().add(goalsComboBox);
-
-                    // hbox for 5th vbox row
-                    HBox deleteGoalHbox5 = new HBox();
-                    // sets alignment of hbox to center
-                    deleteGoalHbox5.setAlignment(Pos.CENTER);
-                    // pulls css specs from style sheet
-                    deleteGoalHbox5.getStyleClass().add("optionsButtonHboxes");
-                    // adds deleteButton to deleteGoalHbox5
-                    deleteGoalHbox5.getChildren().add(deleteButton);
-
-                    // new vbox layout
-                    VBox deleteGoalVBox = new VBox();
-                    // pulls css specs from style sheet
-                    deleteGoalVBox.getStyleClass().add("secondaryWindow");
-                    // adds all hboxes to deleteGoalVBox
-                    deleteGoalVBox.getChildren().add(deleteGoalHbox1);
-                    deleteGoalVBox.getChildren().add(deleteGoalHbox2);
-                    deleteGoalVBox.getChildren().add(deleteGoalHbox3);
-                    deleteGoalVBox.getChildren().add(deleteGoalHbox4);
-                    deleteGoalVBox.getChildren().add(deleteGoalHbox5);
-
-                    // adds deleteGoalVBox to the deleteGoalScene
-                    Scene deleteGoalScene = new Scene(deleteGoalVBox, 450, 450);
-                    // adds deleteGoalScene to deleteGoalStage 
-                    deleteGoalStage.setScene(deleteGoalScene);
-                    // gets css style sheet
-                    deleteGoalScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-                    // shows the stage; actually displays the scene
-                    deleteGoalStage.show();
+                    showEditTasks();
                 }
             }); // end event handler
             // adds deleteGoalButton to optionsButtonHbox3
             optionsButtonHbox3.getChildren().add(deleteGoalButton);
+            
+            
+            
 
             // hbox for 4th vbox row
             HBox optionsButtonHbox4 = new HBox();
@@ -942,7 +880,6 @@ public class SkillBlazer extends Application {
             Region emptyRegion2 = new Region();
             Region emptyRegion3 = new Region();
             Region emptyRegion4 = new Region();
-
             // adds all hboxes and regions to optionsVBox
             optionsVBox.getChildren().add(optionsButtonHbox1);
             optionsVBox.getChildren().add(emptyRegion1);
@@ -962,6 +899,72 @@ public class SkillBlazer extends Application {
             optionsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             // event handler for optionsStage; hideOptions() method
             optionsStage.setOnCloseRequest(e -> hideOptions());
+            
+            
+            editUsernameStage = new Stage();
+            // sets title
+            editUsernameStage.setTitle("Lifetime Metrics");
+            // add skillblazer icon
+            editUsernameStage.getIcons().add(new Image("/llama.jpg"));
+            
+        editUsernameLabel = new Label("Username:");
+        editUsernameTextField = new TextField();
+        editUsernameApplyButton = new Button("Apply");
+        editUsernameCloseButton = new Button("Close");
+        
+        // event handler for editUsernameCloseButton
+            editUsernameCloseButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    editUsernameStage.hide();
+                }
+            });
+        // event handler for editUsernameApplyButton
+            editUsernameApplyButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to change your username?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        skbUserProfile.setUserName(editUsernameTextField.getText());
+                        usernameLabel.setText("Hello, " + skbUserProfile.getUserName() + "!");
+                        editUsernameStage.hide();
+                    }                
+                }
+            });
+        
+        
+        
+            Region emptyRegion5 = new Region();
+             HBox.setHgrow(emptyRegion5, Priority.ALWAYS);
+            Region emptyRegion6 = new Region();
+            HBox.setHgrow(emptyRegion6, Priority.ALWAYS);
+            HBox editUsernameHbox1 = new HBox();
+             HBox editUsernameHbox2 = new HBox();
+             editUsernameHbox1.getChildren().add(editUsernameLabel);
+             editUsernameHbox1.getChildren().add(emptyRegion5);
+             editUsernameHbox1.getChildren().add(editUsernameTextField);
+             editUsernameHbox2.getChildren().add(editUsernameApplyButton);
+             editUsernameHbox2.getChildren().add(emptyRegion6);
+             editUsernameHbox2.getChildren().add(editUsernameCloseButton);
+             
+            // new vbox layout
+            VBox editUsernameVbox = new VBox();
+            // necessary to pull css specs from style sheet
+            editUsernameVbox.getStyleClass().add("secondaryWindow");
+            editUsernameVbox.getChildren().add(editUsernameHbox1);
+            editUsernameVbox.getChildren().add(editUsernameHbox2);
+            
+            // adds this pane/layout to the scene
+            Scene editUsernameScene = new Scene(editUsernameVbox, 600, 300);
+             // adds scene to stage 
+            editUsernameStage.setScene(editUsernameScene);
+            // gets css style sheet
+            editUsernameScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            // shows the stage
+            editUsernameStage.setOnCloseRequest(e -> {editUsernameStage.hide();});
+            
+            
             }
         
         // method to show optionsStage and bring to the front
@@ -980,7 +983,359 @@ public class SkillBlazer extends Application {
             optionsStage.close();
         } // end closeOptions() method
         
-    } // end class Options
+        
+        
+
+        public void createEditTasksWindow() {
+            // creates new stage
+            editTasksStage = new Stage();
+            // sets title
+            editTasksStage.setTitle("Edit Tasks");
+            // add skillblazer icon
+            editTasksStage.getIcons().add(new Image("/llama.jpg"));
+            
+             // initializes habitLabel
+            editHabitLabel = new Label();
+            // sets text for habitLabel
+            editHabitLabel.setText("Habit/Skill:");
+            // initializes habitComboBox
+            editHabitComboBox = new ComboBox();
+            // Tooltip
+            editHabitComboBox.setTooltip(new Tooltip("Select a habit/skill"));
+            for (Task mt : taskList) {
+                // add object to combo box displayed string is objects toString Method
+                editHabitComboBox.getItems().add(mt);
+            }
+            
+            // hbox for 1st metrics vbox row
+            editTasksHbox1 = new HBox();
+            // pulls css styling information
+            editTasksHbox1.getStyleClass().add("progressButtonHboxes");
+             // hbox for 2nd metrics vbox row
+            editTasksHbox2 = new HBox();
+            // pulls css styling information
+            editTasksHbox2.getStyleClass().add("progressButtonHboxes");
+             // hbox for 3rd metrics vbox row
+            editTasksHbox3 = new HBox();
+            // pulls css styling information
+            editTasksHbox3.getStyleClass().add("progressButtonHboxes");
+             // hbox for 4th metrics vbox row
+            editTasksHbox4 = new HBox();
+            // pulls css styling information
+            editTasksHbox4.getStyleClass().add("progressButtonHboxes");
+            // hbox for 5th metrics vbox row
+            editTasksHbox5 = new HBox();
+            // pulls css styling information
+            editTasksHbox5.getStyleClass().add("progressButtonHboxes");
+            // hbox for 6th metrics vbox row
+            editTasksHbox6 = new HBox();
+            // pulls css styling information
+            editTasksHbox6.getStyleClass().add("progressButtonHboxes");
+            // hbox for 7th metrics vbox row
+            editTasksHbox7 = new HBox();
+            // pulls css styling information
+            editTasksHbox7.getStyleClass().add("progressButtonHboxes");
+            
+            
+            // initializes editTaskNameLabel
+            editTaskNameLabel      = new Label("Task Name:");
+            // initializes editTaskNameTextField
+            editTaskNameTextField  = new TextField();
+            // initializes editGoalLabel
+            editGoalLabel        = new Label("Goal:");
+            // initializes editGoalTextField
+            editGoalTextField  = new TextField();
+            
+            // initializes editGoalUnitsLabel
+            editGoalUnitsLabel        = new Label("Goal Units:");
+            // initializes editGoalUnitsTextField
+            editGoalUnitsTextField  = new TextField();
+            // initializes editEndDateLabel
+            editEndDateLabel        = new Label("End Date:");
+            // initializes editEndDate
+            editEndDate  = new DatePicker();
+            
+            editNotesLabel         = new Label("Notes:");
+            editNotesTextArea = new TextArea();
+            editNotesTextArea.setPrefSize(350, 100);
+            
+            editTaskApplyButton = new Button("Apply");
+            editTaskCloseButton = new Button("Close");
+            editTaskDeleteButton = new Button("Delete");
+            editTaskEndTaskButton = new Button("End");
+            
+            // event handler for deleteGoalButton
+            editTaskApplyButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    Task mt = (Task)editHabitComboBox.getSelectionModel().getSelectedItem();
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to edit " + mt.getTaskName() + "?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        if (editTaskApplyEdits()) {
+                            drawCalendar();
+                            closeEditTasks();
+                        }
+                    }
+                }
+            });
+            // event handler for editTaskCloseButton
+            editTaskCloseButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    closeEditTasks();
+                }
+            });
+            // event handler for editTaskDeleteButton
+            editTaskDeleteButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    Task mt = (Task)editHabitComboBox.getSelectionModel().getSelectedItem();
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to delete " + mt.getTaskName() + "?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        taskList.remove(mt);
+                        drawCalendar();
+                        closeEditTasks();
+                    }                
+                }
+            });
+            // event handler for editTaskEndTaskButton
+            editTaskEndTaskButton.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    Task mt = (Task)editHabitComboBox.getSelectionModel().getSelectedItem();
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to end " + mt.getTaskName() + "?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        if (editTaskApplyEdits()) {
+                            GregorianCalendar todaysDate = new GregorianCalendar();
+                            mt.setEndDate(todaysDate);
+                            drawCalendar();
+                            closeEditTasks();
+                        }
+                    }
+
+                }
+            });
+            
+            
+            // create some empty regions
+            Region emptyRegion1 = new Region();
+            HBox.setHgrow(emptyRegion1, Priority.ALWAYS);
+            Region emptyRegion2 = new Region();
+            HBox.setHgrow(emptyRegion2, Priority.ALWAYS);
+            Region emptyRegion3 = new Region();
+            HBox.setHgrow(emptyRegion3, Priority.ALWAYS);
+            Region emptyRegion4 = new Region();
+             HBox.setHgrow(emptyRegion4, Priority.ALWAYS);
+            Region emptyRegion5 = new Region();
+            HBox.setHgrow(emptyRegion5, Priority.ALWAYS);
+            Region emptyRegion6 = new Region();
+            HBox.setHgrow(emptyRegion6, Priority.ALWAYS);
+            Region emptyRegion7 = new Region();
+            HBox.setHgrow(emptyRegion7, Priority.ALWAYS);
+            Region emptyRegion8 = new Region();
+            HBox.setHgrow(emptyRegion8, Priority.ALWAYS);
+            // add fields to hboxes
+            editTasksHbox1.getChildren().add(editHabitLabel);
+            editTasksHbox1.getChildren().add(editHabitComboBox);
+            editTasksHbox2.getChildren().add(editTaskNameLabel);
+            editTasksHbox2.getChildren().add(emptyRegion1);
+            editTasksHbox2.getChildren().add(editTaskNameTextField);
+            editTasksHbox3.getChildren().add(editGoalLabel);
+            editTasksHbox3.getChildren().add(emptyRegion2);
+            editTasksHbox3.getChildren().add(editGoalTextField);
+            editTasksHbox4.getChildren().add(editGoalUnitsLabel);
+            editTasksHbox4.getChildren().add(emptyRegion3);
+            editTasksHbox4.getChildren().add(editGoalUnitsTextField);
+            editTasksHbox5.getChildren().add(editEndDateLabel);
+            editTasksHbox5.getChildren().add(emptyRegion4);
+            editTasksHbox5.getChildren().add(editEndDate);
+            editTasksHbox6.getChildren().add(editNotesLabel);
+            editTasksHbox6.getChildren().add(emptyRegion5);
+            editTasksHbox6.getChildren().add(editNotesTextArea);
+            
+            
+            editTasksHbox7.getChildren().add(editTaskApplyButton);
+            editTasksHbox7.getChildren().add(emptyRegion6);
+            editTasksHbox7.getChildren().add(editTaskDeleteButton);
+            editTasksHbox7.getChildren().add(emptyRegion7);
+            editTasksHbox7.getChildren().add(editTaskEndTaskButton);
+            editTasksHbox7.getChildren().add(emptyRegion8);
+            editTasksHbox7.getChildren().add(editTaskCloseButton);
+            
+            // set habitComboBox action handler
+            editHabitComboBox.setOnAction(e -> {updateEditTaskFields();});
+            // Disable All HBoxes for now
+            editTasksHbox2.setVisible(false);
+            editTasksHbox2.setManaged(false);
+            editTasksHbox3.setVisible(false);
+            editTasksHbox3.setManaged(false);
+            editTasksHbox4.setVisible(false);
+            editTasksHbox4.setManaged(false);
+            editTasksHbox5.setVisible(false);
+            editTasksHbox5.setManaged(false);
+            editTasksHbox6.setVisible(false);
+            editTasksHbox6.setManaged(false);
+            editTasksHbox7.setVisible(false);
+            editTasksHbox7.setManaged(false);
+
+            // if habitComboBox is not empty
+            if (!editHabitComboBox.getItems().isEmpty()) {
+                editHabitComboBox.getSelectionModel().select(0);
+                updateEditTaskFields();
+            }
+            
+
+            // new vbox layout
+            VBox editTasksVbox = new VBox();
+            // necessary to pull css specs from style sheet
+            editTasksVbox.getStyleClass().add("secondaryWindow");
+            editTasksVbox.getChildren().add(editTasksHbox1);
+            editTasksVbox.getChildren().add(editTasksHbox2);
+            editTasksVbox.getChildren().add(editTasksHbox3);
+            editTasksVbox.getChildren().add(editTasksHbox4);
+            editTasksVbox.getChildren().add(editTasksHbox5);
+            editTasksVbox.getChildren().add(editTasksHbox6);
+            editTasksVbox.getChildren().add(editTasksHbox7);
+            // adds this pane/layout to the scene
+            Scene editTasksScene = new Scene(editTasksVbox, 600, 600);
+            // adds scene to stage 
+            editTasksStage.setScene(editTasksScene);
+            // gets css style sheet
+            editTasksScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            // shows the stage
+            editTasksStage.setOnCloseRequest(e -> hideEditTasks());
+        }
+        
+        public boolean editTaskApplyEdits() {
+            Task mt = (Task)editHabitComboBox.getSelectionModel().getSelectedItem();
+            String taskName = editTaskNameTextField.getText();
+            if (taskName.trim().isEmpty()) {
+                Alert alert = new Alert(AlertType.WARNING, "Please enter a habit name!");
+                alert.show();
+                return false;
+            }
+            String notes = editNotesTextArea.getText();
+            
+            if (mt instanceof CumulativeTask) {
+                double goalValue;
+                try{
+                    goalValue = Double.parseDouble(editGoalTextField.getText());
+                } catch (NumberFormatException e) {
+                    Alert alert = new Alert(AlertType.WARNING, "Please enter a numeric value for your goal!");
+                    alert.show();
+                    return false;
+                }
+                if (goalValue<=0) {
+                    Alert alert = new Alert(AlertType.WARNING, "Please enter a positive goal!");
+                    alert.show();
+                    return false;
+                }
+                GregorianCalendar endDate = new GregorianCalendar();
+                if (editEndDate.getValue() == null) {
+                    Alert alert = new Alert(AlertType.WARNING, "Please select an end date!");
+                    alert.show();
+                    return false;
+                }
+                endDate.setTime(Date.from(editEndDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                if (mt.getStartDate().compareTo(endDate)>=0) {
+                    Alert alert = new Alert(AlertType.WARNING, "Please enter an end date after your start date!");
+                    alert.show();
+                    return false;
+                }
+                String goalUnits = editGoalUnitsTextField.getText();
+                ((CumulativeTask)mt).setEndDate(endDate);
+                ((CumulativeTask)mt).setTaskUnits(goalUnits);
+                ((CumulativeTask)mt).setGoalToReach(goalValue);
+            }
+            mt.setTaskName(taskName);
+            mt.setNotes(notes);   
+
+            return true;
+        }
+        
+               // method to show showEditUsername
+        public void showEditUsername() {
+            editUsernameTextField.setText(skbUserProfile.getUserName());
+            editUsernameStage.show();
+            editUsernameStage.toFront();
+        } // end showEditTasks() method 
+        
+        
+        
+
+        // method to show editTasksStage
+        public void showEditTasks() {
+            editTasksStage.show();
+            // remove everything in habitComboBox
+            editHabitComboBox.getItems().clear();
+            // add tasks in taskList to habitComboBox
+            for (Task mt : taskList) {
+                // add object to combo box displayed string is objects toString Method
+                editHabitComboBox.getItems().add(mt);
+            }
+            // if habitComboBox is not empty
+            if (!editHabitComboBox.getItems().isEmpty()) {
+                // select the first combo box entry
+                editHabitComboBox.getSelectionModel().select(0);
+                updateEditTaskFields();
+            }
+            editTasksStage.toFront();
+        } // end showEditTasks() method
+        
+        // method to hide editTasksStage
+        public void hideEditTasks() {
+            editTasksStage.hide();
+        } // end hideEditTasks() method
+        
+        // method to close editTasksStage
+        public void closeEditTasks() {
+            editTasksStage.close();
+        } // end closeEditTasks() method
+        
+        
+         // update the fields for the selected task
+        public void updateEditTaskFields() {
+            Task mt = (Task)editHabitComboBox.getSelectionModel().getSelectedItem();
+            if (mt != null) {
+                editTaskNameTextField.setText(mt.getTaskName());
+                editNotesTextArea.setText(mt.getNotes());
+                editTasksHbox2.setVisible(true);
+                editTasksHbox2.setManaged(true);
+                editTasksHbox6.setVisible(true);
+                editTasksHbox6.setManaged(true);
+                editTasksHbox7.setVisible(true);
+                editTasksHbox7.setManaged(true);
+                
+                if (mt instanceof CumulativeTask) {
+                    editGoalTextField.setText(""+((CumulativeTask)mt).getGoalToReach());
+                    editGoalUnitsTextField.setText(((CumulativeTask)mt).getTaskUnits());
+                    Calendar endDate = ((CumulativeTask)mt).getEndDate();
+                    editEndDate.setValue(endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    editTaskEndTaskButton.setDisable(true);
+                    editTasksHbox3.setVisible(true);
+                    editTasksHbox3.setManaged(true);
+                    editTasksHbox4.setVisible(true);
+                    editTasksHbox4.setManaged(true);
+                    editTasksHbox5.setVisible(true);
+                    editTasksHbox5.setManaged(true);
+                 } else {
+                    editTaskEndTaskButton.setDisable(false);
+                    editTasksHbox3.setVisible(false);
+                    editTasksHbox3.setManaged(false);
+                    editTasksHbox4.setVisible(false);
+                    editTasksHbox4.setManaged(false);
+                    editTasksHbox5.setVisible(false);
+                    editTasksHbox5.setManaged(false);
+                }
+            }
+        }
+
+       
+    }// end class Options
+
 
     // inner class for 'Lifetime Metrics' menu
     class LifetimeMetrics {
@@ -1703,7 +2058,7 @@ public class SkillBlazer extends Application {
             String notes = notesTextArea.getText();
             GregorianCalendar startDate = new GregorianCalendar();
             startDate.setTime(Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            long taskId = 0;
+            long taskId = skbUserProfile.incrementTaskNumber();
             if (dailyRB.isSelected()) {
                 // Create DailyTask object
                 DailyTask newTask = new DailyTask(taskName,taskId,startDate,false,notes);
@@ -1713,7 +2068,7 @@ public class SkillBlazer extends Application {
                 WeeklyTask newTask = new WeeklyTask(taskName,taskId,startDate,false,notes);
                 taskList.add(newTask);
             } else if (customRB.isSelected()) {
-                ArrayList<String> dateList = new ArrayList();
+                ArrayList<String> dateList = new ArrayList<>();
                 // populate array list of days of week
                 if (monRB.isSelected()) {
                     dateList.add("Monday");
@@ -1923,10 +2278,7 @@ public class SkillBlazer extends Application {
                 progressButtonHboxOtherTasks.setVisible(false);
                 progressButtonHboxOtherTasks.setManaged(false);
             }
-            
-            
-            
-            
+
             // hbox for 5th vbox row
             HBox progressButtonHbox5 = new HBox();
             // pulls css styling information
@@ -1972,6 +2324,7 @@ public class SkillBlazer extends Application {
             progressStage.show();
         } // end constructor
         
+        // method to add progress for a task
         public boolean addProgress(Calendar dateProgress) {
             if (!habitComboBox.getItems().isEmpty()) {
                 Task mt = (Task)habitComboBox.getSelectionModel().getSelectedItem();
@@ -1988,34 +2341,35 @@ public class SkillBlazer extends Application {
                         Alert alert = new Alert(AlertType.WARNING, "Please enter a positive value for your progress!");
                         alert.show();
                         return false;
-                    }
+                    } 
+                    boolean previousState = ((CumulativeTask)mt).checkCompleted();
                     ((CumulativeTask)mt).addProgress(dateProgress, progressValue);
+                    boolean newState = ((CumulativeTask)mt).checkCompleted();
+                    if (newState&&(!previousState)) {
+                        Alert alert = new Alert(AlertType.INFORMATION, "Great job! You have completed your goal!");
+                        alert.show();
+                    } else if (progressValue > 0) {
+                        Alert alert = new Alert(AlertType.INFORMATION, "Great job! You have made progress on your goal!");
+                        alert.show();
+                    }
                 } else {
                     if (completedCheckBox.isSelected()) {
                         mt.setDateCompleted(dateProgress);
+                        Alert alert = new Alert(AlertType.INFORMATION, "Great job! You completed your task!");
+                        alert.show();
                     } else {
                         mt.removeDateCompleted(dateProgress);
                     }                               
                 }
-                // test print statements for checking current and best streak code
-                if (mt instanceof DailyTask) {
-                    System.out.println(((DailyTask)mt).getCurrentStreak(dateProgress) + " - " + ((DailyTask)mt).getBestStreak() );
-                }
-                if (mt instanceof WeeklyTask) {
-                    System.out.println(((WeeklyTask)mt).getCurrentStreak(dateProgress) + " - " + ((WeeklyTask)mt).getBestStreak() );
-                }    
-                                                     // ****TO DO: Save to JSON file
             }
             return true;
         }
-        
-
-    } // end class ProgressButton
+    } // end addProgress() method
     
     // method to close the program
     private void closeProgram() {
         // call to JSON method to save information to file
-        JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);    
+        JSONWriter.saveAllFilesToDisk(skbUserProfile, taskList);
         // ensures windows are closed
         habitCreationMenu.closeHabitEntry();
         lifetimeMetrics.closeLifetimeMetrics();                                        
@@ -2030,9 +2384,10 @@ public class SkillBlazer extends Application {
          * application can access the UserProfile and the list of Task objects
          * that were loaded from disk.
          */
-        arrayOfTasks = jsonLoader.loadFromJSON();
+        // instantiates taskList
+        taskList = new ArrayList<Task>();
+        taskList = jsonLoader.loadTasksFromJSON();
         skbUserProfile = jsonLoader.parseAndReturnUserProfile();
-
         launch(args);               // opens the JavaFX Stage
     } // end main method
 
