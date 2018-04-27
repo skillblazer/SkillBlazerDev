@@ -22,7 +22,7 @@ public class DropBoxIntegration {
 
     public void syncDBX() {
 
-        
+  
     Stage dbxWindow = new Stage();
     dbxWindow.setTitle("Upload to DropBox");
     
@@ -77,3 +77,6 @@ public class DropBoxIntegration {
         this.isEnabled = isEnabled;
     }
 }
+
+
+//testing
