@@ -162,6 +162,8 @@ public class JSONLoader {
 
         String taskName = (String) jsonObject.get("taskName");
         long taskId = (long) jsonObject.get("taskId");
+        String notes = (String) jsonObject.get("notes");
+
         int year = convertInt((long) jsonObject.get("year"));
         int month = convertInt((long) jsonObject.get("month"));
         int day = convertInt( (long) jsonObject.get("date"));
@@ -178,30 +180,18 @@ public class JSONLoader {
         // ArrayList<Task> userTaskList
         switch (type) {
             case "daily":
-                // parse remaining fields specific to a DailyTask object
-                currentStreak = convertInt((long) jsonObject.get("currentStreak"));
-                bestStreak = convertInt( (long) jsonObject.get("bestStreak"));
-
                 // instantiate a DailyTask object and add to ArrayList
                 userTasks.add(new DailyTask(taskName, taskId, startDate,
-                        isCompleted, currentStreak, bestStreak));
+                        isCompleted, notes));
                 break;
 
             case "weekly":
-                // parse remaining fields specific to a WeeklyTask object
-                currentStreak = convertInt((long) jsonObject.get("currentStreak"));
-                bestStreak = convertInt((long) jsonObject.get("bestStreak"));
-
                 // instantiate a WeeklyTask object and add to ArrayList
                 userTasks.add(new WeeklyTask(taskName, taskId, startDate,
-                        isCompleted, currentStreak, bestStreak));
+                        isCompleted, notes));
                 break;
 
             case "custom":
-                // parse remaining fields specific to a CustomTask object
-                currentStreak = convertInt((long) jsonObject.get("currentStreak"));
-                bestStreak = convertInt((long) jsonObject.get("bestStreak"));
-
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
                 // copy the contents of the JSONArray into an ArrayList
@@ -213,7 +203,7 @@ public class JSONLoader {
 
                 // instantiate a CustomTask object and add to ArrayList
                 userTasks.add(new CustomTask(taskName, taskId, startDate,
-                        isCompleted, currentStreak, bestStreak, dayListing));
+                        isCompleted, notes, dayListing));
                 break;
 
             case "cumulative":
@@ -222,13 +212,15 @@ public class JSONLoader {
                 int endYear = convertInt((long) jsonObject.get("endYear"));
                 int endMonth = convertInt((long) jsonObject.get("endMonth"));
                 int endDay = convertInt((long) jsonObject.get("endDate"));
+                double goalToReach = (double) jsonObject.get("goalToReach");
+                String goalUnits = (String) jsonObject.get("goalUnits");
 
                 Calendar endDate = new GregorianCalendar();
                 endDate.set(endYear, endMonth, endDay);
 
                 // instantiate a CumulativeTask object and add to ArrayList
                 userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                        isCompleted, endDate));
+                        isCompleted, notes, endDate, goalToReach, goalUnits));
                 break;
         } //end switch statement
 

@@ -60,11 +60,12 @@ public class SkillBlazer extends Application {
     private LifetimeMetrics lifetimeMetrics;                                                            // LifetimeMetrics object
     private HabitCreationButton habitCreationMenu;                                                      // HabitCreationButton object
     private static final String[] dayNamesOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday"};                                                          // String array holding names for days of week
+        "Thursday", "Friday", "Saturday"};                                                              // String array holding names for days of week
 
     // these objects will conduct the startup routine
-    static JSONLoader jsonLoader = new JSONLoader(); // also provides an instance of SkillBlazerInitializer skillBlazerInit
-
+    static JSONLoader jsonLoader = new JSONLoader();     // also provides an instance of SkillBlazerInitializer skillBlazerInit
+    static ArrayList<Task> arrayOfTasks;
+    static UserProfile skbUserProfile;          
 
     // sets up the main stage, scenes and such
     @Override
@@ -281,50 +282,46 @@ public class SkillBlazer extends Application {
         for (int i = 0; i < numberDaysCurrentMonth; i++) {
             for (Task mt : taskList) {
                 // if Task object is an instance of DailyTask
+                // Calendar object representing task start date
+                Calendar taskStartDate = mt.getStartDate();
+                // Calendar object representing task end date
+                Calendar taskEndDate = mt.getEndDate();
+                if (taskEndDate!=null) {
+                    // if end date is passed skip
+                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskEndDate) > 0) {
+                        continue;
+                    }
+                }
+                // if start date has not been reached skip
+                if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) < 0) {
+                    continue;
+                }
+                
                 if (mt instanceof DailyTask) {
-                    // Calendar object representing task start date
-                    Calendar taskStartDate = ((DailyTask) mt).getStartDate();
-                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
+                    // adds Task objects to Day objects of calCalc
+                    calCalc.getDayObject(i).addTask(mt);
+                // else if Task object is an instance of WeeklyTask
+                } else if (mt instanceof WeeklyTask) {
+                    if (dayOfWeek == 6) {
                         // adds Task objects to Day objects of calCalc
                         calCalc.getDayObject(i).addTask(mt);
                     }
-                    // else if Task object is an instance of WeeklyTask
-                } else if (mt instanceof WeeklyTask) {
-                    // Calendar object representing task start date
-                    Calendar taskStartDate = ((WeeklyTask) mt).getStartDate();
-                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
-                        if (dayOfWeek == 6) {
-                            // adds Task objects to Day objects of calCalc
-                            calCalc.getDayObject(i).addTask(mt);
-                        }
-                    }
-                    // else if Task object is an instance of CustomTask
+                // else if Task object is an instance of CustomTask
                 } else if (mt instanceof CustomTask) {
-                    // Calendar object representing task start date
-                    Calendar taskStartDate = ((CustomTask) mt).getStartDate();
-                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
-                        ArrayList<String> daysOfWeek = ((CustomTask) mt).getDaysOfWeek();
-                        // boolean that gets set to true if the days of the week shows up in the ArrayList for the days of the week the task has
-                        boolean todayActive = false;
-                        for (String md : daysOfWeek) {
-                            todayActive |= md.equalsIgnoreCase(dayNamesOfWeek[dayOfWeek]);
-                        }
-                        if (todayActive) {
-                            // adds Task objects to Day objects of calCalc
-                            calCalc.getDayObject(i).addTask(mt);
-                        }
+                    ArrayList<String> daysOfWeek = ((CustomTask) mt).getDaysOfWeek();
+                    // boolean that gets set to true if the days of the week shows up in the ArrayList for the days of the week the task has
+                    boolean todayActive = false;
+                    for (String md : daysOfWeek) {
+                        todayActive |= md.equalsIgnoreCase(dayNamesOfWeek[dayOfWeek]);
                     }
-                    // else if Task object is an instance of CumulativeTask
+                    if (todayActive) {
+                        // adds Task objects to Day objects of calCalc
+                        calCalc.getDayObject(i).addTask(mt);
+                    }
+                // else if Task object is an instance of CumulativeTask
                 } else if (mt instanceof CumulativeTask) {
-                    // Calendar object representing task end date
-                    Calendar taskEndDate = ((CumulativeTask) mt).getEndDate();
-                    Calendar taskStartDate = ((CumulativeTask) mt).getStartDate();
-                    if (calCalc.getDayObject(i).getTaskDate().compareTo(taskStartDate) >= 0) {
-                        if (calCalc.getDayObject(i).getTaskDate().compareTo(taskEndDate) <= 0) {
-                            // adds Task objects to Day objects of calCalc
-                            calCalc.getDayObject(i).addTask(mt);
-                        }
-                    }
+                    // adds Task objects to Day objects of calCalc
+                    calCalc.getDayObject(i).addTask(mt);
                 }
             }
             // week day update
@@ -354,7 +351,7 @@ public class SkillBlazer extends Application {
             vboxArray[i] = new VBox();
             // creates and initializes hboxCal
             HBox hboxCal = new HBox();
-            // creates and initializes; fills it with string value from daysOfWeek
+            // creates and initializes; fills it with string value from dayNamesOfWeek
             Label vboxLabel = new Label(dayNamesOfWeek[i]);
             // pulls css specs from style sheet
             vboxLabel.getStyleClass().add("dayOfWeekLabels");
@@ -442,15 +439,20 @@ public class SkillBlazer extends Application {
                         taskLabel.setTooltip(new Tooltip("Cumulative Task"));
                         if (todayDayOb.getTaskDate().compareTo(((CumulativeTask)mt).getEndDate())==0) {
                             if (((CumulativeTask)mt).checkCompleted()) {
+                                // marks completed task with checkmark
+                                taskLabel.setText(mt.getTaskName()+ "   ✔"); 
                                 taskLabel.getStyleClass().add("labelFinalCumulativeCompleted");
                             } else {
+                                // adds cumulative task name and exclamation point
                                 taskLabel.setText(mt.getTaskName()+"(!)");
                                 taskLabel.getStyleClass().add("labelFinalCumulativeUncompleted");
                             }
                         }
                     } else {
-                        // color completed Tasks Green
+                        // color completed tasks Green
                         if (mt.checkDateCompleted(todayDayOb.getTaskDate())) {
+                            // marks completed task with checkmark
+                            taskLabel.setText(mt.getTaskName()+ "   ✔");  
                             taskLabel.getStyleClass().add("labelCompletedTask");
                         } else {
                             taskLabel.getStyleClass().add("labelDefaultTask");
@@ -989,7 +991,27 @@ public class SkillBlazer extends Application {
     // inner class for 'Lifetime Metrics' menu
     class LifetimeMetrics {
         
+        
+         // member fields - GUI elements
+        private Label habitLabel;                       // label for habitComboBox
         private Stage lifetimeMetricsStage;                     // Stage for LifetimeMetrics
+        private ComboBox habitComboBox;                 // comboBox for list of populated habits/skills of user
+        private Label percentCompletedLabel;
+        private TextField percentCompletedTextField;
+        private Label totalCompletedLabel;
+        private TextField totalCompletedTextField;
+        private Label goalLabel;
+        private TextField goalTextField;
+        private Label currentStreakLabel;
+        private TextField currentStreakTextField;
+        private Label bestStreakLabel;
+        private TextField bestStreakTextField;
+        private HBox lifetimeMetricsHbox1;
+        private HBox lifetimeMetricsHbox2;
+        private HBox lifetimeMetricsHbox3;
+        private HBox lifetimeMetricsHbox4;
+        private HBox lifetimeMetricsHbox5;
+        private HBox lifetimeMetricsHbox6;
         
         // constructor
         public LifetimeMetrics() {
@@ -999,10 +1021,132 @@ public class SkillBlazer extends Application {
             lifetimeMetricsStage.setTitle("Lifetime Metrics");
             // add skillblazer icon
             lifetimeMetricsStage.getIcons().add(new Image("/llama.jpg"));
+            
+             // initializes habitLabel
+            habitLabel = new Label();
+            // sets text for habitLabel
+            habitLabel.setText("Habit/Skill:");
+            // initializes habitComboBox
+            habitComboBox = new ComboBox();
+            // Tooltip
+            habitComboBox.setTooltip(new Tooltip("Select a habit/skill"));
+            for (Task mt : taskList) {
+                // add object to combo box displayed string is objects toString Method
+                habitComboBox.getItems().add(mt);
+            }
+            
+            // hbox for 1st metrics vbox row
+            lifetimeMetricsHbox1 = new HBox();
+            // pulls css styling information
+            lifetimeMetricsHbox1.getStyleClass().add("progressButtonHboxes");
+             // hbox for 2nd metrics vbox row
+            lifetimeMetricsHbox2 = new HBox();
+            // pulls css styling information
+            lifetimeMetricsHbox2.getStyleClass().add("progressButtonHboxes");
+             // hbox for 3rd metrics vbox row
+            lifetimeMetricsHbox3 = new HBox();
+            // pulls css styling information
+            lifetimeMetricsHbox3.getStyleClass().add("progressButtonHboxes");
+             // hbox for 4th metrics vbox row
+            lifetimeMetricsHbox4 = new HBox();
+            // pulls css styling information
+            lifetimeMetricsHbox4.getStyleClass().add("progressButtonHboxes");
+             // hbox for 5th metrics vbox row
+            lifetimeMetricsHbox5 = new HBox();
+            // pulls css styling information
+            lifetimeMetricsHbox5.getStyleClass().add("progressButtonHboxes");
+             // hbox for 6th metrics vbox row
+            lifetimeMetricsHbox6 = new HBox();
+            // pulls css styling information
+            lifetimeMetricsHbox6.getStyleClass().add("progressButtonHboxes");
+            
+            // initializes percentCompletedLabel
+            percentCompletedLabel      = new Label("Percent Completed:");
+            // initializes percentCompletedTextField
+            percentCompletedTextField  = new TextField();
+            percentCompletedTextField.setEditable(false);
+            // initializes totalCompletedLabel
+            totalCompletedLabel      = new Label("Total Completed:");
+            // initializes totalCompletedTextField
+            totalCompletedTextField  = new TextField();
+            totalCompletedTextField.setEditable(false);
+            // initializes goalLabel
+            goalLabel        = new Label("Goal:");
+            // initializes goalTextField
+            goalTextField  = new TextField();
+            goalTextField.setEditable(false);
+            // initializes currentStreakLabel
+            currentStreakLabel             = new Label("Current Streak:");
+            // initializes currentStreakTextField
+            currentStreakTextField         = new TextField();
+            currentStreakTextField.setEditable(false);
+            // initializes bestStreakLabel
+            bestStreakLabel                = new Label("Best Streak:");
+            // initializes bestStreakTextField
+            bestStreakTextField            = new TextField();
+            bestStreakTextField.setEditable(false);
+            // create some empty regions
+            Region emptyRegion1 = new Region();
+            HBox.setHgrow(emptyRegion1, Priority.ALWAYS);
+            Region emptyRegion2 = new Region();
+            HBox.setHgrow(emptyRegion2, Priority.ALWAYS);
+            Region emptyRegion3 = new Region();
+            HBox.setHgrow(emptyRegion3, Priority.ALWAYS);
+            Region emptyRegion4 = new Region();
+             HBox.setHgrow(emptyRegion4, Priority.ALWAYS);
+            Region emptyRegion5 = new Region();
+            HBox.setHgrow(emptyRegion5, Priority.ALWAYS);
+            // add fields to hboxes
+            lifetimeMetricsHbox1.getChildren().add(habitLabel);
+            lifetimeMetricsHbox1.getChildren().add(habitComboBox);
+            lifetimeMetricsHbox2.getChildren().add(percentCompletedLabel);
+            lifetimeMetricsHbox2.getChildren().add(emptyRegion1);
+            lifetimeMetricsHbox2.getChildren().add(percentCompletedTextField);
+            lifetimeMetricsHbox3.getChildren().add(totalCompletedLabel);
+            lifetimeMetricsHbox3.getChildren().add(emptyRegion2);
+            lifetimeMetricsHbox3.getChildren().add(totalCompletedTextField);
+            lifetimeMetricsHbox4.getChildren().add(goalLabel);
+            lifetimeMetricsHbox4.getChildren().add(emptyRegion3);
+            lifetimeMetricsHbox4.getChildren().add(goalTextField);
+            lifetimeMetricsHbox5.getChildren().add(currentStreakLabel);
+            lifetimeMetricsHbox5.getChildren().add(emptyRegion4);
+            lifetimeMetricsHbox5.getChildren().add(currentStreakTextField);
+            lifetimeMetricsHbox6.getChildren().add(bestStreakLabel);
+            lifetimeMetricsHbox6.getChildren().add(emptyRegion5);
+            lifetimeMetricsHbox6.getChildren().add(bestStreakTextField);
+            
+            // set habitComboBox action handler
+            habitComboBox.setOnAction(e -> {updateLifetimeMetricFields();});
+            // Disable All HBoxes for now
+            lifetimeMetricsHbox2.setVisible(false);
+            lifetimeMetricsHbox2.setManaged(false);
+            lifetimeMetricsHbox3.setVisible(false);
+            lifetimeMetricsHbox3.setManaged(false);
+            lifetimeMetricsHbox4.setVisible(false);
+            lifetimeMetricsHbox4.setManaged(false);
+            lifetimeMetricsHbox5.setVisible(false);
+            lifetimeMetricsHbox5.setManaged(false);
+            lifetimeMetricsHbox6.setVisible(false);
+            lifetimeMetricsHbox6.setManaged(false);
+
+            // if habitComboBox is not empty
+            if (!habitComboBox.getItems().isEmpty()) {
+                habitComboBox.getSelectionModel().select(0);
+                updateLifetimeMetricFields();
+            }
+            
+
             // new vbox layout
             VBox lifeMetricsVbox = new VBox();
             // necessary to pull css specs from style sheet
             lifeMetricsVbox.getStyleClass().add("secondaryWindow");
+            lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox1);
+            lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox2);
+            lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox3);
+            lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox4);
+            lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox5);
+            lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox6);
+            
             // adds this pane/layout to the scene
             Scene lifeMetricsScene = new Scene(lifeMetricsVbox, 600, 600);
             // adds scene to stage 
@@ -1016,6 +1160,19 @@ public class SkillBlazer extends Application {
         // method to show lifetimeMetricsStage
         public void showLifetimeMetrics() {
             lifetimeMetricsStage.show();
+            // remove everything in habitComboBox
+            habitComboBox.getItems().clear();
+            // add tasks in taskList to habitComboBox
+            for (Task mt : taskList) {
+                // add object to combo box displayed string is objects toString Method
+                habitComboBox.getItems().add(mt);
+            }
+            // if habitComboBox is not empty
+            if (!habitComboBox.getItems().isEmpty()) {
+                // select the first combo box entry
+                habitComboBox.getSelectionModel().select(0);
+                updateLifetimeMetricFields();
+            }
             lifetimeMetricsStage.toFront();
         } // end showLifetimeMetrics() method
         
@@ -1028,6 +1185,89 @@ public class SkillBlazer extends Application {
         public void closeLifetimeMetrics() {
             lifetimeMetricsStage.close();
         } // end closeLifetimeMetrics() method
+        
+        // update the fields for the selected task
+        public void updateLifetimeMetricFields() {
+            Task mt = (Task)habitComboBox.getSelectionModel().getSelectedItem();
+                GregorianCalendar todayDate = new GregorianCalendar();
+                if (mt instanceof CumulativeTask) {
+                    double totalCompleted = ((CumulativeTask)mt).getTotalProgress();
+                    double goal = ((CumulativeTask)mt).getGoalToReach();
+                    String percentString = String.format("%.2f",totalCompleted/goal*100.0);
+                    percentCompletedTextField.setText(percentString + "%");
+                    totalCompletedTextField.setText(totalCompleted + " " + ((CumulativeTask)mt).getTaskUnits());
+                    goalLabel.setText("Goal:");
+                    goalTextField.setText(goal + " " + ((CumulativeTask)mt).getTaskUnits());
+                    lifetimeMetricsHbox2.setVisible(true);
+                    lifetimeMetricsHbox2.setManaged(true);
+                    lifetimeMetricsHbox3.setVisible(true);
+                    lifetimeMetricsHbox3.setManaged(true);
+                    lifetimeMetricsHbox4.setVisible(true);
+                    lifetimeMetricsHbox4.setManaged(true);
+                    lifetimeMetricsHbox5.setVisible(false);
+                    lifetimeMetricsHbox5.setManaged(false);
+                    lifetimeMetricsHbox6.setVisible(false);
+                    lifetimeMetricsHbox6.setManaged(false);
+                 } else if  (mt instanceof CustomTask){
+                    double totalCompleted = ((CustomTask)mt).getNumCompleted();
+                    double maxPossible = ((CustomTask)mt).getMaxPossible(todayDate);
+                    String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
+                    percentCompletedTextField.setText(percentString + "%");
+                    totalCompletedTextField.setText(""+totalCompleted);
+                    goalLabel.setText("Maximum Possible:");
+                    goalTextField.setText(""+maxPossible);
+                    lifetimeMetricsHbox2.setVisible(true);
+                    lifetimeMetricsHbox2.setManaged(true);
+                    lifetimeMetricsHbox3.setVisible(true);
+                    lifetimeMetricsHbox3.setManaged(true);
+                    lifetimeMetricsHbox4.setVisible(true);
+                    lifetimeMetricsHbox4.setManaged(true);
+                    lifetimeMetricsHbox5.setVisible(false);
+                    lifetimeMetricsHbox5.setManaged(false);
+                    lifetimeMetricsHbox6.setVisible(false);
+                    lifetimeMetricsHbox6.setManaged(false);
+                } else if  (mt instanceof DailyTask){
+                    double totalCompleted = ((DailyTask)mt).getNumCompleted();
+                    double maxPossible = ((DailyTask)mt).getMaxPossible(todayDate);
+                    String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
+                    percentCompletedTextField.setText(percentString + "%");
+                    totalCompletedTextField.setText(""+totalCompleted);
+                    goalLabel.setText("Maximum Possible:");
+                    goalTextField.setText(""+maxPossible);
+                    currentStreakTextField.setText(""+((DailyTask)mt).getCurrentStreak(todayDate));
+                    bestStreakTextField.setText(""+((DailyTask)mt).getBestStreak());
+                    lifetimeMetricsHbox2.setVisible(true);
+                    lifetimeMetricsHbox2.setManaged(true);
+                    lifetimeMetricsHbox3.setVisible(true);
+                    lifetimeMetricsHbox3.setManaged(true);
+                    lifetimeMetricsHbox4.setVisible(true);
+                    lifetimeMetricsHbox4.setManaged(true);
+                    lifetimeMetricsHbox5.setVisible(true);
+                    lifetimeMetricsHbox5.setManaged(true);
+                    lifetimeMetricsHbox6.setVisible(true);
+                    lifetimeMetricsHbox6.setManaged(true);
+                } else if  (mt instanceof WeeklyTask){
+                    double totalCompleted = ((WeeklyTask)mt).getNumCompleted();
+                    double maxPossible = ((WeeklyTask)mt).getMaxPossible(todayDate);
+                    String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
+                    percentCompletedTextField.setText(percentString + "%");
+                    totalCompletedTextField.setText(""+totalCompleted);
+                    goalLabel.setText("Maximum Possible:");
+                    goalTextField.setText(""+maxPossible);
+                    currentStreakTextField.setText(""+((WeeklyTask)mt).getCurrentStreak(todayDate));
+                    bestStreakTextField.setText(""+((WeeklyTask)mt).getBestStreak());
+                    lifetimeMetricsHbox2.setVisible(true);
+                    lifetimeMetricsHbox2.setManaged(true);
+                    lifetimeMetricsHbox3.setVisible(true);
+                    lifetimeMetricsHbox3.setManaged(true);
+                    lifetimeMetricsHbox4.setVisible(true);
+                    lifetimeMetricsHbox4.setManaged(true);
+                    lifetimeMetricsHbox5.setVisible(true);
+                    lifetimeMetricsHbox5.setManaged(true);
+                    lifetimeMetricsHbox6.setVisible(true);
+                    lifetimeMetricsHbox6.setManaged(true);
+                }
+    }
         
     } // end class LifetimeMetrics
 
@@ -1560,7 +1800,7 @@ public class SkillBlazer extends Application {
         private TextField progressMadeTextField;        // textField for "Progress Made"; user can enter progress metrics  
         private Label unitsLabel;                       // label for units
         private Button submitButton;                    // button for user to submit progress information
-        private TextArea notesTextArea;        // textArea for notes that were entered  
+        private TextArea notesTextArea;                 // textArea to display notes that were entered by user
         
         // constructor
         ProgressButton(Day progressDay) {
@@ -1780,12 +2020,14 @@ public class SkillBlazer extends Application {
     
     // method to close the program
     private void closeProgram() {
-                                                // **TO DO: Add call to method to handle JSON writing
+        // call to JSON method to save information to file
+        JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);    
+        // ensures windows are closed
         habitCreationMenu.closeHabitEntry();
         lifetimeMetrics.closeLifetimeMetrics();                                        
         optionsMenu.closeOptions();
         window.close();
-    }
+    } // end closeProgram() method
 
     // main method
     public static void main(String[] args) {
@@ -1794,10 +2036,8 @@ public class SkillBlazer extends Application {
          * application can access the UserProfile and the list of Task objects
          * that were loaded from disk.
          */
-        ArrayList<Task> arrayOfTasks = jsonLoader.loadFromJSON();
-        Iterator<Task> taskIterator = arrayOfTasks.iterator();
-        UserProfile skbUserProfile = jsonLoader.parseAndReturnUserProfile();
-
+        arrayOfTasks = jsonLoader.loadFromJSON();
+        skbUserProfile = jsonLoader.parseAndReturnUserProfile();
 
         launch(args);               // opens the JavaFX Stage
     } // end main method

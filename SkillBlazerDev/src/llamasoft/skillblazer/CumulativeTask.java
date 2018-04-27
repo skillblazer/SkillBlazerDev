@@ -31,7 +31,6 @@ import java.util.Calendar;
 
 public class CumulativeTask extends Task {
 
-    private Calendar endDate;                                           // calendar object representing end date for cumulative task
     private String goalUnits;                                           // string field for goal units (e.g. miles, hours, books, etc.) to be entered by user
     private double goalToReach;                                         // double field to represent numeric amount for goal to reach (e.g. 5 miles); entered by user
     private ArrayList<CumulativeHistoryStruct> cumulativeHistory;       // arraylist of CumulativeHistoryStruct inner class type - custom data structure
@@ -76,16 +75,6 @@ public class CumulativeTask extends Task {
         this.cumulativeHistory = new ArrayList(); 
     } //end CumulativeTask constructor
     
-      /*
-     * Old Fully qualified constructor
-     */
-    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, Calendar endDate) {
-        super(taskName, taskId, startDate, isCompleted, "cumulative","");
-        this.endDate = endDate;
-        this.goalToReach = 0.0;
-        this.cumulativeHistory = new ArrayList(); 
-    } //end CumulativeTask constructor
-    
     /*
      * New Fully qualified constructor
      */
@@ -114,12 +103,6 @@ public class CumulativeTask extends Task {
     	this.endDate = endDate;
     } //end setEndDate method
 
-    /*
-     * Accessor method - endDate
-     */
-    public Calendar getEndDate() {
-        return this.endDate;
-    } //end getEndDate method
 
         // method to add to the ArrayList cumulativeHistory
     public void addProgress(Calendar dateCompleted, double progress) {
@@ -143,28 +126,30 @@ public class CumulativeTask extends Task {
         }
     } // end getProgress() method
     
-    
+    // method that checks whether a task has been completed (compares total progress with goal to reach)
     public boolean checkCompleted() {
         if (getTotalProgress()>=goalToReach) {
             return true;
         } else {
             return false;
         }  
-    }
+    } // end checkCompleted() method
     
+    //  method that returns the total progress a user has made towards a goal
     public double getTotalProgress() {
         double progressSum = 0.0;
         for (CumulativeHistoryStruct mh : cumulativeHistory) {
             progressSum += mh.progress;
         }
         return progressSum;
-    }
+    } // end getTotalProgress() method
     
+    // method to get a goal to reach defined by user
     public double getGoalToReach() {
         return this.goalToReach;
-    }
+    } // end getGoalToReach() method
 
-
+    // method to write a task to JSON
     @Override
     public void writeTaskToJSON() {
         String taskSuffixNumber = String.valueOf(this.getTaskId());
@@ -195,11 +180,13 @@ public class CumulativeTask extends Task {
 
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
+        jsonObject.put("notes", this.notes);
+        jsonObject.put("goalToReach", this.goalToReach);
+        jsonObject.put("goalUnits", this.goalUnits);
 
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
-
-    }
+    } // end writeTaskToJSON() method
     
     // inner class; custom data structure
     class CumulativeHistoryStruct {

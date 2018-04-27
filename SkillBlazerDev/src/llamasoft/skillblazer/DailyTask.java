@@ -32,15 +32,7 @@ public class DailyTask extends Task {
         super(taskName);
         this.type = "daily";
     }
-    
-     /*
-     *  Old Fully qualified constructor (needed for initializing objects stored on disk
-     */
-    public DailyTask(String taskName, long taskId, Calendar startDate,
-                     boolean isCompleted, int currentStreak, int bestStreak) {
-        super(taskName, taskId, startDate, isCompleted, "daily", "");
-    } //end DailyTask constructor
-    
+   
      /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk
      */
@@ -49,7 +41,8 @@ public class DailyTask extends Task {
         super(taskName, taskId, startDate, isCompleted, "daily", notes);
 
     } //end DailyTask constructor
-
+    
+    // method to get the user's current streak; utilizes Collections.sort
     public int getCurrentStreak(Calendar todaysDate) {
         int i;
         int currentStreak=0;
@@ -85,13 +78,11 @@ public class DailyTask extends Task {
         long numDaysBetween = DAYS.between(compare2,compare1);
         if (numDaysBetween > 1) {
             currentStreak = 0;
-        }
-        
-        
-
+        }       
         return currentStreak;
-    }
+    } // end getCurrentStreak() method
 
+    // method to get the user's best streak; utilizes Collections.sort
     public int getBestStreak() {
         Collections.sort(datesCompleted);
         int bestStreak = 0;
@@ -118,8 +109,31 @@ public class DailyTask extends Task {
             }
         }
         return bestStreak;
+    } // end getBestStreak() method
+    
+        
+    // method to get the maximum possible completions up to a given date
+    public int getMaxPossible(Calendar todaysDate) {
+        // create a copy of date passed in
+        Calendar todayCopy = (Calendar) todaysDate.clone();
+        // check if endDate was set
+        if (endDate != null) {
+            // set todayCopy to end date if endDate before todaysDate
+            if (todaysDate.compareTo(endDate)>0) {
+                 todayCopy = (Calendar) endDate.clone();
+            }
+        }
+
+        // create LocalDate objects of todayCopy and startDate
+        LocalDate compare1 = LocalDate.of(todayCopy.get(Calendar.YEAR),todayCopy.get(Calendar.MONTH)+1,todayCopy.get(Calendar.DATE));
+        LocalDate compare2 = LocalDate.of(startDate.get(Calendar.YEAR),startDate.get(Calendar.MONTH)+1,startDate.get(Calendar.DATE));
+        // get total number of days between todayCopy and startDate plus 1
+        long numDaysBetween = DAYS.between(compare2,compare1)+1;
+        int numDaysInt = (int)numDaysBetween;
+        return numDaysInt;
     }
     
+    // method to write a task to JSON
     @Override
     public void writeTaskToJSON() {
         String taskSuffixNumber = String.valueOf(this.getTaskId());
@@ -137,10 +151,9 @@ public class DailyTask extends Task {
         jsonObject.put("year", year);
         jsonObject.put("month", month);
         jsonObject.put("date", date);
-        jsonObject.put("currentStreak", 0); // TO DO: remove this from JSON
-        jsonObject.put("bestStreak", this.getBestStreak()); // TO DO: remove this from JSON
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
+        jsonObject.put("notes", this.notes);
 
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);

@@ -39,6 +39,7 @@ public class Task {
     protected boolean isCompleted;                                      // boolean holding whether task is completed
     protected String type;                                              // string holidng task type
     protected ArrayList<Calendar> datesCompleted = new ArrayList();     // arrayList to hold the dates a particular habit/task has been completed
+    protected Calendar endDate;                                           // calendar object representing end date for cumulative task
     protected String notes;                                             // string field to hold contents in notes text area
     
     // default, no-argument constructor
@@ -63,6 +64,7 @@ public class Task {
         this.startDate = startDate;
         this.isCompleted = isCompleted;
         this.type = type;
+        this.endDate = null;
         this.notes = notes;
     } // end constructor
 
@@ -95,35 +97,34 @@ public class Task {
         return this.taskName;
     } // end getTaskName() method
     
+    // method to return notes
     public String getNotes() {
         return this.notes;
-    }
+    } // end getNotes() method
 
-    // method to initialize task after user input
-    public void startTask() {
-
-    } // end startTask() method
+    // method to end a task
+    public void endTask(Calendar endDate) {
+        this.isCompleted = true;
+        this.endDate = endDate;
+    } // end endTask() method
 
     // method to return whether task is completed
     public boolean getIsCompleted() {
         return this.isCompleted;
     } // end getIsCompleted() method
+    
+     /*
+     * Accessor method - endDate
+     */
+    public Calendar getEndDate() {
+        return this.endDate;
+    } // end getEndDate() method
 
-    // method to set a task as completed
-    protected void setCompleted() {
-        this.isCompleted = true;
-    } // end setCompleted() method
-
-    // method to make changes to an existing task
-    public void editTask() {
-
-    } // end editTask() method
-
-    // method to delete the task specified by the caller
-    protected void deleteTask(Task task) {
-
-    } // end deleteTask() method
-
+    
+    // method to get the total amount completed
+    public int getNumCompleted() {
+        return datesCompleted.size();
+    }
     // method to delete a record
     protected void deleteRecord() {
 
