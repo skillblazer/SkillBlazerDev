@@ -835,7 +835,7 @@ public class SkillBlazer extends Application {
             }); // end event handler
             // adds twitterButton to optionsButtonHbox4
             optionsButtonHbox4.getChildren().add(twitterButton);
-
+/*
             //create upload to dropbox 
             // hbox for 5th vbox row
             HBox optionsButtonHbox5 = new HBox();
@@ -856,13 +856,13 @@ public class SkillBlazer extends Application {
                 @Override
                 public void handle(Event event) {
                     DropBoxIntegration dbxIntegration = new DropBoxIntegration();
-                    System.out.println("todropbox");
-                }
+                    dbxIntegration.syncDBX();
+                    }
             });
             // end event handler
             // adds dbxButton to optionsButtonHbox5
             optionsButtonHbox5.getChildren().add(dbxButton);
-
+*/
             // new vbox layout
             VBox optionsVBox = new VBox();
             // necessary to pull css specs from style sheet
@@ -882,7 +882,7 @@ public class SkillBlazer extends Application {
             optionsVBox.getChildren().add(emptyRegion3);
             optionsVBox.getChildren().add(optionsButtonHbox4);
             optionsVBox.getChildren().add(emptyRegion4);
-            optionsVBox.getChildren().add(optionsButtonHbox5);
+        //    optionsVBox.getChildren().add(optionsButtonHbox5);
 
             // adds this pane/layout to the scene
             Scene optionsScene = new Scene(optionsVBox, 350, 350);
