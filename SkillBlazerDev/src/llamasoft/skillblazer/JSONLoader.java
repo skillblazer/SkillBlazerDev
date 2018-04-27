@@ -24,12 +24,12 @@ public class JSONLoader {
     JSONLoader() {}
 
     // Only use this getter during runtime
-    // At startup you should be calling loadFromJSON()
+    // At startup you should be calling loadTasksFromJSON()
     public ArrayList<Task> getTasks() { return this.userTasks; }
 
     public UserProfile getUserProfile() { return userProfile; }
 
-    protected ArrayList<Task> loadFromJSON() {
+    protected ArrayList<Task> loadTasksFromJSON() {
         String temp;
 
         // Caution: This ArrayList and its Iterator may contain ABSOLUTE PATHS
@@ -133,20 +133,41 @@ public class JSONLoader {
                 userProfile = (new UserProfile(userName, userStartDate, taskNumber));
             }
             else if (!profileFile.exists()) { // if the userprofile doesn't exist, create a default one
-                userProfile = new UserProfile("New User", (new GregorianCalendar()), 0);
+                return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
             }
-        }
+        } //end try block
         catch (IOException e) {
             System.out.println("Unable to ACCESS userProfile from: " +
-                    SkillBlazerInitializer.getLastJSONFilePath());
-            userProfile = (new UserProfile("New User", (new GregorianCalendar()), 0));
+                    SkillBlazerInitializer.getLastJSONFilePath() +
+                    " \nPlease check your file and folder permissions!");
+            return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
         }
         catch (ParseException e) {
             System.out.println("Unable to PARSE json file: " +
                     SkillBlazerInitializer.getLastJSONFilePath() + " userProfile.json");
-            userProfile = (new UserProfile("New User", (new GregorianCalendar()), 0));
+            return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
         }
+
+        // ensure that the userName is not set to a meaningless Default value
+        userProfile.setUserName( getDefaultUsername(userProfile.getUserName()) );
+
         return userProfile;
+    }
+
+
+    // If the user is running the program for the first time, or the program had to
+    // recover from a lost userProfile.json file, the selection statement below
+    // will use the username found in the OS file structure to populate
+    // the username
+    // Borrowing Code from Mark or Rebecca
+    // How dare you implement regex[!|?]
+    private String getDefaultUsername(String userNameFromJSON) {
+        if (userNameFromJSON.equals(("New User"))) {
+            String homePath = System.getProperty("user.home"); //pulls home directory
+            String[] arOfKeys = homePath.split(":?\\\\"); //parses folder path
+            return arOfKeys[2]; //returns username from desktop path
+        }
+        return userNameFromJSON;
     }
 
 
@@ -157,8 +178,6 @@ public class JSONLoader {
      */
     private void parseCreateAndAddTaskToList(JSONObject jsonObject, ArrayList<Task> userTasks) {
         boolean isCompleted;
-        int currentStreak;
-        int bestStreak;
 
         String taskName = (String) jsonObject.get("taskName");
         long taskId = (long) jsonObject.get("taskId");
