@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/23/2018
+ * Date: 4/26/2018
  * 
  * Description:
  * 
@@ -28,6 +28,8 @@ import java.io.IOException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -232,14 +234,77 @@ public class TwitterIntegration {
 						// closes BufferedWriter
 						writeKeys.close();
 					} catch (TwitterException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label twitterError = new Label();
+						twitterError.setText("Twitter is having unexpected server issues.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again in a few minutes.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(tError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #00bfff");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(twitterError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label fileError = new Label();
+						fileError.setText("Unable to locate file.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(fnfError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #f5fffa");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(fileError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label ioError = new Label();
+						ioError.setText("Unable to read or write to file.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(inouError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #f5fffa");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(ioError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
 					}
 
 					twitterWindow.close(); // closes window
@@ -358,11 +423,53 @@ public class TwitterIntegration {
 						// close BufferedReader
 						readKeys.close();
 					} catch (IOException e) {
-						// TODO ADD ERROR WINDOW
-						System.out.println("Could not read file!");
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label ioError = new Label();
+						ioError.setText("Unable to read or write to file.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(inouError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #f5fffa");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(ioError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
 					} catch (TwitterException e) {
-						// TODO ADD ERROR WINDOW
-						System.out.println("Could not send tweet. Try again!");
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label twitterError = new Label();
+						twitterError.setText("Twitter is having unexpected server issues.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again in a few minutes.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(tError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #00bfff");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(twitterError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
 					}
 
 					twitterWindow.close(); // closes window
