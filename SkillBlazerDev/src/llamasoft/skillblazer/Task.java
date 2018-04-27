@@ -21,24 +21,13 @@ import java.util.Calendar;
 
 public class Task {
 
-  /* including for now @Override
-    public String toString() {
-        return "Taskname is: " + taskName + "TaskID is: " + taskId +
-                "StartDate is: " + startDate + "isCompleted is: " +
-                isCompleted + "Type is: " + type;
-    }
-
-    Calendar getStartDate() {
-        return this.startDate; // placeholder return statement -> needs real code!
-    } */
-
    // member fields
     protected String taskName;                                          // string holding task name
     protected long taskId;                                              // long holding task ID
     protected Calendar startDate;                                       // calendar object holding start date
     protected boolean isCompleted;                                      // boolean holding whether task is completed
     protected String type;                                              // string holidng task type
-    protected ArrayList<Calendar> datesCompleted = new ArrayList();     // arrayList to hold the dates a particular habit/task has been completed
+    protected ArrayList<Calendar> datesCompleted = new ArrayList<>();     // arrayList to hold the dates a particular habit/task has been completed
     protected Calendar endDate;                                           // calendar object representing end date for cumulative task
     protected String notes;                                             // string field to hold contents in notes text area
     

@@ -23,7 +23,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
+
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -37,8 +37,6 @@ import javafx.scene.image.Image;
 
 import java.util.GregorianCalendar;
 import javafx.scene.control.Alert.AlertType;
-// uncomment for Macintosh style
-//import com.aquafx_project.*;
 
 // main class; extends Application
 public class SkillBlazer extends Application {
@@ -55,7 +53,7 @@ public class SkillBlazer extends Application {
     private TilePane calendarPane;                                                                      // tilepane object for calendar
     private VBox[] vboxArray = new VBox[49];                                                            // vbox array for main calendar interface
     private Button habitCreationButton;                                                                 // button for habit creation
-    private ArrayList<Task> taskList;                                                                   // arraylist holding tasks  
+    private static ArrayList<Task> taskList;                                                                   // arraylist holding tasks
     private Options optionsMenu;                                                                        // Options object
     private LifetimeMetrics lifetimeMetrics;                                                            // LifetimeMetrics object
     private HabitCreationButton habitCreationMenu;                                                      // HabitCreationButton object
@@ -64,7 +62,6 @@ public class SkillBlazer extends Application {
 
     // these objects will conduct the startup routine
     static JSONLoader jsonLoader = new JSONLoader();     // also provides an instance of SkillBlazerInitializer skillBlazerInit
-    static ArrayList<Task> arrayOfTasks;
     static UserProfile skbUserProfile;          
 
     // sets up the main stage, scenes and such
@@ -2021,7 +2018,7 @@ public class SkillBlazer extends Application {
     // method to close the program
     private void closeProgram() {
         // call to JSON method to save information to file
-        JSONWriter.saveAllFilesToDisk(skbUserProfile, arrayOfTasks);    
+        JSONWriter.saveAllFilesToDisk(skbUserProfile, taskList);
         // ensures windows are closed
         habitCreationMenu.closeHabitEntry();
         lifetimeMetrics.closeLifetimeMetrics();                                        
@@ -2036,7 +2033,7 @@ public class SkillBlazer extends Application {
          * application can access the UserProfile and the list of Task objects
          * that were loaded from disk.
          */
-        arrayOfTasks = jsonLoader.loadFromJSON();
+        taskList = jsonLoader.loadTasksFromJSON();
         skbUserProfile = jsonLoader.parseAndReturnUserProfile();
 
         launch(args);               // opens the JavaFX Stage

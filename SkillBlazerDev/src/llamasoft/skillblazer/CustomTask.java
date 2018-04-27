@@ -67,18 +67,6 @@ public class CustomTask extends Task {
         this.type = "custom";
     } //end CustomTask constructor
 
-    /*
-     * Overloaded Class Constructor - calls parent constructor with taskName and 
-     * startDate. Initializes all subclass variables.
-     */
-//    public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays, int currentStreak,
-//            int bestStreak) {
-//        super(taskName, startDate);
-//        this.actualDaysInTask.addAll(arrayOfDays);
-//        this.currentStreak = currentStreak;
-//        this.bestStreak = bestStreak;
-//        this.type = "custom";
-//    } //end CustomTask constructor
 
      /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk)
@@ -204,7 +192,6 @@ public class CustomTask extends Task {
         // add the JSONArray to the JSONObject, name the array "days"
         jsonObject.put("days", jsonArray);
 
-        System.out.println("In the custom task writeToJSON() method");
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
 
