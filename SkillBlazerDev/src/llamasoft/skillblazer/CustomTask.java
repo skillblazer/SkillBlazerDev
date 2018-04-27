@@ -21,6 +21,8 @@
  ********************************************************** */
 package llamasoft.skillblazer;
 
+import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -30,9 +32,6 @@ import java.util.Calendar;
 public class CustomTask extends Task {
 	
     private ArrayList<String> actualDaysInTask = new ArrayList<>();         //days picked by user
-    private int currentStreak;                                              //current streak of completions
-    private int bestStreak;                                                 //best streak of completions
-
     /*
      * Default Class Constructor - calls parent constructor
      */
@@ -72,15 +71,14 @@ public class CustomTask extends Task {
      * Overloaded Class Constructor - calls parent constructor with taskName and 
      * startDate. Initializes all subclass variables.
      */
-    public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays, int currentStreak,
-            int bestStreak) {
-        super(taskName, startDate);
-        this.actualDaysInTask.addAll(arrayOfDays);
-        this.currentStreak = currentStreak;
-        this.bestStreak = bestStreak;
-        this.type = "custom";
-    } //end CustomTask constructor
-
+//    public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays, int currentStreak,
+//            int bestStreak) {
+//        super(taskName, startDate);
+//        this.actualDaysInTask.addAll(arrayOfDays);
+//        this.currentStreak = currentStreak;
+//        this.bestStreak = bestStreak;
+//        this.type = "custom";
+//    } //end CustomTask constructor
 
      /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk)
@@ -105,33 +103,75 @@ public class CustomTask extends Task {
         this.actualDaysInTask.addAll(listOfDays);
     } //end setDaysOfWeek method
 
-    /*
-     * Accessor Method - currentStreak
-     */
-    public int getCurrentStreak() {
-        return this.currentStreak;
-    } //end getCurrentStreak method
-
-    /*
-     * Mutator Method - currentStreak
-     */
-    public void setCurrentStreak(int currentStreak) {
-        this.currentStreak = currentStreak;
-    } //end setCurrentStreak method
-
-    /*
-     * Accessor Method - bestStreak
-     */
-    public int getBestStreak() {
-        return this.bestStreak;
-    } //end getBestStreak method
-
-    /*
-     * Mutator Method - bestStreak
-     */
-    public void setBestStreak(int bestStreak) {
-        this.bestStreak = bestStreak;
-    } //end getBestStreak method
+        // method to get the maximum possible completions up to a given date
+    public int getMaxPossible(Calendar todaysDate) {
+            Calendar todayCopy = (Calendar) todaysDate.clone();
+            // check if endDate was set
+            if (endDate != null) {
+                // set todayCopy to end date if endDate before todaysDate
+                if (todaysDate.compareTo(endDate)>0) {
+                     todayCopy = (Calendar) endDate.clone();
+                }
+            }
+        
+            // get the days of week of the start date and todays date
+            int todayDayOfWeek = todayCopy.get(Calendar.DAY_OF_WEEK); 
+            int startDayOfWeek = startDate.get(Calendar.DAY_OF_WEEK); 
+            // create an adjustment factor that equals the number of days in addition to 
+            // the quantity of full weeks
+            int daysOfWeekAdj = (todayDayOfWeek-startDayOfWeek+1)%7;
+            // create LocalDate objects of todayCopy and startDate
+            LocalDate compare1 = LocalDate.of(todayCopy.get(Calendar.YEAR),todayCopy.get(Calendar.MONTH)+1,todayCopy.get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(startDate.get(Calendar.YEAR),startDate.get(Calendar.MONTH)+1,startDate.get(Calendar.DATE));
+            
+            // compute the number of full weeks between todayCopy and startDate
+            long numFullWeeksBetween = (DAYS.between(compare2,compare1)+1)/7;
+            // create array to hold integer representation of actualDaysInTask
+            int[] daysInTaskInt = new int[actualDaysInTask.size()];
+            int i = 0;
+            // fill the integer array
+            for (String md : actualDaysInTask) {
+                if (md.equalsIgnoreCase("Sunday")) {
+                    daysInTaskInt[i] = 1;
+                } else if(md.equalsIgnoreCase("Monday")) {
+                    daysInTaskInt[i] = 2;
+                } else if(md.equalsIgnoreCase("Tuesday")) {
+                    daysInTaskInt[i] = 3;
+                } else if(md.equalsIgnoreCase("Wednesday")) {
+                    daysInTaskInt[i] = 4;
+                } else if(md.equalsIgnoreCase("Thursday")) {
+                    daysInTaskInt[i] = 5;
+                } else if(md.equalsIgnoreCase("Friday")) {
+                    daysInTaskInt[i] = 6;
+                } else if(md.equalsIgnoreCase("Saturday")) {
+                    daysInTaskInt[i] = 7;
+                }
+                i++;
+            }
+            
+            // adjust todayDayOfWeek to be greater than startDayOfWeek
+            if (todayDayOfWeek<startDayOfWeek) {
+                todayDayOfWeek += 7;
+            }
+            // count number of additional days in final partial week
+            int numAdditionalDays = 0;
+            if (daysOfWeekAdj != 0) {
+                for (int j = startDayOfWeek; j <= todayDayOfWeek; j++) {
+                    int dayOfWeekMod = ((j-1)%7)+1;
+                    for (int k = 0; k<daysInTaskInt.length;k++) {
+                        if (dayOfWeekMod == daysInTaskInt[k]) {
+                            numAdditionalDays++;
+                        }
+                    }
+                }
+            }
+            // add partial week number to full week number
+            int numTaskDays = ((int)numFullWeeksBetween)*daysInTaskInt.length + numAdditionalDays;
+            return numTaskDays;
+    }
+    
+    
+    
     
     @Override
     public void writeTaskToJSON() {

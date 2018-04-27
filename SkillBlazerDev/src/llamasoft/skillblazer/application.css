@@ -97,6 +97,7 @@
     -fx-font-family: "cambria";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+    -fx-text-fill: #ffe4e1;
 }
     
 /* style specification for habitCreationButtonHbox8 */
@@ -138,13 +139,12 @@
 
 /* style specification for labelFinalCumulativeFinished */
 .labelFinalCumulativeCompleted {
-    -fx-text-fill: #55C505;
-    -fx-font-weight: bold;
+    -fx-text-fill: #008000;
 }
 
 /* style specification for labelCompletedTask */
 .labelCompletedTask {
-    -fx-text-fill: #55C505;
+    -fx-text-fill: #008000;
 }
 
 /* style specification for labelDefaultTask */
