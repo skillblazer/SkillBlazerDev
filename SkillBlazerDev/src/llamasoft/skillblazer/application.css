@@ -1,9 +1,5 @@
 /* properties for vboxMain */
 .vboxMain {
-    /* sets padding */
-    /*-fx-padding: 15; */
-    /* sets spacing */
-    /*-fx-spacing: 200; */
     /* sets background color */
     -fx-background-color:  #6a5acd; 
 }
@@ -26,6 +22,14 @@
     -fx-font-family: "cambria";
     -fx-font-size: 20px;
     -fx-font-weight: bold;
+}
+
+/* properties for usernameLabel */
+.usernameLabel {
+    -fx-font-family: "cambria";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffe4e1;
 }
 
 /* properties for habitCreationButton */

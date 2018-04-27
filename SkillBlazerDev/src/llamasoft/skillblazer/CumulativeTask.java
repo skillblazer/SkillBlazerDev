@@ -96,12 +96,11 @@ public class CumulativeTask extends Task {
         return goalUnits;
     }
     
-    /*
-     * Mutator method - endDate
-     */
-    public void setEndDate(Calendar endDate) {
-    	this.endDate = endDate;
-    } //end setEndDate method
+    public void setTaskUnits (String goalUnits) {
+        this.goalUnits = goalUnits;
+    }
+    
+
 
 
         // method to add to the ArrayList cumulativeHistory
@@ -148,7 +147,13 @@ public class CumulativeTask extends Task {
     public double getGoalToReach() {
         return this.goalToReach;
     } // end getGoalToReach() method
-
+    
+    // method to set a goal to reach defined by user
+    public void setGoalToReach (double goalToReach) {
+        this.goalToReach = goalToReach;
+    }// end setGoalToReach() method
+    
+    
     // method to write a task to JSON
     @Override
     public void writeTaskToJSON() {

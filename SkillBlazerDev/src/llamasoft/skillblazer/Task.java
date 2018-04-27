@@ -86,11 +86,23 @@ public class Task {
         return this.taskName;
     } // end getTaskName() method
     
+        // method to set task name
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    } // end setTaskName() method
+    
+    
     // method to return notes
     public String getNotes() {
         return this.notes;
     } // end getNotes() method
-
+    
+// method to set notes
+    public void setNotes(String notes) {
+        this.notes = notes;
+    } // end setNotes() method
+    
+    
     // method to end a task
     public void endTask(Calendar endDate) {
         this.isCompleted = true;
@@ -109,6 +121,15 @@ public class Task {
         return this.endDate;
     } // end getEndDate() method
 
+        
+    /*
+     * Mutator method - endDate
+     */
+    public void setEndDate(Calendar endDate) {
+    	this.endDate = endDate;
+    } //end setEndDate method
+    
+    
     
     // method to get the total amount completed
     public int getNumCompleted() {
