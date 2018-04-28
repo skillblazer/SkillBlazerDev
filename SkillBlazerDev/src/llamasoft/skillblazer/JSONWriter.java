@@ -1,5 +1,6 @@
 package llamasoft.skillblazer;
 
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -91,6 +92,40 @@ public class JSONWriter {
             System.out.println("Could not find or access " + SkillBlazerInitializer.getLastJSONFilePath() + " or " + fileName + "\n");
         }
     } //end method writeJSON()
+
+
+    /*
+     *  Attempts to delete a file from disk
+     *  Pass the corresponding Task that is going bye-bye as a parameter
+     *  and say goodnight!
+     */
+    static void removeFileFromDisk(Task task) {
+        String letter;
+        if (task.type.equals("weekly")) {
+            letter = "w";
+        } else if (task.type.equals("daily")) {
+            letter = "d";
+        } else if (task.type.equals("custom")) {
+            letter = "c";
+        } else {
+            letter = "v";
+        }
+        String fileName = "skbl" + letter + String.valueOf(task.taskId) + ".json";
+
+        try {
+            java.io.File file = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() + fileName);
+            if(file.delete()) {
+                removeFileFromInit(fileName);  // delete the file from SBinit.txt
+            }
+            else {
+                System.out.println("Deleting file " + SkillBlazerInitializer.getLastJSONFilePath() + fileName + " FAILED!");
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Failed to delete file: " + SkillBlazerInitializer.getLastJSONFilePath() + fileName);
+            e.printStackTrace();
+        }
+    }
 
 
     /*

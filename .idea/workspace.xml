@@ -113,10 +113,9 @@
           <file leaf-file-name="SkillBlazer.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1323">
-                  <caret line="2564" selection-start-line="2564" selection-end-line="2564" />
+                <state relative-caret-position="637">
+                  <caret line="2475" column="30" lean-forward="true" selection-start-line="2475" selection-start-column="30" selection-end-line="2475" selection-end-column="30" />
                   <folding>
-                    <element signature="method#closeProgram#0;class#SkillBlazer#0" />
                     <element signature="method#main#0;class#SkillBlazer#0" />
                   </folding>
                 </state>
@@ -126,8 +125,8 @@
           <file leaf-file-name="JSONWriter.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1246">
-                  <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
+                <state relative-caret-position="630">
+                  <caret line="96" selection-start-line="96" selection-end-line="127" selection-end-column="5" />
                   <folding>
                     <element signature="docComment;class#JSONWriter#0" />
                     <element signature="method#saveAllFilesToDisk#0;class#JSONWriter#0" />
@@ -456,14 +455,7 @@
       <workItem from="1524736445443" duration="7957000" />
       <workItem from="1524824720602" duration="7933000" />
       <workItem from="1524836648736" duration="10238000" />
-      <workItem from="1524869586534" duration="33612000" />
-    </task>
-    <task id="LOCAL-00027" summary="Merge branch 'Phase1_MShearer' of https://github.com/skillblazer/SkillBlazerDev into Jason_funWithFiles_09APR&#10;&#10;# Conflicts:&#10;#&#9;SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java&#10;MERGED CHANGES - KEPT Mark's changes in UserProfile.java over my original member fields&#10;DID NOT Merge TwitterIntegration (YET)">
-      <created>1523446051622</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1523446051623</updated>
+      <workItem from="1524869586534" duration="36642000" />
     </task>
     <task id="LOCAL-00028" summary="Merge branch 'Phase1_MShearer' of https://github.com/skillblazer/SkillBlazerDev into Jason_funWithFiles_09APR&#10;&#10;# Conflicts:&#10;#&#9;SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java&#10;MERGED CHANGES - KEPT Mark's changes in UserProfile.java over my original member fields&#10;DID NOT Merge TwitterIntegration (YET)">
       <created>1523446494361</created>
@@ -801,11 +793,18 @@
       <option name="project" value="LOCAL" />
       <updated>1524922395200</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="Added method updateInitFile to contain the try-catch block that re-writes SBinit.txt given a ArrayList&lt;String&gt; of fileNames&#10;This method will be callec by addFileToInit() and removeFileFromInit() to write an updated list of filenames to the SBinit.txt file.&#10;We can now remove files from SBinit.txt safely.">
+      <created>1524924052168</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1524924052168</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="336454000" />
+    <option name="totallyTimeSpent" value="339484000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -887,7 +886,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Finished testing the CumulativeTask.java, CustomTask.java, DailyTask.java, WeeklyTask.java and UserProfile.java classes (instantiating them from json objects stored to disk).  Removed test code, and left the necessary object instantiations in SkillBlazer.java and SkillBlazer.main()" />
     <MESSAGE value="fixed casts to values that should be (long) in JSONWriter.java  removed unneeded class fields - corrected return statement in Task.getTaskId() so it returns a useful value - removed commented out code from SkillBlazer.java - removed unused fields in JSONLoader.java" />
     <MESSAGE value="one last obsolete comment removal in loadFromJSON() in JSONLoader.java" />
     <MESSAGE value="Laid out basic components of JSONWriter.java -&gt; added methods addFileToInit, writeUserProfileToDisk(), writeCumulativeTaskToDisk(), writeCustomTaskToDisk(), writeDailyTaskToDisk(), writeWeeklyTaskToDisk() and saveUser() so that saving Tasks and the UserProfile can be performed as single operations.  These methods will be called by convertArrayListToJSONArray() once completed.  In JSONLoader.java I made skillBlazerInit and userProfile package-protected members (no longer private) to ease use in other classes.  Also made skillBlazerInit STATIC for the same reason." />
@@ -912,11 +910,12 @@
     <MESSAGE value="Promoted CumulativeHistoryStruct from being an inner class of CumulativeTask to a separate, public class.&#10;Completed the initial code for parsing and writing CumulativeHistoryStruct objects in and out of JSON files.&#10;The initial version of everything required to store History is now included in the program, and requires testing.  (No push yet)." />
     <MESSAGE value="Fixed stupid loop decisions which were writing the same completion info pretty much everywhere.  &#10;JSONLoader.java -&gt; Fixed parseHistoryStruct() and parseCreateAndAddTaskToList()&#10;JSONWriter.java -&gt; Fixed prepareCalendarObjectsForJSONStorage() and prepareCumulativeHistoryStructForJSONStorage()&#10;Completion dates and the CumulativeHistoryStruct objects now write to JSON, and are parsed back from JSON correctly." />
     <MESSAGE value="fixed stupid name form a song that was stuck in my head every time i read 'struct'" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed stupid name form a song that was stuck in my head every time i read 'struct'" />
+    <MESSAGE value="Added method updateInitFile to contain the try-catch block that re-writes SBinit.txt given a ArrayList&lt;String&gt; of fileNames&#10;This method will be callec by addFileToInit() and removeFileFromInit() to write an updated list of filenames to the SBinit.txt file.&#10;We can now remove files from SBinit.txt safely." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added method updateInitFile to contain the try-catch block that re-writes SBinit.txt given a ArrayList&lt;String&gt; of fileNames&#10;This method will be callec by addFileToInit() and removeFileFromInit() to write an updated list of filenames to the SBinit.txt file.&#10;We can now remove files from SBinit.txt safely." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="10" />
+      <option name="time" value="11" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -1385,17 +1384,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1323">
-          <caret line="2564" selection-start-line="2564" selection-end-line="2564" />
-          <folding>
-            <element signature="method#closeProgram#0;class#SkillBlazer#0" />
-            <element signature="method#main#0;class#SkillBlazer#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
@@ -1448,10 +1436,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="2475" column="30" lean-forward="true" selection-start-line="2475" selection-start-column="30" selection-end-line="2475" selection-end-column="30" />
+          <folding>
+            <element signature="method#main#0;class#SkillBlazer#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1246">
-          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
+        <state relative-caret-position="630">
+          <caret line="96" selection-start-line="96" selection-end-line="127" selection-end-column="5" />
           <folding>
             <element signature="docComment;class#JSONWriter#0" />
             <element signature="method#saveAllFilesToDisk#0;class#JSONWriter#0" />
