@@ -264,7 +264,7 @@ public class JSONLoader {
 
                 completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
 
-                ArrayList<CumulativeHistoryStruct> loveToWatchHerStruct = parseHistoryStruct(jsonObject, completionCount);
+                ArrayList<CumulativeHistoryStruct> historyStruct = parseHistoryStruct(jsonObject, completionCount);
 
                 if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
                     // parse out the completion date fields and instantiate them for this CumulativeHistoryStruct
@@ -272,7 +272,7 @@ public class JSONLoader {
 
                     // instantiate a CumulativeTask object and add to ArrayList
                     userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                            isCompleted, notes, endDate, goalToReach, goalUnits, loveToWatchHerStruct));
+                            isCompleted, notes, endDate, goalToReach, goalUnits, historyStruct));
                 } else {
                     // instantiate a CumulativeTask object and add to ArrayList
                     userTasks.add(new CumulativeTask(taskName, taskId, startDate,
