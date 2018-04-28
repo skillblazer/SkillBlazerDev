@@ -1497,6 +1497,9 @@ public class SkillBlazer extends Application {
         private TextField totalCompletedTextField;
         private Label goalLabel;
         private TextField goalTextField;
+        private Label maxPossibleLabel;
+        private TextField maxPossibleTextField;
+        
         private Label currentStreakLabel;
         private TextField currentStreakTextField;
         private Label bestStreakLabel;
@@ -1507,7 +1510,7 @@ public class SkillBlazer extends Application {
         private HBox lifetimeMetricsHbox4;
         private HBox lifetimeMetricsHbox5;
         private HBox lifetimeMetricsHbox6;
-        
+        private HBox lifetimeMetricsHbox7;
         // constructor
         public LifetimeMetrics() {
             // creates new stage
@@ -1556,11 +1559,12 @@ public class SkillBlazer extends Application {
             lifetimeMetricsHbox6 = new HBox();
             // pulls css styling information
             lifetimeMetricsHbox6.getStyleClass().add("progressButtonHboxes");
-            
+             // hbox for 6th metrics vbox row
+            lifetimeMetricsHbox7 = new HBox();
+            // pulls css styling information
+            lifetimeMetricsHbox7.getStyleClass().add("progressButtonHboxes");
             // initializes percentCompletedLabel
             percentCompletedLabel = new Label("Percent Completed:");
-            // tooltip for percentCompletedLabel
-            percentCompletedLabel.setTooltip(new Tooltip("% that a task has been completed"));
             // initializes percentCompletedTextField
             percentCompletedTextField  = new TextField();
             percentCompletedTextField.setTooltip(new Tooltip("% that a task has been completed"));
@@ -1568,8 +1572,6 @@ public class SkillBlazer extends Application {
             percentCompletedTextField.setEditable(false);
             // initializes totalCompletedLabel
             totalCompletedLabel = new Label("Total Completed:");
-            // tooltip for totalCompletedLabel
-            totalCompletedLabel.setTooltip(new Tooltip("Total # days completed"));
             // initializes totalCompletedTextField
             totalCompletedTextField  = new TextField();
             // tooltip for totalCompletedTextField
@@ -1580,12 +1582,20 @@ public class SkillBlazer extends Application {
             goalLabel  = new Label("Goal:");
             // initializes goalTextField
             goalTextField  = new TextField();
+            // tooltip for goalTextField
+            goalTextField.setTooltip(new Tooltip("This is your goal"));
             // sets editable to false
             goalTextField.setEditable(false);
+            // initializes maxPossibleLabel
+            maxPossibleLabel  = new Label("Max Possible:");
+            // initializes maxPossibleTextField
+            maxPossibleTextField  = new TextField();
+            // tooltip for maxPossibleTextField
+            maxPossibleTextField.setTooltip(new Tooltip("This is your maximum possible number of completions"));
+            // sets editable to false
+            maxPossibleTextField.setEditable(false);
             // initializes currentStreakLabel
             currentStreakLabel  = new Label("Current Streak:");
-            // tooltip for currentStreakLabel
-            currentStreakLabel.setTooltip(new Tooltip("This is your current streak"));
             // initializes currentStreakTextField
             currentStreakTextField  = new TextField();
             // tooltip for currentStreakTextField
@@ -1594,8 +1604,6 @@ public class SkillBlazer extends Application {
             currentStreakTextField.setEditable(false);
             // initializes bestStreakLabel
             bestStreakLabel  = new Label("Best Streak:");
-            // tooltip for bestStreakLabel
-            bestStreakLabel.setTooltip(new Tooltip("This is your best streak"));
             // initializes bestStreakTextField
             bestStreakTextField  = new TextField();
             // tooltip for bestStreakTextField
@@ -1613,6 +1621,8 @@ public class SkillBlazer extends Application {
             HBox.setHgrow(emptyRegion4, Priority.ALWAYS);
             Region emptyRegion5 = new Region();
             HBox.setHgrow(emptyRegion5, Priority.ALWAYS);
+            Region emptyRegion6 = new Region();
+            HBox.setHgrow(emptyRegion6, Priority.ALWAYS);
             // add fields to hboxes
             lifetimeMetricsHbox1.getChildren().add(habitLabel);
             lifetimeMetricsHbox1.getChildren().add(habitComboBox);
@@ -1625,12 +1635,15 @@ public class SkillBlazer extends Application {
             lifetimeMetricsHbox4.getChildren().add(goalLabel);
             lifetimeMetricsHbox4.getChildren().add(emptyRegion3);
             lifetimeMetricsHbox4.getChildren().add(goalTextField);
-            lifetimeMetricsHbox5.getChildren().add(currentStreakLabel);
+            lifetimeMetricsHbox5.getChildren().add(maxPossibleLabel);
             lifetimeMetricsHbox5.getChildren().add(emptyRegion4);
-            lifetimeMetricsHbox5.getChildren().add(currentStreakTextField);
-            lifetimeMetricsHbox6.getChildren().add(bestStreakLabel);
+            lifetimeMetricsHbox5.getChildren().add(maxPossibleTextField);
+            lifetimeMetricsHbox6.getChildren().add(currentStreakLabel);
             lifetimeMetricsHbox6.getChildren().add(emptyRegion5);
-            lifetimeMetricsHbox6.getChildren().add(bestStreakTextField);
+            lifetimeMetricsHbox6.getChildren().add(currentStreakTextField);
+            lifetimeMetricsHbox7.getChildren().add(bestStreakLabel);
+            lifetimeMetricsHbox7.getChildren().add(emptyRegion6);
+            lifetimeMetricsHbox7.getChildren().add(bestStreakTextField);
             
             // set habitComboBox action handler
             habitComboBox.setOnAction(e -> {updateLifetimeMetricFields();});
@@ -1647,7 +1660,8 @@ public class SkillBlazer extends Application {
             lifetimeMetricsHbox5.setManaged(false);
             lifetimeMetricsHbox6.setVisible(false);
             lifetimeMetricsHbox6.setManaged(false);
-
+            lifetimeMetricsHbox7.setVisible(false);
+            lifetimeMetricsHbox7.setManaged(false);
             // if habitComboBox is not empty
             if (!habitComboBox.getItems().isEmpty()) {
                 habitComboBox.getSelectionModel().select(0);
@@ -1665,7 +1679,7 @@ public class SkillBlazer extends Application {
             lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox4);
             lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox5);
             lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox6);
-            
+            lifeMetricsVbox.getChildren().add(lifetimeMetricsHbox7);
             // adds this pane/layout to the scene
             Scene lifeMetricsScene = new Scene(lifeMetricsVbox, 600, 600);
             // adds scene to stage 
@@ -1715,7 +1729,6 @@ public class SkillBlazer extends Application {
                     String percentString = String.format("%.2f",totalCompleted/goal*100.0);
                     percentCompletedTextField.setText(percentString + "%");
                     totalCompletedTextField.setText(totalCompleted + " " + ((CumulativeTask)mt).getTaskUnits());
-                    goalLabel.setText("Goal:");
                     goalTextField.setText(goal + " " + ((CumulativeTask)mt).getTaskUnits());
                     lifetimeMetricsHbox2.setVisible(true);
                     lifetimeMetricsHbox2.setManaged(true);
@@ -1727,60 +1740,63 @@ public class SkillBlazer extends Application {
                     lifetimeMetricsHbox5.setManaged(false);
                     lifetimeMetricsHbox6.setVisible(false);
                     lifetimeMetricsHbox6.setManaged(false);
+                    lifetimeMetricsHbox7.setVisible(false);
+                    lifetimeMetricsHbox7.setManaged(false);
                  } else if  (mt instanceof CustomTask){
                     double totalCompleted = ((CustomTask)mt).getNumCompleted();
                     double maxPossible = ((CustomTask)mt).getMaxPossible(todayDate);
                     String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
                     percentCompletedTextField.setText(percentString + "%");
                     totalCompletedTextField.setText(""+totalCompleted);
-                    goalLabel.setText("Maximum Possible:");
-                    goalTextField.setText(""+maxPossible);
+                    maxPossibleTextField.setText(""+maxPossible);
                     lifetimeMetricsHbox2.setVisible(true);
                     lifetimeMetricsHbox2.setManaged(true);
                     lifetimeMetricsHbox3.setVisible(true);
                     lifetimeMetricsHbox3.setManaged(true);
-                    lifetimeMetricsHbox4.setVisible(true);
-                    lifetimeMetricsHbox4.setManaged(true);
-                    lifetimeMetricsHbox5.setVisible(false);
-                    lifetimeMetricsHbox5.setManaged(false);
+                    lifetimeMetricsHbox4.setVisible(false);
+                    lifetimeMetricsHbox4.setManaged(false);
+                    lifetimeMetricsHbox5.setVisible(true);
+                    lifetimeMetricsHbox5.setManaged(true);
                     lifetimeMetricsHbox6.setVisible(false);
                     lifetimeMetricsHbox6.setManaged(false);
+                    lifetimeMetricsHbox7.setVisible(false);
+                    lifetimeMetricsHbox7.setManaged(false);
                 } else if  (mt instanceof DailyTask){
                     double totalCompleted = ((DailyTask)mt).getNumCompleted();
                     double maxPossible = ((DailyTask)mt).getMaxPossible(todayDate);
                     String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
                     percentCompletedTextField.setText(percentString + "%");
                     totalCompletedTextField.setText(""+totalCompleted);
-                    goalLabel.setText("Maximum Possible:");
-                    goalTextField.setText(""+maxPossible);
+                    maxPossibleTextField.setText(""+maxPossible);
                     currentStreakTextField.setText(""+((DailyTask)mt).getCurrentStreak(todayDate));
                     bestStreakTextField.setText(""+((DailyTask)mt).getBestStreak());
                     lifetimeMetricsHbox2.setVisible(true);
                     lifetimeMetricsHbox2.setManaged(true);
                     lifetimeMetricsHbox3.setVisible(true);
                     lifetimeMetricsHbox3.setManaged(true);
-                    lifetimeMetricsHbox4.setVisible(true);
-                    lifetimeMetricsHbox4.setManaged(true);
+                    lifetimeMetricsHbox4.setVisible(false);
+                    lifetimeMetricsHbox4.setManaged(false);
                     lifetimeMetricsHbox5.setVisible(true);
                     lifetimeMetricsHbox5.setManaged(true);
                     lifetimeMetricsHbox6.setVisible(true);
                     lifetimeMetricsHbox6.setManaged(true);
+                    lifetimeMetricsHbox7.setVisible(true);
+                    lifetimeMetricsHbox7.setManaged(true);
                 } else if  (mt instanceof WeeklyTask){
                     double totalCompleted = ((WeeklyTask)mt).getNumCompleted();
                     double maxPossible = ((WeeklyTask)mt).getMaxPossible(todayDate);
                     String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
                     percentCompletedTextField.setText(percentString + "%");
                     totalCompletedTextField.setText(""+totalCompleted);
-                    goalLabel.setText("Maximum Possible:");
-                    goalTextField.setText(""+maxPossible);
+                    maxPossibleTextField.setText(""+maxPossible);
                     currentStreakTextField.setText(""+((WeeklyTask)mt).getCurrentStreak(todayDate));
                     bestStreakTextField.setText(""+((WeeklyTask)mt).getBestStreak());
                     lifetimeMetricsHbox2.setVisible(true);
                     lifetimeMetricsHbox2.setManaged(true);
                     lifetimeMetricsHbox3.setVisible(true);
                     lifetimeMetricsHbox3.setManaged(true);
-                    lifetimeMetricsHbox4.setVisible(true);
-                    lifetimeMetricsHbox4.setManaged(true);
+                    lifetimeMetricsHbox4.setVisible(false);
+                    lifetimeMetricsHbox4.setManaged(false);
                     lifetimeMetricsHbox5.setVisible(true);
                     lifetimeMetricsHbox5.setManaged(true);
                     lifetimeMetricsHbox6.setVisible(true);

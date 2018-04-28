@@ -187,8 +187,7 @@ public class JSONLoader {
         int month = convertInt((long) jsonObject.get("month"));
         int day = convertInt( (long) jsonObject.get("date"));
 
-        Calendar startDate = new GregorianCalendar();
-        startDate.set(year, month, day);
+        Calendar startDate = new GregorianCalendar(year, month, day);
 
         isCompleted = (boolean)  jsonObject.get("isCompleted");
         String type = (String) jsonObject.get("type");
@@ -259,8 +258,7 @@ public class JSONLoader {
                 double goalToReach = (double) jsonObject.get("goalToReach");
                 String goalUnits = (String) jsonObject.get("goalUnits");
 
-                Calendar endDate = new GregorianCalendar();
-                endDate.set(endYear, endMonth, endDay);
+                Calendar endDate = new GregorianCalendar(endYear, endMonth, endDay);
 
                 completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
 
@@ -278,9 +276,6 @@ public class JSONLoader {
                     userTasks.add(new CumulativeTask(taskName, taskId, startDate,
                             isCompleted, notes, endDate, goalToReach, goalUnits));
                 }
-                // instantiate a CumulativeTask object and add to ArrayList
-                userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                        isCompleted, notes, endDate, goalToReach, goalUnits));
                 break;
         } //end switch statement
     } //end method parseCreateAndAddTaskToList()
