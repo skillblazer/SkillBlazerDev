@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSON"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Twitter4j"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DropBoxInt"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
