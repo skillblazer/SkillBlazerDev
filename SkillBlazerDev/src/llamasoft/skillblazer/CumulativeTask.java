@@ -25,7 +25,6 @@ package llamasoft.skillblazer;
 
 import org.json.simple.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -88,7 +87,7 @@ public class CumulativeTask extends Task {
 
 
     /*
-     * Fully Qualified constructor which includes the ArrayList<CumulativeHistory> (inner class member) cumulativeHistory as a parameter
+     * Fully Qualified constructor which includes the ArrayList<CumulativeHistoryStruct> (inner class member) cumulativeHistory as a parameter
      * This is useful for instantiation of CumulativeTask objects that have been stored in JSON files
      */
     public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate, double goalToReach, String goalUnits, ArrayList<CumulativeHistoryStruct> cumulativeHistory) {
@@ -200,36 +199,14 @@ public class CumulativeTask extends Task {
         jsonObject.put("goalToReach", this.goalToReach);
         jsonObject.put("goalUnits", this.goalUnits);
 
+        // pass the jsonObject and the inner class object ArrayList<CumulativeHistoryStruct> cumulativeHistory to
+        // a method in JSONWriter which will prep the Calendar objects and corresponding progress values
+        // to be added to the JSON file
+        long completionCount = cumulativeHistory.size();
+        JSONWriter.prepareCumulativeHistoryStructForJSONStorage(jsonObject, cumulativeHistory);
+
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
     } // end writeTaskToJSON() method
-    
-    // inner class; custom data structure
-    class CumulativeHistoryStruct {
-        public Calendar date;               // calendar object holding the date
-        public double progress;             // double field holding progress made toward goal
-        
-        // constructor
-        CumulativeHistoryStruct() {
-            date = null;
-            progress = 0.0;
-        }
-        
-        // constructor
-        CumulativeHistoryStruct(Calendar date,double progress) {
-            this.date = date;
-            this.progress = progress;
-        }
-        
-        // Overriding equals() method to compare dates
-        @Override
-        public boolean equals(Object o) {
-            if (o instanceof CumulativeHistoryStruct) {
-                return date.equals(((CumulativeHistoryStruct)o).date);
-            } else {
-                return false;
-            }
-        } // end equals() method
-    }
 
 }//end CumulativeTask class

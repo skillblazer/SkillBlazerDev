@@ -262,6 +262,20 @@ public class JSONLoader {
                 Calendar endDate = new GregorianCalendar();
                 endDate.set(endYear, endMonth, endDay);
 
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this CumulativeHistoryStruct
+
+
+                    // instantiate a CumulativeTask object and add to ArrayList
+                    userTasks.add(new CumulativeTask(taskName, taskId, startDate,
+                            isCompleted, notes, endDate, goalToReach, goalUnits));
+                } else {
+                    // instantiate a CumulativeTask object and add to ArrayList
+                    userTasks.add(new CumulativeTask(taskName, taskId, startDate,
+                            isCompleted, notes, endDate, goalToReach, goalUnits));
+                }
+
                 // instantiate a CumulativeTask object and add to ArrayList
                 userTasks.add(new CumulativeTask(taskName, taskId, startDate,
                         isCompleted, notes, endDate, goalToReach, goalUnits));
@@ -297,6 +311,31 @@ public class JSONLoader {
 
         return jsonDatesCompleted;
     }
+
+
+    private ArrayList<CumulativeHistoryStruct> parseHistoryStuct(JSONObject jsonObject, ArrayList<CumulativeHistoryStruct> cumulativeHistoryStructArrayList, long completionCount) {
+        String jsonStructName;
+        int completionYear, completionMonth, completionDate;
+        double progress;
+
+        for (int i = 1; i <= completionCount; i++) {
+            jsonStructName = "completionDate" + i;
+
+            JSONArray structFields = (JSONArray)(jsonObject.get(jsonStructName));
+            Iterator<String> structFieldIterator = structFields.iterator();
+
+            completionYear = Integer.parseInt(structFieldIterator.next());
+            completionMonth = Integer.parseInt(structFieldIterator.next());
+            completionDate = Integer.parseInt(structFieldIterator.next());
+            progress = Double.parseDouble(structFieldIterator.next());
+
+            Calendar nextCalendar = new GregorianCalendar(completionYear, completionMonth, completionDate);
+            CumulativeHistoryStruct newStruct = new CumulativeHistoryStruct(nextCalendar, progress);
+            cumulativeHistoryStructArrayList.add( newStruct);
+        }
+        return cumulativeHistoryStructArrayList;
+    }
+
 
     /*
      * Legal JSON places numeric values into the file without quotes

@@ -189,7 +189,7 @@ public class JSONWriter {
         for (int i = 1; i <= datesCompleted.size(); i++) { // completionDates from 1 to n are desirable - no '0's
             Iterator<Calendar> calIterator = datesCompleted.iterator();
             // create a string with completionDate + index of datesCompleted  e.g. completionDate1, completionDate2, ...
-            String arrayName = "completionDate" + i;
+            String arrayName = "completionDate" + i; // this will correspond to a JSONArray key value in the json file
             // create a new JSONArray to correspond with this Calendar object
             JSONArray datesArray = new JSONArray();
 
@@ -198,9 +198,57 @@ public class JSONWriter {
                 datesArray.add(calIterator.next().get(Calendar.YEAR));
                 datesArray.add(calIterator.next().get(Calendar.MONTH));
                 datesArray.add(calIterator.next().get(Calendar.DATE));
-
                 // add the JSONArray for one Calendar object to the parent jsonObject
                 jsonCalendarObject.put(datesArray, arrayName);
+            } //end while loop
+        } //end for loop
+    }
+
+
+    /*
+     * CumulativeTask objects have an inner class object that presents a unique challenge
+     * when storing its history in JSON files.
+     *
+     * This method will also add a (long) completionCount field to JSON files
+     */
+    static void prepareCumulativeHistoryStructForJSONStorage(JSONObject jsonCalendarObject, ArrayList<CumulativeHistoryStruct> structArrayList) {
+        // create and store a value for how many CumulativeHistoryStruct objects are
+        // going to be stored for Completion dates & progress metric values
+        // this value will be added to the JSON and then used
+        // to determine how many CumulativeHistoryStruct objects will be parsed out of the JSON file
+        // at startup
+        long completionCount = structArrayList.size();
+        jsonCalendarObject.put("completionCount", completionCount);
+
+        // for each Calendar Object in ArrayList<Calendar> datesCompleted
+        for (int i = 1; i <= structArrayList.size(); i++) { // completionDates from 1 to n are desirable - no '0's
+            Iterator<CumulativeHistoryStruct> structIterator = structArrayList.iterator();
+
+            // create a string with completionDate + 'index' of datesCompleted  e.g. completionDate1, completionDate2, ...
+            String structName = "completionDate" + i; // this will correspond to a JSONArray key value in the json file
+
+            int year,month,date;
+            double progress;
+            // create a new JSONArray to correspond with this Cumulative Calendar object
+            JSONArray structArray = new JSONArray();
+
+            while (structIterator.hasNext()) { // for each CumulativeHistoryStruct in the ArrayList<CumulativeHistoryStruct>
+                // get the values out of the struct that we'll need for the Calendar object
+                year = structIterator.next().date.get(Calendar.YEAR);
+                month = structIterator.next().date.get(Calendar.MONTH);
+                date = structIterator.next().date.get(Calendar.DATE);
+                // get the value for progress
+                progress = structIterator.next().progress;
+
+                // place all four values into the JSONArray as String values
+                // required so that an Iterator can take them all out at startup
+                structArray.add( String.valueOf(year) );
+                structArray.add( String.valueOf(month) );
+                structArray.add( String.valueOf(date) );
+                structArray.add( String.valueOf(progress) );
+
+                // add the JSONArray which contains the Calendar info and the progress info into the JSONObject
+                jsonCalendarObject.put(structArray, structName);
             } //end while loop
         } //end for loop
     }
