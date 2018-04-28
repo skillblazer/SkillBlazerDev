@@ -17,9 +17,9 @@ import java.time.LocalDate;
 import static java.time.temporal.ChronoUnit.DAYS;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.GregorianCalendar;
 
 public class WeeklyTask extends Task {
 
@@ -40,6 +40,13 @@ public class WeeklyTask extends Task {
      */
     public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes) {
         super(taskName, taskId, startDate, isCompleted, "weekly", notes);
+    } //end WeeklyTask constructor
+
+    /*
+     *  New Fully qualified constructor (needed for initializing objects stored on disk
+     */
+    public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<Calendar> datesCompleted) {
+        super(taskName, taskId, startDate, isCompleted, "weekly", notes, datesCompleted);
     } //end WeeklyTask constructor
 
     // method to get user's current streak; utilizes Collections.sort
@@ -159,11 +166,11 @@ public class WeeklyTask extends Task {
         jsonObject.put("taskName", this.getTaskName());
         jsonObject.put("notes", this.notes);
 
+        JSONWriter.prepareCalendarObjectsForJSONStorage(jsonObject, this.datesCompleted);
+
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
 
     } // end overloaded method writeTaskToJSON(WeeklyTask task)
 
-    /* DO YOU NEED TO OVERRIDE the Task.getCurrentStreak() or
-    Task.getBestStreak() methods? */
 }

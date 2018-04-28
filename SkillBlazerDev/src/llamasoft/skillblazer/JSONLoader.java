@@ -191,26 +191,37 @@ public class JSONLoader {
         startDate.set(year, month, day);
 
         isCompleted = (boolean)  jsonObject.get("isCompleted");
-
         String type = (String) jsonObject.get("type");
+
+        ArrayList<Calendar> jsonDatesCompleted = new ArrayList<>();
+        long completionCount;
 
         // Parse the remaining subclass-specific (unique) fields and
         // instantiate the correct Task subclass, add it to the
         // ArrayList<Task> userTaskList
         switch (type) {
             case "daily":
+                completionCount = (long) jsonObject.get("completionCount");
+                jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+
                 // instantiate a DailyTask object and add to ArrayList
                 userTasks.add(new DailyTask(taskName, taskId, startDate,
-                        isCompleted, notes));
+                        isCompleted, notes, jsonDatesCompleted));
                 break;
 
             case "weekly":
+                completionCount = (long) jsonObject.get("completionCount");
+                jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+
                 // instantiate a WeeklyTask object and add to ArrayList
                 userTasks.add(new WeeklyTask(taskName, taskId, startDate,
-                        isCompleted, notes));
+                        isCompleted, notes, jsonDatesCompleted));
                 break;
 
             case "custom":
+                completionCount = (long) jsonObject.get("completionCount");
+                jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
                 // copy the contents of the JSONArray into an ArrayList
@@ -222,7 +233,7 @@ public class JSONLoader {
 
                 // instantiate a CustomTask object and add to ArrayList
                 userTasks.add(new CustomTask(taskName, taskId, startDate,
-                        isCompleted, notes, dayListing));
+                        isCompleted, notes, dayListing, jsonDatesCompleted));
                 break;
 
             case "cumulative":
@@ -245,6 +256,34 @@ public class JSONLoader {
 
     } //end method parseCreateAndAddTaskToList()
 
+
+    /*
+     * Parse completiondates (Calendar objects) for the Daily/Weekly/Custom Task subclasses
+     * {{{{This method CANNOT be used for CumulativeTask.java}}}}
+     */
+    private ArrayList<Calendar> parseCompletionDates(JSONObject jsonObject, ArrayList<Calendar> jsonDatesCompleted, long completionCount) {
+
+        String jsonArrayName;
+        int completionYear, completionMonth, completionDate;
+
+        for (int i = 0; i < completionCount; i++) {
+            // for each completionDate (JSONArray) labeled as "completionDate" + i e.g. completionDate0, completionDate1, ...
+            jsonArrayName = "completionDate" + i; // determine the next Array name in the JSON file
+
+            JSONArray completionDateFields = (JSONArray)(jsonObject.get(jsonArrayName));
+            Iterator<Integer> dateFieldsIterator = completionDateFields.iterator();
+
+            completionYear = convertInt(dateFieldsIterator.next());
+            completionMonth = convertInt(dateFieldsIterator.next());
+            completionDate = convertInt(dateFieldsIterator.next());
+
+            // create the new Calendar object to represent the completion date
+            // that was stored in JSON, with the correct Year, Month, Day
+            jsonDatesCompleted.add(new GregorianCalendar(completionYear, completionMonth, completionDate));
+        } //end for loop
+
+        return jsonDatesCompleted;
+    }
 
     /*
      * Legal JSON places numeric values into the file without quotes

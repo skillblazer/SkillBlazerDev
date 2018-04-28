@@ -60,7 +60,7 @@ public class CumulativeTask extends Task {
         super(taskName, startDate);
         this.type = "cumulative";
         this.goalToReach = 0.0;
-        this.cumulativeHistory = new ArrayList(); 
+        this.cumulativeHistory = new ArrayList<>();
     } //end CumulativeTask constructor
 
     /*
@@ -72,7 +72,7 @@ public class CumulativeTask extends Task {
         this.endDate = endDate;
         this.type = "cumulative";
         this.goalToReach = 0.0;
-        this.cumulativeHistory = new ArrayList(); 
+        this.cumulativeHistory = new ArrayList<>();
     } //end CumulativeTask constructor
     
     /*
@@ -83,7 +83,20 @@ public class CumulativeTask extends Task {
         this.endDate = endDate;
         this.goalToReach = goalToReach;
         this.goalUnits = goalUnits;
-        this.cumulativeHistory = new ArrayList(); 
+        this.cumulativeHistory = new ArrayList<>();
+    } //end CumulativeTask constructor
+
+
+    /*
+     * Fully Qualified constructor which includes the ArrayList<CumulativeHistory> (inner class member) cumulativeHistory as a parameter
+     * This is useful for instantiation of CumulativeTask objects that have been stored in JSON files
+     */
+    public CumulativeTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate, double goalToReach, String goalUnits, ArrayList<CumulativeHistoryStruct> cumulativeHistory) {
+        super(taskName, taskId, startDate, isCompleted, "cumulative", notes);
+        this.endDate = endDate;
+        this.goalToReach = goalToReach;
+        this.goalUnits = goalUnits;
+        this.cumulativeHistory = cumulativeHistory;
     } //end CumulativeTask constructor
     
        @Override
@@ -100,8 +113,6 @@ public class CumulativeTask extends Task {
         this.goalUnits = goalUnits;
     }
     
-
-
 
         // method to add to the ArrayList cumulativeHistory
     public void addProgress(Calendar dateCompleted, double progress) {

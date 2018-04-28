@@ -2,6 +2,8 @@ package llamasoft.skillblazer;
 
 import java.io.FileWriter;
 import java.io.IOException;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.PrintWriter;
@@ -33,7 +35,6 @@ public class JSONWriter {
         for (Task task : allTasks) {
             task.writeTaskToJSON();
         } //end for loop
-
     } //end method saveAllFilesToDisk
 
 
@@ -162,5 +163,46 @@ public class JSONWriter {
         return listOfFiles;
     } //end method getFileContents();
 
+
+    /*
+     * CustomTask, DailyTask & WeeklyTask all need to be able to store
+     * dates (Calendar) objects that record when a task was completed
+     * This method will take an ArrayList<Calendar> and a JSONObject
+     * and add a JSONArray completionDate[#][YEAR, MONTH, DATE] to the jsonObject
+     * for each recorded completion date
+     *
+     * This method will also add a (long) completionCount field to JSON files
+     *
+     * {CumulativeTask will need a similar method with additional info and
+     * won't be using this}
+     */
+    static void prepareCalendarObjectsForJSONStorage(JSONObject jsonCalendarObject, ArrayList<Calendar> datesCompleted) {
+        // create and store a value for how many Calendar objects are
+        // going to be stored for Completion dates
+        // this value will be added to the JSON and then used
+        // to determine how many Calendar objects will be parsed out of the JSON file
+        // at startup
+        long completionCount = datesCompleted.size();
+        jsonCalendarObject.put("completionCount", completionCount);
+
+        // for each Calendar Object in ArrayList<Calendar> datesCompleted
+        for (int i = 0; i < datesCompleted.size(); i++) {
+            Iterator<Calendar> calIterator = datesCompleted.iterator();
+            // create a string with completionDate + index of datesCompleted  e.g. completionDate1, completionDate2, ...
+            String arrayName = "completionDate" + i;
+            // create a new JSONArray to correspond with this Calendar object
+            JSONArray datesArray = new JSONArray();
+
+            while (calIterator.hasNext()) {
+                // add Year/Month/Date numeric values to THIS JSONArray
+                datesArray.add(calIterator.next().get(Calendar.YEAR));
+                datesArray.add(calIterator.next().get(Calendar.MONTH));
+                datesArray.add(calIterator.next().get(Calendar.DATE));
+
+                // add the JSONArray for one Calendar object to the parent jsonObject
+                jsonCalendarObject.put(datesArray, arrayName);
+            } //end while loop
+        } //end for loop
+    }
 
 }

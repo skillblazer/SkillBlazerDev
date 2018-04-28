@@ -2,8 +2,10 @@ package llamasoft.skillblazer;
 
 import java.time.LocalDate;
 import static java.time.temporal.ChronoUnit.DAYS;
+
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
@@ -41,7 +43,17 @@ public class DailyTask extends Task {
         super(taskName, taskId, startDate, isCompleted, "daily", notes);
 
     } //end DailyTask constructor
-    
+
+    /*
+     *  New Fully qualified constructor (needed for initializing objects stored on disk
+     *  INCLUDES COMPLETION DATES as the last parameter
+     */
+    public DailyTask(String taskName, long taskId, Calendar startDate,
+                     boolean isCompleted, String notes, ArrayList<Calendar> datesCompleted) {
+        super(taskName, taskId, startDate, isCompleted, "daily", notes, datesCompleted);
+
+    } //end DailyTask constructor
+
     // method to get the user's current streak; utilizes Collections.sort
     public int getCurrentStreak(Calendar todaysDate) {
         int i;
@@ -155,11 +167,10 @@ public class DailyTask extends Task {
         jsonObject.put("taskName", this.getTaskName());
         jsonObject.put("notes", this.notes);
 
+        JSONWriter.prepareCalendarObjectsForJSONStorage(jsonObject, this.datesCompleted);
+
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
-
     } // end method writeTaskToJSON()
 
-    /* DO YOU NEED TO OVERRIDE the Task.getCurrentStreak() or
-     * Task.getBestStreak() methods?  */
 }

@@ -57,6 +57,18 @@ public class Task {
         this.notes = notes;
     } // end constructor
 
+    // fully-qualified constructor with ArrayList<Calendar> datesCompleted
+    public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes, ArrayList<Calendar> datesCompleted) {
+        this.taskName = taskName;
+        this.taskId = taskId;
+        this.startDate = startDate;
+        this.isCompleted = isCompleted;
+        this.type = type;
+        this.endDate = null;
+        this.notes = notes;
+        this.datesCompleted = datesCompleted;
+    } // end constructor
+
     // method to get task ID
     long getTaskId() {
         return this.taskId;

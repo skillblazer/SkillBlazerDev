@@ -141,7 +141,6 @@ public class UserProfile {
      * application and presents it.
      */
     public Label determineUsername() {
-    	  	
        	Label userNameLabel;
     	String userName;		
     	String homePath = System.getProperty("user.home"); //pulls home directory

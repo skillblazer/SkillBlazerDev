@@ -75,6 +75,15 @@ public class CustomTask extends Task {
         super(taskName, taskId, startDate, isCompleted, "custom", notes);
         this.actualDaysInTask.addAll(daysInTask);
     } //end CustomTask constructor
+
+
+    /*
+     *  New Fully qualified constructor with Completion Dates (Calendar objects) (needed for initializing objects stored on disk)
+     */
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<String> daysInTask, ArrayList<Calendar> datesCompleted) {
+        super(taskName, taskId, startDate, isCompleted, "custom", notes, datesCompleted);
+        this.actualDaysInTask.addAll(daysInTask);
+    } //end CustomTask constructor
     
     
     /*
@@ -181,6 +190,8 @@ public class CustomTask extends Task {
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
         jsonObject.put("notes", this.notes);
+
+        JSONWriter.prepareCalendarObjectsForJSONStorage(jsonObject, this.datesCompleted);
 
         JSONArray jsonArray = new JSONArray();
 
