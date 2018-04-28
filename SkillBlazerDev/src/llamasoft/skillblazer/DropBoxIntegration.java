@@ -1,8 +1,8 @@
 package llamasoft.skillblazer;
 
 import javafx.scene.control.Button;
-import com.dropbox.core.*;
-import static com.dropbox.core.DbxWriteMode.add;
+//import com.dropbox.core.*;
+//import static com.dropbox.core.DbxWriteMode.add;
 import java.io.*;
 import java.util.Locale;
 import javafx.event.Event;

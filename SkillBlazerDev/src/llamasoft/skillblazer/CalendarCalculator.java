@@ -84,7 +84,7 @@ public class CalendarCalculator {
 
     // method to instantiate calendar and create Day objects
     public void instantiateCalendar() {
-//        Scene calendarScene;
+        // int holding the amount of days for a given month
         int daysThisMonth = getDaysInThisCalendarMonth(getCurrentYearInt(), getCurrentMonthInt());
         /*
         * THE FOLLOWING CODE IS MEANT TO BE REMOVED EVENTUALLY - THIS IS CODE TO TEST THE
