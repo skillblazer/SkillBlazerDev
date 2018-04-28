@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5acd183e-8273-463c-a396-4f70d515ec15" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +20,8 @@
           <file leaf-file-name="CumulativeTask.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1589">
-                  <caret line="200" selection-start-line="200" selection-end-line="200" />
+                <state relative-caret-position="161">
+                  <caret line="94" column="31" lean-forward="true" selection-start-line="94" selection-start-column="31" selection-end-line="94" selection-end-column="31" />
                   <folding>
                     <element signature="method#CumulativeTask#0;class#CumulativeTask#0" />
                     <element signature="method#CumulativeTask#1;class#CumulativeTask#0" />
@@ -69,11 +70,12 @@
           <file leaf-file-name="JSONLoader.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1204">
-                  <caret line="287" selection-start-line="287" selection-end-line="287" />
+                <state relative-caret-position="1218">
+                  <caret line="312" column="5" lean-forward="true" selection-start-line="312" selection-start-column="5" selection-end-line="312" selection-end-column="5" />
                   <folding>
                     <element signature="method#getTasks#0;class#JSONLoader#0" />
                     <element signature="method#getUserProfile#0;class#JSONLoader#0" />
+                    <element signature="method#loadTasksFromJSON#0;class#JSONLoader#0" />
                     <element signature="e#1326#1393#0" />
                     <element signature="e#2394#2454#0" />
                     <element signature="method#addActualFileNames#0;class#JSONLoader#0" />
@@ -82,13 +84,17 @@
                     <element signature="e#3805#3823#0" />
                     <element signature="method#parseAndReturnUserProfile#0;class#JSONLoader#0" />
                     <element signature="method#getDefaultUsername#0;class#JSONLoader#0" />
+                    <element signature="method#parseCreateAndAddTaskToList#0;class#JSONLoader#0" />
                     <element signature="e#8290#8350#0" />
                     <element signature="e#8783#8872#0" />
                     <element signature="e#9732#9821#0" />
                     <element signature="e#11080#11169#0" />
                     <element signature="e#9659#9720#0" />
                     <element signature="e#12908#12997#0" />
+                    <element signature="method#parseCompletionDates#0;class#JSONLoader#0" />
                     <element signature="e#13619#13696#0" />
+                    <element signature="e#12902#12968#0" />
+                    <element signature="method#parseHistoryStruct#0;class#JSONLoader#0" />
                     <element signature="method#convertInt#0;class#JSONLoader#0" />
                   </folding>
                 </state>
@@ -120,15 +126,22 @@
           <file leaf-file-name="JSONWriter.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="254">
-                  <caret line="198" column="52" lean-forward="true" selection-start-line="198" selection-start-column="52" selection-end-line="198" selection-end-column="52" />
+                <state relative-caret-position="1246">
+                  <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
                   <folding>
                     <element signature="docComment;class#JSONWriter#0" />
                     <element signature="method#saveAllFilesToDisk#0;class#JSONWriter#0" />
+                    <element signature="e#766#809#0" />
                     <element signature="method#saveUser#0;class#JSONWriter#0" />
+                    <element signature="method#writeUserProfileToDisk#0;class#JSONWriter#0" />
+                    <element signature="e#1550#1594#0" />
                     <element signature="method#writeJSON#0;class#JSONWriter#0" />
-                    <element signature="method#addFileToInit#0;class#JSONWriter#0" />
-                    <element signature="method#getFileContents#0;class#JSONWriter#0" />
+                    <element signature="e#3667#3724#0" />
+                    <element signature="method#prepareCalendarObjectsForJSONStorage#0;class#JSONWriter#0" />
+                    <element signature="e#6703#6764#0" />
+                    <element signature="e#8689#8765#0" />
+                    <element signature="e#9635#9712#0" />
+                    <element signature="e#10447#10507#0" />
                   </folding>
                 </state>
               </provider>
@@ -443,21 +456,7 @@
       <workItem from="1524736445443" duration="7957000" />
       <workItem from="1524824720602" duration="7933000" />
       <workItem from="1524836648736" duration="10238000" />
-      <workItem from="1524869586534" duration="31424000" />
-    </task>
-    <task id="LOCAL-00025" summary="added methods for reading from and writing to SBinit.txt to retrieve a listing of json files created by Tasks and the userProfile.">
-      <created>1523279569294</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1523279569294</updated>
-    </task>
-    <task id="LOCAL-00026" summary="minor commenting fixes">
-      <created>1523282886281</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1523282886281</updated>
+      <workItem from="1524869586534" duration="33612000" />
     </task>
     <task id="LOCAL-00027" summary="Merge branch 'Phase1_MShearer' of https://github.com/skillblazer/SkillBlazerDev into Jason_funWithFiles_09APR&#10;&#10;# Conflicts:&#10;#&#9;SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java&#10;MERGED CHANGES - KEPT Mark's changes in UserProfile.java over my original member fields&#10;DID NOT Merge TwitterIntegration (YET)">
       <created>1523446051622</created>
@@ -788,11 +787,25 @@
       <option name="project" value="LOCAL" />
       <updated>1524921339724</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="Fixed stupid loop decisions which were writing the same completion info pretty much everywhere.  &#10;JSONLoader.java -&gt; Fixed parseHistoryStruct() and parseCreateAndAddTaskToList()&#10;JSONWriter.java -&gt; Fixed prepareCalendarObjectsForJSONStorage() and prepareCumulativeHistoryStructForJSONStorage()&#10;Completion dates and the CumulativeHistoryStruct objects now write to JSON, and are parsed back from JSON correctly.">
+      <created>1524921379391</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1524921379391</updated>
+    </task>
+    <task id="LOCAL-00075" summary="fixed stupid name form a song that was stuck in my head every time i read 'struct'">
+      <created>1524922395200</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1524922395200</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="334266000" />
+    <option name="totallyTimeSpent" value="336454000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -816,7 +829,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50026345" side_tool="true" weight="0.28336653" />
       <window_info anchor="right" id="Maven Projects" order="4" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="11" visible="true" weight="0.18027888" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.18027888" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49973658" weight="0.28336653" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="2" />
@@ -874,7 +887,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Removed primitive (int) and (long) casts throughout JSONLoader.java -&gt; ArrayList&lt;Task&gt; now returning arrays to test main() method!  UserProfile object now being instantiated correctly!" />
     <MESSAGE value="Finished testing the CumulativeTask.java, CustomTask.java, DailyTask.java, WeeklyTask.java and UserProfile.java classes (instantiating them from json objects stored to disk).  Removed test code, and left the necessary object instantiations in SkillBlazer.java and SkillBlazer.main()" />
     <MESSAGE value="fixed casts to values that should be (long) in JSONWriter.java  removed unneeded class fields - corrected return statement in Task.getTaskId() so it returns a useful value - removed commented out code from SkillBlazer.java - removed unused fields in JSONLoader.java" />
     <MESSAGE value="one last obsolete comment removal in loadFromJSON() in JSONLoader.java" />
@@ -899,7 +911,8 @@
     <MESSAGE value="Changed completionCount in JSONLoader and JSONWriter (all references) so that it is always in range 1,2,..N  (no zeroes)&#10;in JSONLoader parseCreateAndAddTaskToList() the switch cases for &quot;weekly&quot;,&quot;daily&quot;,&quot;custom&quot; now check the completionCount, if its greater than zero it calls the method to parse out the completionDates (Calendar) objects, and calls the appropriate *Task constructor with the ArrayList&lt;Calendar&gt; completionDates parameter.&#10;JSONLoader -&gt; if completionCount is zero the [sub]Task will be instantiated without a completionDates parameter." />
     <MESSAGE value="Promoted CumulativeHistoryStruct from being an inner class of CumulativeTask to a separate, public class.&#10;Completed the initial code for parsing and writing CumulativeHistoryStruct objects in and out of JSON files.&#10;The initial version of everything required to store History is now included in the program, and requires testing.  (No push yet)." />
     <MESSAGE value="Fixed stupid loop decisions which were writing the same completion info pretty much everywhere.  &#10;JSONLoader.java -&gt; Fixed parseHistoryStruct() and parseCreateAndAddTaskToList()&#10;JSONWriter.java -&gt; Fixed prepareCalendarObjectsForJSONStorage() and prepareCumulativeHistoryStructForJSONStorage()&#10;Completion dates and the CumulativeHistoryStruct objects now write to JSON, and are parsed back from JSON correctly." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed stupid loop decisions which were writing the same completion info pretty much everywhere.  &#10;JSONLoader.java -&gt; Fixed parseHistoryStruct() and parseCreateAndAddTaskToList()&#10;JSONWriter.java -&gt; Fixed prepareCalendarObjectsForJSONStorage() and prepareCumulativeHistoryStructForJSONStorage()&#10;Completion dates and the CumulativeHistoryStruct objects now write to JSON, and are parsed back from JSON correctly." />
+    <MESSAGE value="fixed stupid name form a song that was stuck in my head every time i read 'struct'" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed stupid name form a song that was stuck in my head every time i read 'struct'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1372,37 +1385,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1204">
-          <caret line="287" selection-start-line="287" selection-end-line="287" />
+        <state relative-caret-position="1323">
+          <caret line="2564" selection-start-line="2564" selection-end-line="2564" />
           <folding>
-            <element signature="method#getTasks#0;class#JSONLoader#0" />
-            <element signature="method#getUserProfile#0;class#JSONLoader#0" />
-            <element signature="e#1326#1393#0" />
-            <element signature="e#2394#2454#0" />
-            <element signature="method#addActualFileNames#0;class#JSONLoader#0" />
-            <element signature="e#2880#2947#0" />
-            <element signature="e#3200#3265#0" />
-            <element signature="e#3805#3823#0" />
-            <element signature="method#parseAndReturnUserProfile#0;class#JSONLoader#0" />
-            <element signature="method#getDefaultUsername#0;class#JSONLoader#0" />
-            <element signature="e#8290#8350#0" />
-            <element signature="e#8783#8872#0" />
-            <element signature="e#9732#9821#0" />
-            <element signature="e#11080#11169#0" />
-            <element signature="e#9659#9720#0" />
-            <element signature="e#12908#12997#0" />
-            <element signature="e#13619#13696#0" />
-            <element signature="method#convertInt#0;class#JSONLoader#0" />
+            <element signature="method#closeProgram#0;class#SkillBlazer#0" />
+            <element signature="method#main#0;class#SkillBlazer#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1589">
-          <caret line="200" selection-start-line="200" selection-end-line="200" />
+        <state relative-caret-position="161">
+          <caret line="94" column="31" lean-forward="true" selection-start-line="94" selection-start-column="31" selection-end-line="94" selection-end-column="31" />
           <folding>
             <element signature="method#CumulativeTask#0;class#CumulativeTask#0" />
             <element signature="method#CumulativeTask#1;class#CumulativeTask#0" />
@@ -1419,28 +1416,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1323">
-          <caret line="2564" selection-start-line="2564" selection-end-line="2564" />
+        <state relative-caret-position="1218">
+          <caret line="312" column="5" lean-forward="true" selection-start-line="312" selection-start-column="5" selection-end-line="312" selection-end-column="5" />
           <folding>
-            <element signature="method#closeProgram#0;class#SkillBlazer#0" />
-            <element signature="method#main#0;class#SkillBlazer#0" />
+            <element signature="method#getTasks#0;class#JSONLoader#0" />
+            <element signature="method#getUserProfile#0;class#JSONLoader#0" />
+            <element signature="method#loadTasksFromJSON#0;class#JSONLoader#0" />
+            <element signature="e#1326#1393#0" />
+            <element signature="e#2394#2454#0" />
+            <element signature="method#addActualFileNames#0;class#JSONLoader#0" />
+            <element signature="e#2880#2947#0" />
+            <element signature="e#3200#3265#0" />
+            <element signature="e#3805#3823#0" />
+            <element signature="method#parseAndReturnUserProfile#0;class#JSONLoader#0" />
+            <element signature="method#getDefaultUsername#0;class#JSONLoader#0" />
+            <element signature="method#parseCreateAndAddTaskToList#0;class#JSONLoader#0" />
+            <element signature="e#8290#8350#0" />
+            <element signature="e#8783#8872#0" />
+            <element signature="e#9732#9821#0" />
+            <element signature="e#11080#11169#0" />
+            <element signature="e#9659#9720#0" />
+            <element signature="e#12908#12997#0" />
+            <element signature="method#parseCompletionDates#0;class#JSONLoader#0" />
+            <element signature="e#13619#13696#0" />
+            <element signature="e#12902#12968#0" />
+            <element signature="method#parseHistoryStruct#0;class#JSONLoader#0" />
+            <element signature="method#convertInt#0;class#JSONLoader#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="198" column="52" lean-forward="true" selection-start-line="198" selection-start-column="52" selection-end-line="198" selection-end-column="52" />
+        <state relative-caret-position="1246">
+          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
           <folding>
             <element signature="docComment;class#JSONWriter#0" />
             <element signature="method#saveAllFilesToDisk#0;class#JSONWriter#0" />
+            <element signature="e#766#809#0" />
             <element signature="method#saveUser#0;class#JSONWriter#0" />
+            <element signature="method#writeUserProfileToDisk#0;class#JSONWriter#0" />
+            <element signature="e#1550#1594#0" />
             <element signature="method#writeJSON#0;class#JSONWriter#0" />
-            <element signature="method#addFileToInit#0;class#JSONWriter#0" />
-            <element signature="method#getFileContents#0;class#JSONWriter#0" />
+            <element signature="e#3667#3724#0" />
+            <element signature="method#prepareCalendarObjectsForJSONStorage#0;class#JSONWriter#0" />
+            <element signature="e#6703#6764#0" />
+            <element signature="e#8689#8765#0" />
+            <element signature="e#9635#9712#0" />
+            <element signature="e#10447#10507#0" />
           </folding>
         </state>
       </provider>

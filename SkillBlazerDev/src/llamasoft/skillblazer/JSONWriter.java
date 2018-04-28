@@ -113,26 +113,50 @@ public class JSONWriter {
 
         if(!contents.contains(fileName)) { //if the arraylist doesn't already contain 'fileName'
             contents.add(fileName); // add it to the arraylist
-
-            try {
-                java.io.File file = new java.io.File(SkillBlazerInitializer.getAbsoluteInitFilePath());
-                PrintWriter output = new PrintWriter(file);
-                Iterator<String> contentIterator = contents.iterator();
-
-                // fileName was not already in the ArrayList populated from disk
-                // rewrite the SBinit.txt file with the UPDATED ArrayList of filenames
-                while(contentIterator.hasNext()) { // if the contents ArrayList has another filename
-                    output.println(contentIterator.next()); // add the filename to SBinit.txt
-                }
-                output.flush();
-                output.close();
-            }
-            catch (IOException e) {
-                System.out.println("Could not access SBinit.txt to add filename to disk");
-                e.printStackTrace();
-            }
+            updateInitFile(contents);
         }//end if selection
     } //end method addFileToInit()
+
+
+    /*
+     * Get the contents of SBinit.txt
+     * remove the fileName provided as a parameter
+     * update the contents of SBinit.txt with the (shorter) list of files
+     */
+    static void removeFileFromInit(String fileName) {
+        ArrayList<String> contents = getFileContents();
+
+        if(contents.contains(fileName)) { //if the arraylist doesn't already contain 'fileName'
+            contents.remove(fileName); // add it to the arraylist
+            updateInitFile(contents);
+
+        }//end if selection
+    } //end method removeFileFromInit()
+
+
+    /*
+     * try-catch block to write an ArrayList<String> to SBinit.txt
+     */
+    static void updateInitFile(ArrayList<String> contents) {
+        try {
+            java.io.File file = new java.io.File(SkillBlazerInitializer.getAbsoluteInitFilePath());
+            PrintWriter output = new PrintWriter(file);
+            // create iterator to rewrite the SBinit.txt file
+            Iterator<String> contentIterator = contents.iterator();
+
+            // fileName was not already in the ArrayList populated from disk
+            // rewrite the SBinit.txt file with the UPDATED ArrayList of filenames
+            while(contentIterator.hasNext()) { // if the contents ArrayList has another filename
+                output.println(contentIterator.next()); // add the filename to SBinit.txt
+            }
+            output.flush();
+            output.close();
+        }
+        catch (IOException e) {
+            System.out.println("Could not access SBinit.txt to remove a file.");
+            e.printStackTrace();
+        }
+    } //end method updateInitFile()
 
 
     static ArrayList<String> getFileContents() {
@@ -162,6 +186,8 @@ public class JSONWriter {
         }
         return listOfFiles;
     } //end method getFileContents();
+
+
 
 
     /*
