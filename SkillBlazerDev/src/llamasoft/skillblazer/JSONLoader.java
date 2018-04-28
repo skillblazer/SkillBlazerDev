@@ -263,25 +263,26 @@ public class JSONLoader {
                 endDate.set(endYear, endMonth, endDay);
 
                 completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+
+                ArrayList<CumulativeHistoryStruct> loveToWatchHerStruct = parseHistoryStruct(jsonObject, completionCount);
+
                 if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
                     // parse out the completion date fields and instantiate them for this CumulativeHistoryStruct
 
 
                     // instantiate a CumulativeTask object and add to ArrayList
                     userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                            isCompleted, notes, endDate, goalToReach, goalUnits));
+                            isCompleted, notes, endDate, goalToReach, goalUnits, loveToWatchHerStruct));
                 } else {
                     // instantiate a CumulativeTask object and add to ArrayList
                     userTasks.add(new CumulativeTask(taskName, taskId, startDate,
                             isCompleted, notes, endDate, goalToReach, goalUnits));
                 }
-
                 // instantiate a CumulativeTask object and add to ArrayList
                 userTasks.add(new CumulativeTask(taskName, taskId, startDate,
                         isCompleted, notes, endDate, goalToReach, goalUnits));
                 break;
         } //end switch statement
-
     } //end method parseCreateAndAddTaskToList()
 
 
@@ -290,15 +291,14 @@ public class JSONLoader {
      * {{{{This method CANNOT be used for CumulativeTask objects}}}}
      */
     private ArrayList<Calendar> parseCompletionDates(JSONObject jsonObject, ArrayList<Calendar> jsonDatesCompleted, long completionCount) {
-        String jsonArrayName;
         int completionYear, completionMonth, completionDate;
 
         for (int i = 1; i <= completionCount; i++) { // completionCount should be in range 1, 2, 3,...N  (zeros are not desirable)
             // for each completionDate (JSONArray) labeled as "completionDate" + i e.g. completionDate1, completionDate2, ...
-            jsonArrayName = "completionDate" + i; // determine the next Array name in the JSON file
+            String jsonArrayName = "completionDate" + i; // determine the next Array name in the JSON file
 
             JSONArray completionDateFields = (JSONArray)(jsonObject.get(jsonArrayName));
-            Iterator<Integer> dateFieldsIterator = completionDateFields.iterator();
+            Iterator<Long> dateFieldsIterator = completionDateFields.iterator();
 
             completionYear = convertInt(dateFieldsIterator.next());
             completionMonth = convertInt(dateFieldsIterator.next());
@@ -313,7 +313,8 @@ public class JSONLoader {
     }
 
 
-    private ArrayList<CumulativeHistoryStruct> parseHistoryStuct(JSONObject jsonObject, ArrayList<CumulativeHistoryStruct> cumulativeHistoryStructArrayList, long completionCount) {
+    private ArrayList<CumulativeHistoryStruct> parseHistoryStruct(JSONObject jsonObject, long completionCount) {
+        ArrayList<CumulativeHistoryStruct> cumulativeHistoryStructArrayList = new ArrayList<>();
         String jsonStructName;
         int completionYear, completionMonth, completionDate;
         double progress;
@@ -322,7 +323,7 @@ public class JSONLoader {
             jsonStructName = "completionDate" + i;
 
             JSONArray structFields = (JSONArray)(jsonObject.get(jsonStructName));
-            Iterator<String> structFieldIterator = structFields.iterator();
+            Iterator<String> structFieldIterator = structFields.iterator(); // using String since a struct has int and double values
 
             completionYear = Integer.parseInt(structFieldIterator.next());
             completionMonth = Integer.parseInt(structFieldIterator.next());

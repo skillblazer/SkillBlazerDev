@@ -185,23 +185,22 @@ public class JSONWriter {
         long completionCount = datesCompleted.size();
         jsonCalendarObject.put("completionCount", completionCount);
 
-        // for each Calendar Object in ArrayList<Calendar> datesCompleted
-        for (int i = 1; i <= datesCompleted.size(); i++) { // completionDates from 1 to n are desirable - no '0's
-            Iterator<Calendar> calIterator = datesCompleted.iterator();
-            // create a string with completionDate + index of datesCompleted  e.g. completionDate1, completionDate2, ...
-            String arrayName = "completionDate" + i; // this will correspond to a JSONArray key value in the json file
-            // create a new JSONArray to correspond with this Calendar object
-            JSONArray datesArray = new JSONArray();
+        Iterator<Calendar> calIterator = datesCompleted.iterator();
+        int indexValue = 1;
 
-            while (calIterator.hasNext()) {
-                // add Year/Month/Date numeric values to THIS JSONArray
-                datesArray.add(calIterator.next().get(Calendar.YEAR));
-                datesArray.add(calIterator.next().get(Calendar.MONTH));
-                datesArray.add(calIterator.next().get(Calendar.DATE));
-                // add the JSONArray for one Calendar object to the parent jsonObject
-                jsonCalendarObject.put(datesArray, arrayName);
-            } //end while loop
-        } //end for loop
+        while (calIterator.hasNext()) {
+            JSONArray datesArray = new JSONArray(); // create a new JSONArray to correspond with this Calendar object
+            // create a string with completionDate + index of datesCompleted  e.g. completionDate1, completionDate2, ...
+            String arrayName = "completionDate" + indexValue; // this will correspond to a JSONArray key value in the json file
+            Calendar temp = calIterator.next();
+            // add Year/Month/Date numeric values to THIS JSONArray
+            datesArray.add(temp.get(Calendar.YEAR));
+            datesArray.add(temp.get(Calendar.MONTH));
+            datesArray.add(temp.get(Calendar.DATE));
+            // add the JSONArray for one Calendar object to the parent jsonObject
+            jsonCalendarObject.put(arrayName, datesArray);
+            indexValue++;  // increase this so the next JSONArray has a new name
+        } //end while loop
     }
 
 
@@ -221,36 +220,37 @@ public class JSONWriter {
         jsonCalendarObject.put("completionCount", completionCount);
 
         // for each Calendar Object in ArrayList<Calendar> datesCompleted
-        for (int i = 1; i <= structArrayList.size(); i++) { // completionDates from 1 to n are desirable - no '0's
-            Iterator<CumulativeHistoryStruct> structIterator = structArrayList.iterator();
+        Iterator<CumulativeHistoryStruct> structIterator = structArrayList.iterator();
 
-            // create a string with completionDate + 'index' of datesCompleted  e.g. completionDate1, completionDate2, ...
-            String structName = "completionDate" + i; // this will correspond to a JSONArray key value in the json file
+        int year,month,date;
+        double progress;
+        int indexValue = 1;
 
-            int year,month,date;
-            double progress;
+        while (structIterator.hasNext()) { // for each CumulativeHistoryStruct in the ArrayList<CumulativeHistoryStruct>
             // create a new JSONArray to correspond with this Cumulative Calendar object
             JSONArray structArray = new JSONArray();
+            // create a string with completionDate + 'index' of datesCompleted  e.g. completionDate1, completionDate2, ...
+            String structName = "completionDate" + indexValue; // this will correspond to a JSONArray key value in the json file
 
-            while (structIterator.hasNext()) { // for each CumulativeHistoryStruct in the ArrayList<CumulativeHistoryStruct>
-                // get the values out of the struct that we'll need for the Calendar object
-                year = structIterator.next().date.get(Calendar.YEAR);
-                month = structIterator.next().date.get(Calendar.MONTH);
-                date = structIterator.next().date.get(Calendar.DATE);
-                // get the value for progress
-                progress = structIterator.next().progress;
+            // get the values out of the struct that we'll need for the Calendar object
+            CumulativeHistoryStruct temp = structIterator.next();
+            year = temp.date.get(Calendar.YEAR);
+            month = temp.date.get(Calendar.MONTH);
+            date = temp.date.get(Calendar.DATE);
+            // get the value for progress
+            progress = temp.progress;
 
-                // place all four values into the JSONArray as String values
-                // required so that an Iterator can take them all out at startup
-                structArray.add( String.valueOf(year) );
-                structArray.add( String.valueOf(month) );
-                structArray.add( String.valueOf(date) );
-                structArray.add( String.valueOf(progress) );
+            // place all four values into the JSONArray as String values
+            // required so that an Iterator can take them all out at startup
+            structArray.add( String.valueOf(year) );
+            structArray.add( String.valueOf(month) );
+            structArray.add( String.valueOf(date) );
+            structArray.add( String.valueOf(progress) );
 
-                // add the JSONArray which contains the Calendar info and the progress info into the JSONObject
-                jsonCalendarObject.put(structArray, structName);
-            } //end while loop
-        } //end for loop
+            // add the JSONArray which contains the Calendar info and the progress info into the JSONObject
+            jsonCalendarObject.put(structName, structArray);
+            indexValue++;
+        } //end while loop
     }
 
 }

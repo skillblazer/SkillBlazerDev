@@ -202,7 +202,6 @@ public class CumulativeTask extends Task {
         // pass the jsonObject and the inner class object ArrayList<CumulativeHistoryStruct> cumulativeHistory to
         // a method in JSONWriter which will prep the Calendar objects and corresponding progress values
         // to be added to the JSON file
-        long completionCount = cumulativeHistory.size();
         JSONWriter.prepareCumulativeHistoryStructForJSONStorage(jsonObject, cumulativeHistory);
 
         JSONWriter.writeJSON(jsonObject, fileName);
