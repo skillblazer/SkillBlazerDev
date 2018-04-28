@@ -201,39 +201,53 @@ public class JSONLoader {
         // ArrayList<Task> userTaskList
         switch (type) {
             case "daily":
-                completionCount = (long) jsonObject.get("completionCount");
-                jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
-
-                // instantiate a DailyTask object and add to ArrayList
-                userTasks.add(new DailyTask(taskName, taskId, startDate,
-                        isCompleted, notes, jsonDatesCompleted));
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this task
+                    jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+                    // instantiate a DailyTask object and add to ArrayList - includes completionDates
+                    userTasks.add(new DailyTask(taskName, taskId, startDate, isCompleted, notes, jsonDatesCompleted));
+                } else {
+                    // instantiate a DailyTask object and add to ArrayList (no completions yet)
+                    userTasks.add(new DailyTask(taskName, taskId, startDate,
+                            isCompleted, notes));
+                }
                 break;
 
             case "weekly":
-                completionCount = (long) jsonObject.get("completionCount");
-                jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
-
-                // instantiate a WeeklyTask object and add to ArrayList
-                userTasks.add(new WeeklyTask(taskName, taskId, startDate,
-                        isCompleted, notes, jsonDatesCompleted));
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this task
+                    jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+                    // instantiate a WeeklyTask object and add to ArrayList - includes completionDates
+                    userTasks.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, notes, jsonDatesCompleted));
+                } else {
+                    // instantiate a WeeklyTask object and add to ArrayList (no completions yet)
+                    userTasks.add(new WeeklyTask(taskName, taskId, startDate,
+                            isCompleted, notes));
+                }
                 break;
 
             case "custom":
-                completionCount = (long) jsonObject.get("completionCount");
-                jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
-
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
                 // copy the contents of the JSONArray into an ArrayList
-
                 Iterator<String> dayIterator = days.iterator();
                 while (dayIterator.hasNext()) {
                     dayListing.add(dayIterator.next());
                 }
 
-                // instantiate a CustomTask object and add to ArrayList
-                userTasks.add(new CustomTask(taskName, taskId, startDate,
-                        isCompleted, notes, dayListing, jsonDatesCompleted));
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this task
+                    jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+                    // instantiate a CustomTask object and add to ArrayList - includes completionDates
+                    userTasks.add(new CustomTask(taskName, taskId, startDate, isCompleted, notes, dayListing, jsonDatesCompleted));
+                } else {
+                    // instantiate a CustomTask object and add to ArrayList (no completions yet)
+                    userTasks.add(new CustomTask(taskName, taskId, startDate,
+                            isCompleted, notes, dayListing));
+                }
                 break;
 
             case "cumulative":
@@ -258,16 +272,15 @@ public class JSONLoader {
 
 
     /*
-     * Parse completiondates (Calendar objects) for the Daily/Weekly/Custom Task subclasses
-     * {{{{This method CANNOT be used for CumulativeTask.java}}}}
+     * Parse completionDates (Calendar objects) for the Daily/Weekly/Custom Task subclasses
+     * {{{{This method CANNOT be used for CumulativeTask objects}}}}
      */
     private ArrayList<Calendar> parseCompletionDates(JSONObject jsonObject, ArrayList<Calendar> jsonDatesCompleted, long completionCount) {
-
         String jsonArrayName;
         int completionYear, completionMonth, completionDate;
 
-        for (int i = 0; i < completionCount; i++) {
-            // for each completionDate (JSONArray) labeled as "completionDate" + i e.g. completionDate0, completionDate1, ...
+        for (int i = 1; i <= completionCount; i++) { // completionCount should be in range 1, 2, 3,...N  (zeros are not desirable)
+            // for each completionDate (JSONArray) labeled as "completionDate" + i e.g. completionDate1, completionDate2, ...
             jsonArrayName = "completionDate" + i; // determine the next Array name in the JSON file
 
             JSONArray completionDateFields = (JSONArray)(jsonObject.get(jsonArrayName));

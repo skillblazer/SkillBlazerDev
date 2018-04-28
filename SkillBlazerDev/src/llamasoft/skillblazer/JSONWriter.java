@@ -186,7 +186,7 @@ public class JSONWriter {
         jsonCalendarObject.put("completionCount", completionCount);
 
         // for each Calendar Object in ArrayList<Calendar> datesCompleted
-        for (int i = 0; i < datesCompleted.size(); i++) {
+        for (int i = 1; i <= datesCompleted.size(); i++) { // completionDates from 1 to n are desirable - no '0's
             Iterator<Calendar> calIterator = datesCompleted.iterator();
             // create a string with completionDate + index of datesCompleted  e.g. completionDate1, completionDate2, ...
             String arrayName = "completionDate" + i;

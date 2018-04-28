@@ -3,14 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5acd183e-8273-463c-a396-4f70d515ec15" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -116,11 +110,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="CumulativeTask.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="CumulativeTask.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1141">
-                  <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
+                <state relative-caret-position="371">
+                  <caret line="160" column="4" lean-forward="true" selection-start-line="160" selection-start-column="4" selection-end-line="160" selection-end-column="4" />
                   <folding>
                     <element signature="e#3472#3473#0" expanded="true" />
                     <element signature="e#3504#3505#0" expanded="true" />
@@ -135,7 +129,7 @@
           <file leaf-file-name="WeeklyTask.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="630">
+                <state relative-caret-position="-1689">
                   <caret line="36" column="4" lean-forward="true" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
                 </state>
               </provider>
@@ -144,8 +138,8 @@
           <file leaf-file-name="DailyTask.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="525">
-                  <caret line="44" column="33" lean-forward="true" selection-start-line="44" selection-start-column="33" selection-end-line="44" selection-end-column="33" />
+                <state relative-caret-position="782">
+                  <caret line="153" lean-forward="true" selection-start-line="153" selection-end-line="153" />
                   <folding>
                     <element signature="docComment;class#DailyTask#0" />
                     <element signature="method#getCurrentStreak#0;class#DailyTask#0" />
@@ -165,11 +159,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="JSONWriter.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="JSONWriter.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1372">
-                  <caret line="186" lean-forward="true" selection-start-line="186" selection-end-line="186" />
+                <state relative-caret-position="1309">
+                  <caret line="183" column="21" lean-forward="true" selection-start-line="183" selection-start-column="21" selection-end-line="183" selection-end-column="21" />
                   <folding>
                     <element signature="docComment;class#JSONWriter#0" />
                     <element signature="method#saveAllFilesToDisk#0;class#JSONWriter#0" />
@@ -191,8 +185,8 @@
               <file leaf-file-name="JSONLoader.java" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1267">
-                      <caret line="199" column="63" lean-forward="true" selection-start-line="199" selection-start-column="63" selection-end-line="199" selection-end-column="63" />
+                    <state relative-caret-position="1456">
+                      <caret line="272" lean-forward="true" selection-start-line="272" selection-end-line="272" />
                       <folding>
                         <element signature="method#getTasks#0;class#JSONLoader#0" />
                         <element signature="method#getUserProfile#0;class#JSONLoader#0" />
@@ -205,6 +199,7 @@
                         <element signature="e#3805#3823#0" />
                         <element signature="method#parseAndReturnUserProfile#0;class#JSONLoader#0" />
                         <element signature="method#getDefaultUsername#0;class#JSONLoader#0" />
+                        <element signature="method#parseCompletionDates#0;class#JSONLoader#0" />
                         <element signature="method#convertInt#0;class#JSONLoader#0" />
                       </folding>
                     </state>
@@ -227,8 +222,8 @@
               <file leaf-file-name="SkillBlazer.java" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1554">
-                      <caret line="2373" lean-forward="true" selection-start-line="2373" selection-end-line="2373" />
+                    <state relative-caret-position="945">
+                      <caret line="631" column="6" lean-forward="true" selection-start-line="631" selection-start-column="6" selection-end-line="631" selection-end-column="6" />
                       <folding>
                         <element signature="method#start#0;class#SkillBlazer#0" />
                         <element signature="class#5030:5228" />
@@ -362,13 +357,13 @@
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/TaskHistory.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/UserProfile.java" />
-        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java" />
-        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" />
         <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java" />
+        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java" />
+        <option value="$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java" />
       </list>
     </option>
   </component>
@@ -626,14 +621,7 @@
       <workItem from="1524736445443" duration="7957000" />
       <workItem from="1524824720602" duration="7933000" />
       <workItem from="1524836648736" duration="10238000" />
-      <workItem from="1524869586534" duration="16059000" />
-    </task>
-    <task id="LOCAL-00021" summary="added SkillBlazerInitializer.java.  Started work on JSONLoader.java.  Not much here yet.">
-      <created>1523158374129</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1523158374129</updated>
+      <workItem from="1524869586534" duration="18665000" />
     </task>
     <task id="LOCAL-00022" summary="Started laying out structure of methods in JSONLoader.java.  Added JSONWriter and JSONLoader member objects to SkillBlazer.java">
       <created>1523165189611</created>
@@ -971,11 +959,18 @@
       <option name="project" value="LOCAL" />
       <updated>1524847104540</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="Added a constructor to CumulativeTask.java -&gt; this constructor includes the ArrayList&lt;CumulativeHistoryStruct&gt; as the last parameter&#10;CustomTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;DailyTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;WeeklyTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;Task.java now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter.  This feature requires testing&#10;JSONLoader.java now has calls to the switch: &quot;daily&quot;, &quot;weekly&quot;, and &quot;custom&quot; cases, which call a method to parse Calendar objects (for completion dates) from the JSON file&#10;JSONLoader.java now has a method parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount) which will pull all of the JSONArrays which represent completion dates (Calendar objects) out of the JSON file.  REQUIRES TESTING&#10;JSONWriter.java now has a method prepareCalendarObjectsForJSONStorage(jsonCalendarObject, datesCompleted) which takes all of the Calendar objects which represent completionDates in a TASK, and converts them to JSON arrays that are added to the JSONObject.  REQUIRES TESTING&#10;Removed old comments from various files as I found them.">
+      <created>1524891901843</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1524891901844</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="318901000" />
+    <option name="totallyTimeSpent" value="321507000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1057,7 +1052,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added citation for method:  CalendarCalculator.isLeapYear()" />
     <MESSAGE value="Pulled from Rebecca's PhaseII branch and am now creating my PhaseII branch" />
     <MESSAGE value="Major refactor of JSONLoader.java -&gt; needs testing but its in a lot better shape!" />
     <MESSAGE value="Developing tests and double checking execution flow in JSONLoader" />
@@ -1082,7 +1076,8 @@
     <MESSAGE value="Removed commented-out constructor from CustomTask.java" />
     <MESSAGE value="Removed commented-out constructor from CustomTask.java&#10;Changed JSONLoader to now pull the username from the OS filesystem folder names, unless a non-default value is already set.&#10;Removed saveHistoryToFile() from class JSONWriter.java&#10;removed zombie Aquafx code from SkillBlazer.java&#10;removed ArrayList&lt;Task&gt; arrayOfTasks (jason's arraylist) from SkillBlazer.java -&gt; set ArrayList&lt;Task&gt; taskList to STATIC so that Jason and Rebecca's code are using the same arraylist.  This still needs improvement&#10;added &lt;&gt; to ArrayList&lt;Calendar&gt; datesCompleted = new ArrayList&lt;&gt;(); in Task.java" />
     <MESSAGE value="Changed createTaskObject() in SkillBlazer.java to use a method in UserProfile.java which will increment the taskNumber (class field) and return the incremented value.  This will automate the creation of new task numbers through the GUI." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed createTaskObject() in SkillBlazer.java to use a method in UserProfile.java which will increment the taskNumber (class field) and return the incremented value.  This will automate the creation of new task numbers through the GUI." />
+    <MESSAGE value="Added a constructor to CumulativeTask.java -&gt; this constructor includes the ArrayList&lt;CumulativeHistoryStruct&gt; as the last parameter&#10;CustomTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;DailyTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;WeeklyTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;Task.java now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter.  This feature requires testing&#10;JSONLoader.java now has calls to the switch: &quot;daily&quot;, &quot;weekly&quot;, and &quot;custom&quot; cases, which call a method to parse Calendar objects (for completion dates) from the JSON file&#10;JSONLoader.java now has a method parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount) which will pull all of the JSONArrays which represent completion dates (Calendar objects) out of the JSON file.  REQUIRES TESTING&#10;JSONWriter.java now has a method prepareCalendarObjectsForJSONStorage(jsonCalendarObject, datesCompleted) which takes all of the Calendar objects which represent completionDates in a TASK, and converts them to JSON arrays that are added to the JSONObject.  REQUIRES TESTING&#10;Removed old comments from various files as I found them." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a constructor to CumulativeTask.java -&gt; this constructor includes the ArrayList&lt;CumulativeHistoryStruct&gt; as the last parameter&#10;CustomTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;DailyTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;WeeklyTask.java writeToJSON() method now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter, and a call to the JSONWriter.java prepareCalendarObjectsForJSONStorage(jsonObject, datesCompleted) method.  This feature requires testing&#10;Task.java now has an additional constructor which accepts a datesCompleted ArrayList&lt;Calendar&gt; as the last parameter.  This feature requires testing&#10;JSONLoader.java now has calls to the switch: &quot;daily&quot;, &quot;weekly&quot;, and &quot;custom&quot; cases, which call a method to parse Calendar objects (for completion dates) from the JSON file&#10;JSONLoader.java now has a method parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount) which will pull all of the JSONArrays which represent completion dates (Calendar objects) out of the JSON file.  REQUIRES TESTING&#10;JSONWriter.java now has a method prepareCalendarObjectsForJSONStorage(jsonCalendarObject, datesCompleted) which takes all of the Calendar objects which represent completionDates in a TASK, and converts them to JSON arrays that are added to the JSONObject.  REQUIRES TESTING&#10;Removed old comments from various files as I found them." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1106,6 +1101,7 @@
             <element signature="e#3805#3823#0" />
             <element signature="method#parseAndReturnUserProfile#0;class#JSONLoader#0" />
             <element signature="method#getDefaultUsername#0;class#JSONLoader#0" />
+            <element signature="method#parseCompletionDates#0;class#JSONLoader#0" />
             <element signature="method#convertInt#0;class#JSONLoader#0" />
           </folding>
         </state>
@@ -1535,6 +1531,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="80" column="81" selection-start-line="80" selection-start-column="81" selection-end-line="80" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/SkillBlazer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1533">
@@ -1625,32 +1628,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1372">
-          <caret line="186" lean-forward="true" selection-start-line="186" selection-end-line="186" />
+        <state relative-caret-position="371">
+          <caret line="160" column="4" lean-forward="true" selection-start-line="160" selection-start-column="4" selection-end-line="160" selection-end-column="4" />
           <folding>
-            <element signature="docComment;class#JSONWriter#0" />
-            <element signature="method#saveAllFilesToDisk#0;class#JSONWriter#0" />
-            <element signature="method#saveUser#0;class#JSONWriter#0" />
-            <element signature="method#writeJSON#0;class#JSONWriter#0" />
-            <element signature="method#addFileToInit#0;class#JSONWriter#0" />
-            <element signature="method#getFileContents#0;class#JSONWriter#0" />
+            <element signature="e#3472#3473#0" expanded="true" />
+            <element signature="e#3504#3505#0" expanded="true" />
+            <element signature="e#3559#3560#0" expanded="true" />
+            <element signature="e#3601#3602#0" expanded="true" />
+            <element signature="method#equals#0;class#CumulativeHistoryStruct#0;class#CumulativeTask#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="903">
-          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/DailyTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="44" column="33" lean-forward="true" selection-start-line="44" selection-start-column="33" selection-end-line="44" selection-end-column="33" />
+        <state relative-caret-position="782">
+          <caret line="153" lean-forward="true" selection-start-line="153" selection-end-line="153" />
           <folding>
             <element signature="docComment;class#DailyTask#0" />
             <element signature="method#getCurrentStreak#0;class#DailyTask#0" />
@@ -1662,36 +1657,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/WeeklyTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
+        <state relative-caret-position="-1689">
           <caret line="36" column="4" lean-forward="true" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CustomTask.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/Task.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1134">
-          <caret line="80" column="81" selection-start-line="80" selection-start-column="81" selection-end-line="80" selection-end-column="81" />
+        <state relative-caret-position="903">
+          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/CumulativeTask.java">
+    <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1141">
-          <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
+        <state relative-caret-position="1309">
+          <caret line="183" column="21" lean-forward="true" selection-start-line="183" selection-start-column="21" selection-end-line="183" selection-end-column="21" />
           <folding>
-            <element signature="e#3472#3473#0" expanded="true" />
-            <element signature="e#3504#3505#0" expanded="true" />
-            <element signature="e#3559#3560#0" expanded="true" />
-            <element signature="e#3601#3602#0" expanded="true" />
-            <element signature="method#equals#0;class#CumulativeHistoryStruct#0;class#CumulativeTask#0" />
+            <element signature="docComment;class#JSONWriter#0" />
+            <element signature="method#saveAllFilesToDisk#0;class#JSONWriter#0" />
+            <element signature="method#saveUser#0;class#JSONWriter#0" />
+            <element signature="method#writeJSON#0;class#JSONWriter#0" />
+            <element signature="method#addFileToInit#0;class#JSONWriter#0" />
+            <element signature="method#getFileContents#0;class#JSONWriter#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SkillBlazerDev/src/llamasoft/skillblazer/JSONLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1267">
-          <caret line="199" column="63" lean-forward="true" selection-start-line="199" selection-start-column="63" selection-end-line="199" selection-end-column="63" />
+        <state relative-caret-position="1456">
+          <caret line="272" lean-forward="true" selection-start-line="272" selection-end-line="272" />
           <folding>
             <element signature="method#getTasks#0;class#JSONLoader#0" />
             <element signature="method#getUserProfile#0;class#JSONLoader#0" />
@@ -1704,6 +1700,7 @@
             <element signature="e#3805#3823#0" />
             <element signature="method#parseAndReturnUserProfile#0;class#JSONLoader#0" />
             <element signature="method#getDefaultUsername#0;class#JSONLoader#0" />
+            <element signature="method#parseCompletionDates#0;class#JSONLoader#0" />
             <element signature="method#convertInt#0;class#JSONLoader#0" />
           </folding>
         </state>
