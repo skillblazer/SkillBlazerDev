@@ -34,19 +34,26 @@ public class WeeklyTask extends Task {
         super(taskName);
         this.type = "weekly";
     }
-    
-     /*
-     *  New Fully qualified constructor (needed for initializing objects stored on disk
+
+    /*
+     *  Constructor that does not mention endDates or datesCompleted (needed for creating a new task in GUI)
      */
     public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes) {
         super(taskName, taskId, startDate, isCompleted, "weekly", notes);
     } //end WeeklyTask constructor
 
+     /*
+     *  The constructor formerly known as fully qualified (needed for initializing objects stored on disk
+     */
+    public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate) {
+        super(taskName, taskId, startDate, isCompleted, "weekly", notes, endDate);
+    } //end WeeklyTask constructor
+
     /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk
      */
-    public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<Calendar> datesCompleted) {
-        super(taskName, taskId, startDate, isCompleted, "weekly", notes, datesCompleted);
+    public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate, ArrayList<Calendar> datesCompleted) {
+        super(taskName, taskId, startDate, isCompleted, "weekly", notes, datesCompleted, endDate);
     } //end WeeklyTask constructor
 
     // method to get user's current streak; utilizes Collections.sort
@@ -142,7 +149,6 @@ public class WeeklyTask extends Task {
             return numSaturdaysInt;
     }
     
-    
 
     // method to write a task to JSON
     @Override
@@ -156,12 +162,23 @@ public class WeeklyTask extends Task {
         int month = cal.get(Calendar.MONTH);
         int date = cal.get(Calendar.DATE);
 
+        int[] endValues = this.getEndValues();
+        int endYear = endValues[0];
+        int endMonth = endValues[1];
+        int endDate = endValues[2];
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", this.type);
         jsonObject.put("taskId", this.getTaskId());
+        // place values for start date in JSON
         jsonObject.put("year", year);
         jsonObject.put("month", month);
         jsonObject.put("date", date);
+        // place values to represent the end date in JSON
+        jsonObject.put("endYear", endYear);
+        jsonObject.put("endMonth", endMonth);
+        jsonObject.put("endDate", endDate);
+        // remaining fields
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
         jsonObject.put("notes", this.notes);

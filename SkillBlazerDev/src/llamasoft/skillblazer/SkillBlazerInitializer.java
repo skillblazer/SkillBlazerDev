@@ -31,16 +31,18 @@ class SkillBlazerInitializer {
 
     static String getLastJSONFilePath() {
         return userFileLocation;
-    }
+    } //end method getLastJSONFilePath()
 
     static String getAbsoluteInitFilePath() {
         // will return a String of form "user.home" + \\SkillBlazer\\SBinit.txt"
         return userFileLocation + initFile;
-    }
+    } //end method getAbsoluteFilePath()
+
 
     private static void createSkillBlazerDirectory() {
         boolean newDirectory = new File(userFileLocation).mkdirs();
-    }
+    } //end method createSkilBlazerDirectory()
+
 
     /*
      * Read the contents of the SBinit.txt file from the disk
@@ -74,8 +76,6 @@ class SkillBlazerInitializer {
                 java.io.PrintWriter output = new java.io.PrintWriter(file);  // create the file
                 output.flush();
                 output.close();
-
-
             }
             else if (!file.exists()) {
                 // if the SBinit.txt file doesn't exist, go ahead and create it for later
@@ -84,7 +84,6 @@ class SkillBlazerInitializer {
                 java.io.PrintWriter output = new java.io.PrintWriter(file);
                 output.flush();
                 output.close();  // close the file
-
             }
         }
         catch (IOException e) {
@@ -98,52 +97,6 @@ class SkillBlazerInitializer {
         }
         // pass the ArrayList<String> listOfJsonFiles to the caller
         return listOfJsonFiles;
-    }
-
-
-    static void writeJsonFileListToInit(ArrayList<String> fileList) {
-        // a method will need to be written to handle taking the Task
-        // objects and creating a corresponding list of Strings for the
-        // filename e.g. d0005.json or userProfile.json
-
-        Iterator<String> fileNamesIterator = fileList.iterator();
-        // create a file object to reference SBinit.txt
-        java.io.File directory = new java.io.File(userFileLocation);
-        java.io.File file = new java.io.File(userFileLocation + initFile);
-
-        try {
-            if (!directory.exists()) {
-                createSkillBlazerDirectory();
-            }
-            if (!file.exists()) {
-                // create the file on disk
-                java.io.PrintWriter output = new java.io.PrintWriter(file);
-                while (fileNamesIterator.hasNext()) {
-                    // add contents of the ArrayList of fileNames to SBinit.txt
-                    output.println(fileNamesIterator.next());
-                }
-                output.close(); // close the file
-            } else {
-                // open the file on the disk
-                java.io.PrintWriter output = new java.io.PrintWriter(file);
-                // (Overwriting previous contents) add filenames to disk
-                // one per line
-                while (fileNamesIterator.hasNext()) {
-                    // add contents of the ArrayList of fileNames to SBinit.txt
-                    output.println(fileNamesIterator.next());
-                }
-                output.close();
-            }
-        }
-        catch (IOException e) {
-            System.out.println(" Error while WRITING data to " + initFile +
-                "  It's quite possible that the file has been set to read " +
-                "only, or the program cannot access the folder specified!" +
-                "\n1.  Check Permissions for folder: " + userFileLocation +
-                "\n2.  Check Permissions for file: " + userFileLocation + initFile);
-            System.out.println("\n\n");
-            e.printStackTrace();
-        }
-    }
+    } //end method getFileList()
 
 }

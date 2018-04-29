@@ -57,14 +57,26 @@ public class Task {
         this.notes = notes;
     } // end constructor
 
-    // fully-qualified constructor with ArrayList<Calendar> datesCompleted
-    public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes, ArrayList<Calendar> datesCompleted) {
+    // fully-qualified constructor with endDate
+    public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes, Calendar endDate) {
         this.taskName = taskName;
         this.taskId = taskId;
         this.startDate = startDate;
         this.isCompleted = isCompleted;
         this.type = type;
-        this.endDate = null;
+        //this.endDate = null;
+        this.notes = notes;
+        this.endDate = endDate;
+    } // end constructor
+
+    // fully-qualified constructor with ArrayList<Calendar> datesCompleted
+    public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes, ArrayList<Calendar> datesCompleted, Calendar endDate) {
+        this.taskName = taskName;
+        this.taskId = taskId;
+        this.startDate = startDate;
+        this.isCompleted = isCompleted;
+        this.type = type;
+        this.endDate = endDate;
         this.notes = notes;
         this.datesCompleted = datesCompleted;
     } // end constructor
@@ -141,7 +153,32 @@ public class Task {
     	this.endDate = endDate;
     } //end setEndDate method
     
-    
+
+    /*
+     *  Method to create a short arraylist of values to represent
+     *  the endDate for Weekly/Daily/Custom tasks
+     *  DO NOT USE FOR CumulativeTask!
+     */
+    public int[] getEndValues() {
+        int[] endValues = {0, 0, 0};
+
+        if (!this.isCompleted) {
+            // if the task is not completed ( !isCompleted )
+            // zeros will be written to the JSON file for the endDate
+            endValues[0] = 0;
+            endValues[1] = 0;
+            endValues[2] = 0;
+        } else {
+            // user has marked the Task as finished forever
+            // get the endDate they specified and write it to JSON
+            Calendar taskEndDate = this.getEndDate();
+            endValues[0] = taskEndDate.get(Calendar.YEAR);
+            endValues[1] = taskEndDate.get(Calendar.MONTH);
+            endValues[2] = taskEndDate.get(Calendar.DATE);
+        }
+        return endValues;
+    } //end method getEndValues()
+
     
     // method to get the total amount completed
     public int getNumCompleted() {
