@@ -32,7 +32,7 @@ public class CumulativeTask extends Task {
 
     private String goalUnits;                                           // string field for goal units (e.g. miles, hours, books, etc.) to be entered by user
     private double goalToReach;                                         // double field to represent numeric amount for goal to reach (e.g. 5 miles); entered by user
-    private ArrayList<CumulativeHistoryStruct> cumulativeHistory;       // arraylist of CumulativeHistoryStruct inner class type - custom data structure
+    private ArrayList<CumulativeHistoryStruct> cumulativeHistory;       // ArrayList of CumulativeHistoryStruct inner class type - custom data structure
     
     /*
      * Default Class Constructor - calls parent constructor
@@ -184,7 +184,7 @@ public class CumulativeTask extends Task {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", this.type);
         jsonObject.put("taskId", this.getTaskId());
-        // endDate fields
+        // endDate fields - more simplistic than its Weekly/Daily/Custom siblings
         jsonObject.put("endYear", endYear);
         jsonObject.put("endMonth", endMonth);
         jsonObject.put("endDate", endDate);
@@ -192,7 +192,7 @@ public class CumulativeTask extends Task {
         jsonObject.put("year", year);
         jsonObject.put("month", month);
         jsonObject.put("date", date);
-
+        // remaining fields
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
         jsonObject.put("notes", this.notes);

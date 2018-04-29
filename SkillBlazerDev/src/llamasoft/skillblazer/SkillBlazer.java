@@ -2251,6 +2251,7 @@ public class SkillBlazer extends Application {
                 taskList.add(newTask);
             } else if (weeklyRB.isSelected()) {
                 // Create WeeklyTask object
+                // Jason added a WeeklyTask constructor with no endDate parameter so this won't break on 29APR2018
                 WeeklyTask newTask = new WeeklyTask(taskName,taskId,startDate,false,notes);
                 taskList.add(newTask);
             } else if (customRB.isSelected()) {

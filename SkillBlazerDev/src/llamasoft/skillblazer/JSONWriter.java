@@ -1,12 +1,9 @@
 package llamasoft.skillblazer;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -221,8 +218,6 @@ public class JSONWriter {
         }
         return listOfFiles;
     } //end method getFileContents();
-
-
 
 
     /*

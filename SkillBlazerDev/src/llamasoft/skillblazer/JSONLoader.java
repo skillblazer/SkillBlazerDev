@@ -185,12 +185,24 @@ public class JSONLoader {
 
         int year = convertInt((long) jsonObject.get("year"));
         int month = convertInt((long) jsonObject.get("month"));
-        int day = convertInt( (long) jsonObject.get("date"));
-
+        int day = convertInt((long) jsonObject.get("date"));
         Calendar startDate = new GregorianCalendar(year, month, day);
 
-        isCompleted = (boolean)  jsonObject.get("isCompleted");
+        // parse out the values for the endDate Calendar object from JSON
+        int endYear = convertInt((long) jsonObject.get("endYear"));
+        int endMonth = convertInt((long) jsonObject.get("endMonth"));
+        int endDay = convertInt((long) jsonObject.get("endDate"));
+
+        isCompleted = (boolean) jsonObject.get("isCompleted");
+        Calendar endDate;
+
         String type = (String) jsonObject.get("type");
+        if (!isCompleted && !type.equals("cumulative")) { // zero for a month is a valid value (January) so check the year/date
+            endDate = null;  // pass a null value so the client/GUI knows to not close out a task
+        }
+        else { // endYear & endDay contain valid values, create a GregorianCalendar object to pass to constructors
+            endDate = new GregorianCalendar(endYear, endMonth, endDay);
+        }
 
         ArrayList<Calendar> jsonDatesCompleted = new ArrayList<>();
         long completionCount;
@@ -199,35 +211,37 @@ public class JSONLoader {
         // instantiate the correct Task subclass, add it to the
         // ArrayList<Task> userTaskList
         switch (type) {
+
             case "daily":
+
                 completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
                 if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
                     // parse out the completion date fields and instantiate them for this task
                     jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
                     // instantiate a DailyTask object and add to ArrayList - includes completionDates
-                    userTasks.add(new DailyTask(taskName, taskId, startDate, isCompleted, notes, jsonDatesCompleted));
+                    userTasks.add(new DailyTask(taskName, taskId, startDate, isCompleted, notes, endDate, jsonDatesCompleted));
                 } else {
                     // instantiate a DailyTask object and add to ArrayList (no completions yet)
-                    userTasks.add(new DailyTask(taskName, taskId, startDate,
-                            isCompleted, notes));
+                    userTasks.add(new DailyTask(taskName, taskId, startDate, isCompleted, notes, endDate));
                 }
                 break;
 
             case "weekly":
+
                 completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
                 if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
                     // parse out the completion date fields and instantiate them for this task
                     jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
                     // instantiate a WeeklyTask object and add to ArrayList - includes completionDates
-                    userTasks.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, notes, jsonDatesCompleted));
+                    userTasks.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, notes, endDate, jsonDatesCompleted));
                 } else {
                     // instantiate a WeeklyTask object and add to ArrayList (no completions yet)
-                    userTasks.add(new WeeklyTask(taskName, taskId, startDate,
-                            isCompleted, notes));
+                    userTasks.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, notes, endDate));
                 }
                 break;
 
             case "custom":
+
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
                 // copy the contents of the JSONArray into an ArrayList
@@ -235,33 +249,25 @@ public class JSONLoader {
                 while (dayIterator.hasNext()) {
                     dayListing.add(dayIterator.next());
                 }
-
                 completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
                 if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
                     // parse out the completion date fields and instantiate them for this task
                     jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
                     // instantiate a CustomTask object and add to ArrayList - includes completionDates
-                    userTasks.add(new CustomTask(taskName, taskId, startDate, isCompleted, notes, dayListing, jsonDatesCompleted));
+                    userTasks.add(new CustomTask(taskName, taskId, startDate, isCompleted, notes, dayListing, endDate, jsonDatesCompleted));
                 } else {
                     // instantiate a CustomTask object and add to ArrayList (no completions yet)
-                    userTasks.add(new CustomTask(taskName, taskId, startDate,
-                            isCompleted, notes, dayListing));
+                    userTasks.add(new CustomTask(taskName, taskId, startDate, isCompleted, notes, dayListing, endDate));
                 }
                 break;
 
             case "cumulative":
                 // parse remaining fields specific to a CumulativeTask object
                 //Calendar endDate = (Calendar) jsonObject.get("endDate");
-                int endYear = convertInt((long) jsonObject.get("endYear"));
-                int endMonth = convertInt((long) jsonObject.get("endMonth"));
-                int endDay = convertInt((long) jsonObject.get("endDate"));
+
                 double goalToReach = (double) jsonObject.get("goalToReach");
                 String goalUnits = (String) jsonObject.get("goalUnits");
-
-                Calendar endDate = new GregorianCalendar(endYear, endMonth, endDay);
-
                 completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
-
                 ArrayList<CumulativeHistoryStruct> historyStruct = parseHistoryStruct(jsonObject, completionCount);
 
                 if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
@@ -269,12 +275,10 @@ public class JSONLoader {
 
 
                     // instantiate a CumulativeTask object and add to ArrayList
-                    userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                            isCompleted, notes, endDate, goalToReach, goalUnits, historyStruct));
+                    userTasks.add(new CumulativeTask(taskName, taskId, startDate, isCompleted, notes, endDate, goalToReach, goalUnits, historyStruct));
                 } else {
                     // instantiate a CumulativeTask object and add to ArrayList
-                    userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                            isCompleted, notes, endDate, goalToReach, goalUnits));
+                    userTasks.add(new CumulativeTask(taskName, taskId, startDate, isCompleted, notes, endDate, goalToReach, goalUnits));
                 }
                 break;
         } //end switch statement
