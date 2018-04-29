@@ -3,7 +3,7 @@
  * File Name: TwitterIntegration.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/16/2018
+ * Date: 4/26/2018
  * 
  * Description:
  * 
@@ -12,23 +12,25 @@
  * Twitter and tweet out accomplishments that they have met
  * or when they have completed a task. The functionality 
  * will be available to them from the start using the Options
- * menu and selecting the "Tweet" button.
+ * menu and selecting the "Submit Tweet" button.
  ***********************************************************/
 
 package llamasoft.skillblazer;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -48,59 +50,27 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
-public class TwitterIntegration extends Application {
+public class TwitterIntegration {
 
 	// Consumer key token for allowing application to access Twitter
 	private final static String CONSUMER_KEY = "34d1J2WyuSLYbvu4zeGLVmGRv";
 	// Consumer secret token for allowing application to access Twitter
 	private final static String CONSUMER_KEY_SECRET = "rmHY2LIUzvMVjGn2AGMx54rAGPx9zKSzlNpY0DSNl05mmqPjzW";
 
-	Stage window;
-	Button button;
-
-	public static void main(String[] args) throws IOException {
-		launch(args);
-	} //end of main method
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		window = primaryStage;
-		window.setTitle("Test Window");
-
-		button = new Button("Click me");
-
-		button.setOnAction(e -> {
-			try {
-				display();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
-
-		StackPane layout = new StackPane();
-		layout.getChildren().add(button);
-		Scene scene = new Scene(layout, 300, 250);
-		window.setScene(scene);
-		window.show();
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void display() throws IOException {
+	public void display() throws IOException, TwitterException {
 
 		Label instructLabel; // label for "Instructions"
-		Label instructions; // "Instructions"
+		TextArea instructions; // "Instructions"
 		Label urlLabel; // label for "Auth URL"
-		Label authURL; // "Auth URL"
+		TextArea authURL; // "Auth URL"
 		Label pinLabel; // label for "PIN"
 		TextField pinTextField; // text field for "PIN"
 		Label tweetLabel; // label for "Tweet" area
 		TextArea tweetTextArea; // textArea for "Tweet" area
 		Button submitButton; // button for user to submit tweet
 
-		final int MAX_CHARS = 280;
-		String authorizationURL = "";
-		String pinCode = "";
+		final int MAX_CHARS = 280; // max characters for tweet
 
 		Stage twitterWindow = new Stage();
 		twitterWindow.setTitle("Twitter Integrated Application");
@@ -110,8 +80,16 @@ public class TwitterIntegration extends Application {
 
 		if (exists == false) {
 
+			// creates Twitter instance and sets consumer auth tokens for skillblazer
+			Twitter twitter = new TwitterFactory().getInstance();
+			twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
+			// creates request for token from twitter for user
+			RequestToken requestToken = twitter.getOAuthRequestToken();
+			// creates auth URL that user will use to obtain PIN to authorize skillblazer to post
+			String authorizationURL = requestToken.getAuthorizationURL();
+
 			// hbox for instructions row
-			HBox instructHbox = new HBox(5);
+			HBox instructHbox = new HBox(10);
 			instructHbox.setPadding(new Insets(15, 12, 15, 12));
 			// pulls css styling information
 			instructHbox.getStyleClass().add("progressButtonHboxes");
@@ -121,10 +99,17 @@ public class TwitterIntegration extends Application {
 			// sets text for instructLabel
 			instructLabel.setText("Instructions:");
 			// initializes instructions
-			instructions = new Label();
-			instructions.setTextFill(Color.web("#f5fffa"));
+			instructions = new TextArea();
+			// sets preferential size of text area
+			instructions.setPrefSize(350, 150);
+			// sets authURL to non-editable
+			instructions.setEditable(false);
 			// sets text for instructions
-			instructions.setText("These are the instructions.");
+			instructions.setText("Please copy and paste the auth URL provided into a browser window."
+								+ " Authorize skillblazer to access your Twitter page."
+								+ " Copy and paste the PIN given to you in the PIN text box."
+								+ " Write your Tweet and then click the Submit Tweet button.");
+			instructions.setWrapText(true);
 			// adds instructLabel to instructHbox
 			instructHbox.getChildren().add(instructLabel);
 			// adds instructions to instructHbox
@@ -141,10 +126,13 @@ public class TwitterIntegration extends Application {
 			// sets text for urlLabel
 			urlLabel.setText("Auth URL:");
 			// initializes authURL
-			authURL = new Label();
-			authURL.setTextFill(Color.web("#f5fffa"));
-			// sets text for URL for user to use - EXAMPLE WILL REPLACE
-			authURL.setText("https://twitter.auth.url.example565333424545234234.com");
+			authURL = new TextArea(authorizationURL);
+			// sets preferential size of text area
+			authURL.setPrefSize(350, 75);
+			// sets authURL to non-editable
+			authURL.setEditable(false);
+			// makes the authURL text area wrap text
+			authURL.setWrapText(true);
 			// adds components to urlHbox
 			urlHbox.getChildren().add(urlLabel);
 			urlHbox.getChildren().add(authURL);
@@ -225,9 +213,105 @@ public class TwitterIntegration extends Application {
 				@Override
 				public void handle(Event event) {
 
-					// TODO: Perform twitter integration code
-					twitterWindow.close(); // closes window
+					try {
+						// creates access token to use in authenticating user credentials
+						AccessToken accessToken = null;
+						// pulls PIN from pin text field
+						String pin = pinTextField.getText();
+						// sets access token to equal full user token given by Twitter with the PIN
+						accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+						// creates and updates current user status on Twitter
+						String tweet = tweetTextArea.getText();
+						twitter.updateStatus(tweet);
 
+						// pulls access token and access secret token from user accessToken
+						String aToken = accessToken.getToken();
+						String aSToken = accessToken.getTokenSecret();
+						// records user home directory
+						String homePath = System.getProperty("user.home");
+						// writes user's access token and access secret token to twitterAccessFile.txt
+						// for later use
+						BufferedWriter writeKeys = new BufferedWriter(
+								new FileWriter(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
+						writeKeys.write(aToken + "," + aSToken);
+						
+						// closes BufferedWriter
+						writeKeys.close();
+					} catch (TwitterException e) {
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label twitterError = new Label();
+						twitterError.setText("Twitter is having unexpected server issues.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again in a few minutes.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(tError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #00bfff");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(twitterError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
+					} catch (FileNotFoundException e) {
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label fileError = new Label();
+						fileError.setText("Unable to locate file.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(fnfError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #f5fffa");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(fileError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
+					} catch (IOException e) {
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label ioError = new Label();
+						ioError.setText("Unable to read or write to file.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(inouError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #f5fffa");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(ioError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
+					}
+
+					twitterWindow.close(); // closes window
 				}
 			}); // end event handler
 
@@ -247,7 +331,7 @@ public class TwitterIntegration extends Application {
 			twitterVbox.getChildren().add(pinHbox);
 			twitterVbox.getChildren().add(tweetHbox);
 			twitterVbox.getChildren().add(submitTweetButtonHbox);
-
+			
 			// adds twitterVbox to twitterScene
 			Scene twitterScene = new Scene(twitterVbox, 500, 450);
 			// adds twitterScene to twitterWindow
@@ -267,11 +351,15 @@ public class TwitterIntegration extends Application {
 			// sets text for instructLabel
 			instructLabel.setText("Instructions:");
 			// initializes instructions
-			instructions = new Label();
-			instructions.setTextFill(Color.web("#f5fffa"));
+			instructions = new TextArea();
+			// sets preferential size of text area
+			instructions.setPrefSize(350, 75);
+			// sets authURL to non-editable
+			instructions.setEditable(false);
 			// sets text for instructions
-			instructions.setText("You have already authorized this application to post to your Twitter profile.\n"
-					+ "Write and submit Tweet below.");
+			instructions.setText("You have already authorized this application to post to your Twitter profile."
+					+ " Write and submit Tweet below.");
+			instructions.setWrapText(true);
 			// adds instructLabel to instructHbox
 			instructHbox.getChildren().add(instructLabel);
 			// adds instructions to instructHbox
@@ -316,30 +404,80 @@ public class TwitterIntegration extends Application {
 				public void handle(Event event) {
 
 					try {
-
+						
+						// records user home directory
 						String homePath = System.getProperty("user.home");
-
+						
+						// reads user access keys from twitterAccessFile.txt to authenticate to Twitter
 						BufferedReader readKeys = new BufferedReader(
 								new FileReader(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
 						String keys = readKeys.readLine();
+						// splits string pulled from file to separate both keys
 						String[] arOfKeys = keys.split(",");
 
+						// creates Twitter instance and sets consumer access keys for skillblazer
 						Twitter twitterReuse = new TwitterFactory().getInstance();
 						twitterReuse.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
+						// sets user access keys from string array pulled earlier
 						final String accessKey = arOfKeys[0];
 						final String accessSKey = arOfKeys[1];
+						// creates auth token to be used to authenticate to Twitter servers
 						AccessToken oathAccessToken = new AccessToken(accessKey, accessSKey);
 						twitterReuse.setOAuthAccessToken(oathAccessToken);
+						// sends tweet using twitter instance with auth token
 						String tweet = tweetTextArea.getText();
 						twitterReuse.updateStatus(tweet);
-
+						
+						// close BufferedReader
 						readKeys.close();
 					} catch (IOException e) {
-						// TODO ADD ERROR WINDOW
-						System.out.println("Could not read file!");
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label ioError = new Label();
+						ioError.setText("Unable to read or write to file.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(inouError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #f5fffa");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(ioError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
 					} catch (TwitterException e) {
-						// TODO ADD ERROR WINDOW
-						System.out.println("Could not send tweet. Try again!");
+						Stage window = new Stage();
+						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
+						
+						window.initModality(Modality.APPLICATION_MODAL);
+						window.setTitle("Twitter Error");
+						
+						Label twitterError = new Label();
+						twitterError.setText("Twitter is having unexpected server issues.");
+						Label closeLab = new Label();
+						closeLab.setText("Please close the window and try again in a few minutes.");
+						Button closeButton = new Button ("Close");
+						closeButton.setOnAction(tError -> window.close());
+						
+						VBox layout = new VBox(10);
+						layout.setStyle("-fx-background-color: #00bfff");
+						layout.setPadding(new Insets(30));
+						Region emptyRegion1 = new Region();
+						layout.getChildren().addAll(twitterError, closeLab, emptyRegion1, closeButton);
+						layout.setAlignment(Pos.CENTER);
+						
+						Scene scene = new Scene(layout, 400, 150);
+						window.setScene(scene);
+						window.show();
 					}
 
 					twitterWindow.close(); // closes window
@@ -369,7 +507,7 @@ public class TwitterIntegration extends Application {
 			twitterWindow.show();
 		}
 
-	} //end of display method
+	} // end of display method
 
 	private static boolean determineFileExists() throws IOException {
 		// read user tokens from designated file
@@ -382,41 +520,5 @@ public class TwitterIntegration extends Application {
 		}
 
 		return exists;
-	} //end of determineFileExists method
-
-	/*
-	 * 
-	 */
-	private void twitterInt() throws TwitterException, IOException {
-
-		Twitter twitter = new TwitterFactory().getInstance();
-		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
-		RequestToken requestToken = twitter.getOAuthRequestToken();
-		System.out.println("Authorization URL: \n" + requestToken.getAuthorizationURL());
-
-		AccessToken accessToken = null;
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		while (null == accessToken) {
-			try {
-				System.out.print("Input PIN here: ");
-				String pin = br.readLine();
-
-				accessToken = twitter.getOAuthAccessToken(requestToken, pin);
-
-			} catch (TwitterException te) {
-
-				System.out.println("Failed to get access token, caused by: " + te.getMessage());
-
-				System.out.println("Retry input PIN");
-
-			}
-		}
-
-		System.out.println("Access Token: " + accessToken.getToken());
-		System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
-
-		twitter.updateStatus("First Tweet using skillblazer application #LlamasForLife");
-
-	}
-} //end of TwitterIntegration class
+	} // end of determineFileExists method
+} // end of TwitterIntegration class

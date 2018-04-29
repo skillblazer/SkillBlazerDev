@@ -21,6 +21,8 @@
  ********************************************************** */
 package llamasoft.skillblazer;
 
+import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -29,10 +31,7 @@ import java.util.Calendar;
 
 public class CustomTask extends Task {
 	
-    private ArrayList<String> actualDaysInTask = new ArrayList<>(); //days picked by user
-    private int currentStreak; //current streak of completions
-    private int bestStreak; //best streak of completions
-
+    private ArrayList<String> actualDaysInTask = new ArrayList<>();         //days picked by user
     /*
      * Default Class Constructor - calls parent constructor
      */
@@ -68,30 +67,43 @@ public class CustomTask extends Task {
         this.type = "custom";
     } //end CustomTask constructor
 
-    /*
-     * Overloaded Class Constructor - calls parent constructor with taskName and 
-     * startDate. Initializes all subclass variables.
-     */
-    public CustomTask(String taskName, Calendar startDate, ArrayList<String> arrayOfDays, int currentStreak,
-            int bestStreak) {
-        super(taskName, startDate);
-        this.actualDaysInTask.addAll(arrayOfDays);
-        this.currentStreak = currentStreak;
-        this.bestStreak = bestStreak;
-        this.type = "custom";
-    } //end CustomTask constructor
 
-    /*
-     *  Fully qualified constructor (needed for initializing objects stored on disk
+     /*
+     *  constructor
      */
-    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, int currentStreak,
-            int bestStreak, ArrayList<String> daysInTask) {
-        super(taskName, taskId, startDate, isCompleted, "custom");
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<String> daysInTask) {
+        super(taskName, taskId, startDate, isCompleted, "custom", notes);
         this.actualDaysInTask.addAll(daysInTask);
-        this.currentStreak = currentStreak;
-        this.bestStreak = bestStreak;
     } //end CustomTask constructor
 
+
+    /*
+     *  The constructor formerly known as fully qualified
+     */
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate, ArrayList<String> daysInTask) {
+        super(taskName, taskId, startDate, isCompleted, "custom", notes, endDate);
+        this.actualDaysInTask.addAll(daysInTask);
+    } //end CustomTask constructor
+
+
+    /*
+     *  Constructor with endDate (needed for initializing objects stored on disk)
+     */
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<String> daysInTask, Calendar endDate) {
+        super(taskName, taskId, startDate, isCompleted, "custom", notes, endDate);
+        this.actualDaysInTask.addAll(daysInTask);
+    } //end CustomTask constructor
+
+
+    /*
+     *  Fully qualified constructor with endDate and Completion Dates (Calendar objects) (needed for initializing objects stored on disk)
+     */
+    public CustomTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, ArrayList<String> daysInTask, Calendar endDate, ArrayList<Calendar> datesCompleted) {
+        super(taskName, taskId, startDate, isCompleted, "custom", notes, datesCompleted, endDate);
+        this.actualDaysInTask.addAll(daysInTask);
+    } //end CustomTask constructor
+    
+    
     /*
      * Accessor Method - actualDaysInTask
      */
@@ -106,34 +118,77 @@ public class CustomTask extends Task {
         this.actualDaysInTask.addAll(listOfDays);
     } //end setDaysOfWeek method
 
-    /*
-     * Accessor Method - currentStreak
-     */
-    public int getCurrentStreak() {
-        return this.currentStreak;
-    } //end getCurrentStreak method
-
-    /*
-     * Mutator Method - currentStreak
-     */
-    public void setCurrentStreak(int currentStreak) {
-        this.currentStreak = currentStreak;
-    } //end setCurrentStreak method
-
-    /*
-     * Accessor Method - bestStreak
-     */
-    public int getBestStreak() {
-        return this.bestStreak;
-    } //end getBestStreak method
-
-    /*
-     * Mutator Method - bestStreak
-     */
-    public void setBestStreak(int bestStreak) {
-        this.bestStreak = bestStreak;
-    } //end getBestStreak method
+        // method to get the maximum possible completions up to a given date
+    public int getMaxPossible(Calendar todaysDate) {
+            Calendar todayCopy = (Calendar) todaysDate.clone();
+            // check if endDate was set
+            if (endDate != null) {
+                // set todayCopy to end date if endDate before todaysDate
+                if (todaysDate.compareTo(endDate)>0) {
+                     todayCopy = (Calendar) endDate.clone();
+                }
+            }
+        
+            // get the days of week of the start date and todays date
+            int todayDayOfWeek = todayCopy.get(Calendar.DAY_OF_WEEK); 
+            int startDayOfWeek = startDate.get(Calendar.DAY_OF_WEEK); 
+            // create an adjustment factor that equals the number of days in addition to 
+            // the quantity of full weeks
+            int daysOfWeekAdj = (todayDayOfWeek-startDayOfWeek+1)%7;
+            // create LocalDate objects of todayCopy and startDate
+            LocalDate compare1 = LocalDate.of(todayCopy.get(Calendar.YEAR),todayCopy.get(Calendar.MONTH)+1,todayCopy.get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(startDate.get(Calendar.YEAR),startDate.get(Calendar.MONTH)+1,startDate.get(Calendar.DATE));
+            
+            // compute the number of full weeks between todayCopy and startDate
+            long numFullWeeksBetween = (DAYS.between(compare2,compare1)+1)/7;
+            // create array to hold integer representation of actualDaysInTask
+            int[] daysInTaskInt = new int[actualDaysInTask.size()];
+            int i = 0;
+            // fill the integer array
+            for (String md : actualDaysInTask) {
+                if (md.equalsIgnoreCase("Sunday")) {
+                    daysInTaskInt[i] = 1;
+                } else if(md.equalsIgnoreCase("Monday")) {
+                    daysInTaskInt[i] = 2;
+                } else if(md.equalsIgnoreCase("Tuesday")) {
+                    daysInTaskInt[i] = 3;
+                } else if(md.equalsIgnoreCase("Wednesday")) {
+                    daysInTaskInt[i] = 4;
+                } else if(md.equalsIgnoreCase("Thursday")) {
+                    daysInTaskInt[i] = 5;
+                } else if(md.equalsIgnoreCase("Friday")) {
+                    daysInTaskInt[i] = 6;
+                } else if(md.equalsIgnoreCase("Saturday")) {
+                    daysInTaskInt[i] = 7;
+                }
+                i++;
+            }
+            
+            // adjust todayDayOfWeek to be greater than startDayOfWeek
+            if (todayDayOfWeek<startDayOfWeek) {
+                todayDayOfWeek += 7;
+            }
+            // count number of additional days in final partial week
+            int numAdditionalDays = 0;
+            if (daysOfWeekAdj != 0) {
+                for (int j = startDayOfWeek; j <= todayDayOfWeek; j++) {
+                    int dayOfWeekMod = ((j-1)%7)+1;
+                    for (int k = 0; k<daysInTaskInt.length;k++) {
+                        if (dayOfWeekMod == daysInTaskInt[k]) {
+                            numAdditionalDays++;
+                        }
+                    }
+                }
+            }
+            // add partial week number to full week number
+            int numTaskDays = ((int)numFullWeeksBetween)*daysInTaskInt.length + numAdditionalDays;
+            return numTaskDays;
+    }
     
+
+    /*
+     * method to write the CustomTask info to JSON
+     */
     @Override
     public void writeTaskToJSON() {
         String taskSuffixNumber = String.valueOf(this.getTaskId());
@@ -145,16 +200,28 @@ public class CustomTask extends Task {
         int month = cal.get(Calendar.MONTH);
         int date = cal.get(Calendar.DATE);
 
+        int[] endValues = this.getEndValues();
+        int endYear = endValues[0];
+        int endMonth = endValues[1];
+        int endDate = endValues[2];
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", this.type);
         jsonObject.put("taskId", this.getTaskId());
+        // start date values
         jsonObject.put("year", year);
         jsonObject.put("month", month);
         jsonObject.put("date", date);
-        jsonObject.put("currentStreak", this.getCurrentStreak());
-        jsonObject.put("bestStreak", this.getBestStreak());
+        // end date values
+        jsonObject.put("endYear", endYear);
+        jsonObject.put("endMonth", endMonth);
+        jsonObject.put("endDate", endDate);
+        // remaining fields
         jsonObject.put("isCompleted", this.getIsCompleted());
         jsonObject.put("taskName", this.getTaskName());
+        jsonObject.put("notes", this.notes);
+
+        JSONWriter.prepareCalendarObjectsForJSONStorage(jsonObject, this.datesCompleted);
 
         JSONArray jsonArray = new JSONArray();
 

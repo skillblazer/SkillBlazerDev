@@ -1,11 +1,7 @@
 /* properties for vboxMain */
 .vboxMain {
-    /* sets padding */
-    /*-fx-padding: 15; */
-    /* sets spacing */
-    /*-fx-spacing: 200; */
     /* sets background color */
-    -fx-background-color:  #6a5acd;  
+    -fx-background-color:  #6a5acd; 
 }
 
 /* properties for appTitle */
@@ -26,6 +22,14 @@
     -fx-font-family: "cambria";
     -fx-font-size: 20px;
     -fx-font-weight: bold;
+}
+
+/* properties for usernameLabel */
+.usernameLabel {
+    -fx-font-family: "cambria";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffe4e1;
 }
 
 /* properties for habitCreationButton */
@@ -97,6 +101,7 @@
     -fx-font-family: "cambria";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+    -fx-text-fill: #ffe4e1;
 }
     
 /* style specification for habitCreationButtonHbox8 */
@@ -130,6 +135,26 @@
     -fx-font-size: 12px;
 }
 
+/* style specification for labelFinalCumulativeUncompleted */
+.labelFinalCumulativeUncompleted {
+    -fx-text-fill: #ff0000;
+    -fx-font-weight: bold;
+}
+
+/* style specification for labelFinalCumulativeFinished */
+.labelFinalCumulativeCompleted {
+    -fx-text-fill: #008000;
+}
+
+/* style specification for labelCompletedTask */
+.labelCompletedTask {
+    -fx-text-fill: #008000;
+}
+
+/* style specification for labelDefaultTask */
+.labelDefaultTask {
+    -fx-text-fill: #000000;
+}
 /* style specification for buttons */
 .button2 {
     /* sets background color */
@@ -152,5 +177,3 @@
     /* sets background color */
     -fx-background-color: #00ff7f;
 }
-
-

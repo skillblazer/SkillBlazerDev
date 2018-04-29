@@ -19,23 +19,20 @@ public class JSONLoader {
     private ArrayList<Task> userTasks = new ArrayList<>();
     private JSONObject jsonUserObject;
     static SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
-    UserProfile userProfile;
-
+    public static UserProfile userProfile;
 
     JSONLoader() {}
 
     // Only use this getter during runtime
-    // At startup you should be calling loadFromJSON()
+    // At startup you should be calling loadTasksFromJSON()
     public ArrayList<Task> getTasks() { return this.userTasks; }
 
-    public UserProfile getProfileFromLoader() {
-        return this.userProfile;
-    }
+    public UserProfile getUserProfile() { return userProfile; }
 
-    protected ArrayList<Task> loadFromJSON() {
+    protected ArrayList<Task> loadTasksFromJSON() {
         String temp;
 
-        // !!! This ArrayList and its Iterator will contain ABSOLUTE PATHS !!!
+        // Caution: This ArrayList and its Iterator may contain ABSOLUTE PATHS
         ArrayList<String> actualFilenames = addActualFileNames();
 
         // create an Iterator to reference the VALID filenames
@@ -63,34 +60,30 @@ public class JSONLoader {
                 System.out.println("\nIOException error thrown\n");
                 e.printStackTrace();
             }
-
-            if (temp.contains("userProfile")) {
-                // call the method to instantiate the UserProfile object
-                parseAndReturnUserProfile(jsonUserObject);
-            } else {
+            if (temp.contains("skbl")) {
                 // call the method to instantiate a Task-subclass object and
                 // add it to the arraylist of tasks
                 parseCreateAndAddTaskToList(jsonUserObject, userTasks);
             }
-
         } //end while loop
         return userTasks;
     }
 
+
     /*
      * Method to screen for files with skillblazer filenames and place them in
-     * an iterator for later use
+     * an ArrayList<String> for later use
      */
     private ArrayList<String> addActualFileNames() {
         String tempFileName;
         // get the list of all files in the "user.home" + "\\SkillBlazer\\"
         // home directory
         ArrayList<String> allFileNames = skillBlazerInit.getFileList();
-        // generate Iterator for all the (un filtered) files in the directory
+        // generate Iterator for all the (un-filtered) files in the directory
         Iterator<String> allFileIterator = allFileNames.iterator();
         // generate an Iterator that will reference the ArrayList<String>
         // that contains files we want to work with
-        ArrayList<String> actualFilenames = new ArrayList<>();
+        ArrayList<String> validatedFileNames = new ArrayList<>();
         /*
          * look for SkillBlazer files in the directory
          */
@@ -103,13 +96,12 @@ public class JSONLoader {
                     // not a task file?  is it the UserProfile data? :
                 tempFileName.contains("userProfile.json")) {
                 // if the filename has a skillblazer format add it to the list
-                actualFilenames.add(tempFileName);
+                validatedFileNames.add(tempFileName);
             }
         } //end while loop
 
-        // return an Iterator<String> instantiated on
-        // ArrayList<String> actualFilenames
-        return actualFilenames;
+        // return ArrayList<String> validatedFileNames
+        return validatedFileNames;
     }
 
 
@@ -118,27 +110,64 @@ public class JSONLoader {
      * a UserProfile object
      * @return UserProfile object
      */
-    private UserProfile parseAndReturnUserProfile(JSONObject jsonObject) {
-        String userName = (String) jsonObject.get("userName");
+    public UserProfile parseAndReturnUserProfile() {
+        try {
+            FileReader fileReader = new FileReader(SkillBlazerInitializer.getLastJSONFilePath() +
+                                                            "userProfile.json");
 
-        String taskStr = (String) jsonObject.get("taskNumber");
-        long taskNumber = Long.parseLong(taskStr);
+            JSONObject jsonObject = (JSONObject)(jsonParser.parse(fileReader));
 
-        String yearStr = (String) (jsonObject.get("year"));
-        int year = Integer.parseInt(yearStr);
+            java.io.File profileFile = new java.io.File(SkillBlazerInitializer.getLastJSONFilePath() +
+                                                            "userProfile.json");
 
-        String monthStr = (String) jsonObject.get("month");
-        int month = Integer.parseInt(monthStr);
+            if (profileFile.exists()) {
+                String userName = (String) jsonObject.get("userName");
+                long taskNumber = (long) jsonObject.get("taskNumber");
+                int year = convertInt((long) (jsonObject.get("year")));
+                int month = convertInt((long) jsonObject.get("month"));
+                int day = convertInt((long) jsonObject.get("date"));
 
-        String dayStr = (String) jsonObject.get("date");
-        int day = Integer.parseInt(dayStr);
+                Calendar userStartDate = new GregorianCalendar();
+                userStartDate.set(year, month, day);
 
-        Calendar userStartDate = new GregorianCalendar();
-        userStartDate.set(year, month, day);
+                userProfile = (new UserProfile(userName, userStartDate, taskNumber));
+            }
+            else if (!profileFile.exists()) { // if the userprofile doesn't exist, create a default one
+                return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
+            }
+        } //end try block
+        catch (IOException e) {
+            System.out.println("Unable to ACCESS userProfile from: " +
+                    SkillBlazerInitializer.getLastJSONFilePath() +
+                    " \nPlease check your file and folder permissions!");
+            return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
+        }
+        catch (ParseException e) {
+            System.out.println("Unable to PARSE json file: " +
+                    SkillBlazerInitializer.getLastJSONFilePath() + " userProfile.json");
+            return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
+        }
 
-        userProfile = (new UserProfile(userName, userStartDate, taskNumber));
+        // ensure that the userName is not set to a meaningless Default value
+        userProfile.setUserName( getDefaultUsername(userProfile.getUserName()) );
 
         return userProfile;
+    }
+
+
+    // If the user is running the program for the first time, or the program had to
+    // recover from a lost userProfile.json file, the selection statement below
+    // will use the username found in the OS file structure to populate
+    // the username
+    // Borrowing Code from Mark or Rebecca
+    // How dare you implement regex[!|?]
+    private String getDefaultUsername(String userNameFromJSON) {
+        if (userNameFromJSON.equals(("New User"))) {
+            String homePath = System.getProperty("user.home"); //pulls home directory
+            String[] arOfKeys = homePath.split(":?\\\\"); //parses folder path
+            return arOfKeys[2]; //returns username from desktop path
+        }
+        return userNameFromJSON;
     }
 
 
@@ -149,107 +178,175 @@ public class JSONLoader {
      */
     private void parseCreateAndAddTaskToList(JSONObject jsonObject, ArrayList<Task> userTasks) {
         boolean isCompleted;
-        int currentStreak;
-        int bestStreak;
 
         String taskName = (String) jsonObject.get("taskName");
+        long taskId = (long) jsonObject.get("taskId");
+        String notes = (String) jsonObject.get("notes");
 
-        String taskStr = (String) jsonObject.get("taskId");
-        long taskId = Long.parseLong(taskStr);
+        int year = convertInt((long) jsonObject.get("year"));
+        int month = convertInt((long) jsonObject.get("month"));
+        int day = convertInt((long) jsonObject.get("date"));
+        Calendar startDate = new GregorianCalendar(year, month, day);
 
-        String yearStr = (String) (jsonObject.get("year"));
-        int year = Integer.parseInt(yearStr);
+        // parse out the values for the endDate Calendar object from JSON
+        int endYear = convertInt((long) jsonObject.get("endYear"));
+        int endMonth = convertInt((long) jsonObject.get("endMonth"));
+        int endDay = convertInt((long) jsonObject.get("endDate"));
 
-        String monthStr = (String) jsonObject.get("month");
-        int month = Integer.parseInt(monthStr);
+        isCompleted = (boolean) jsonObject.get("isCompleted");
+        Calendar endDate;
 
-        String dayStr = (String) jsonObject.get("date");
-        int day = Integer.parseInt(dayStr);
-
-        Calendar startDate = new GregorianCalendar();
-        startDate.set(year, month, day);
-
-        String isCompletedString = (String) jsonObject.get("isCompleted");
-        if(isCompletedString.equals("false")) {
-            isCompleted = false;
-        } else {
-            isCompleted = true;
-        }
         String type = (String) jsonObject.get("type");
+        if (!isCompleted && !type.equals("cumulative")) { // zero for a month is a valid value (January) so check the year/date
+            endDate = null;  // pass a null value so the client/GUI knows to not close out a task
+        }
+        else { // endYear & endDay contain valid values, create a GregorianCalendar object to pass to constructors
+            endDate = new GregorianCalendar(endYear, endMonth, endDay);
+        }
+
+        ArrayList<Calendar> jsonDatesCompleted = new ArrayList<>();
+        long completionCount;
 
         // Parse the remaining subclass-specific (unique) fields and
         // instantiate the correct Task subclass, add it to the
         // ArrayList<Task> userTaskList
         switch (type) {
+
             case "daily":
-                // parse remaining fields specific to a DailyTask object
-                String dcurrentStr = (String) jsonObject.get("currentStreak");
-                currentStreak = Integer.parseInt(dcurrentStr);
 
-                String dbestStr = (String) jsonObject.get("bestStreak");
-                bestStreak = Integer.parseInt(dbestStr);
-
-                // instantiate a DailyTask object and add to ArrayList
-                userTasks.add(new DailyTask(taskName, taskId, startDate,
-                        isCompleted, currentStreak, bestStreak));
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this task
+                    jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+                    // instantiate a DailyTask object and add to ArrayList - includes completionDates
+                    userTasks.add(new DailyTask(taskName, taskId, startDate, isCompleted, notes, endDate, jsonDatesCompleted));
+                } else {
+                    // instantiate a DailyTask object and add to ArrayList (no completions yet)
+                    userTasks.add(new DailyTask(taskName, taskId, startDate, isCompleted, notes, endDate));
+                }
                 break;
 
             case "weekly":
-                // parse remaining fields specific to a WeeklyTask object
-                String wcurrentStr = (String) jsonObject.get("currentStreak");
-                currentStreak = Integer.parseInt(wcurrentStr);
 
-                String wbestStr = (String) jsonObject.get("bestStreak");
-                bestStreak = Integer.parseInt(wbestStr);
-
-                // instantiate a WeeklyTask object and add to ArrayList
-                userTasks.add(new WeeklyTask(taskName, taskId, startDate,
-                        isCompleted, currentStreak, bestStreak));
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this task
+                    jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+                    // instantiate a WeeklyTask object and add to ArrayList - includes completionDates
+                    userTasks.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, notes, endDate, jsonDatesCompleted));
+                } else {
+                    // instantiate a WeeklyTask object and add to ArrayList (no completions yet)
+                    userTasks.add(new WeeklyTask(taskName, taskId, startDate, isCompleted, notes, endDate));
+                }
                 break;
 
             case "custom":
-                // parse remaining fields specific to a CustomTask object
-                String ccurrentStr = (String) jsonObject.get("currentStreak");
-                currentStreak = Integer.parseInt(ccurrentStr);
-
-                String cbestStr = (String) jsonObject.get("bestStreak");
-                bestStreak = Integer.parseInt(cbestStr);
 
                 JSONArray days = (JSONArray) jsonObject.get("days");
                 ArrayList<String> dayListing = new ArrayList<>();
                 // copy the contents of the JSONArray into an ArrayList
-
                 Iterator<String> dayIterator = days.iterator();
                 while (dayIterator.hasNext()) {
                     dayListing.add(dayIterator.next());
                 }
-
-                // instantiate a CustomTask object and add to ArrayList
-                userTasks.add(new CustomTask(taskName, taskId, startDate,
-                        isCompleted, currentStreak, bestStreak, dayListing));
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this task
+                    jsonDatesCompleted = parseCompletionDates(jsonObject, jsonDatesCompleted, completionCount);
+                    // instantiate a CustomTask object and add to ArrayList - includes completionDates
+                    userTasks.add(new CustomTask(taskName, taskId, startDate, isCompleted, notes, dayListing, endDate, jsonDatesCompleted));
+                } else {
+                    // instantiate a CustomTask object and add to ArrayList (no completions yet)
+                    userTasks.add(new CustomTask(taskName, taskId, startDate, isCompleted, notes, dayListing, endDate));
+                }
                 break;
 
             case "cumulative":
                 // parse remaining fields specific to a CumulativeTask object
                 //Calendar endDate = (Calendar) jsonObject.get("endDate");
-                String vyearStr = (String) jsonObject.get("endYear");
-                int endYear = Integer.parseInt(vyearStr);
 
-                String vmonthStr = (String) jsonObject.get("endMonth");
-                int endMonth = Integer.parseInt(vmonthStr);
+                double goalToReach = (double) jsonObject.get("goalToReach");
+                String goalUnits = (String) jsonObject.get("goalUnits");
+                completionCount = (long) jsonObject.get("completionCount"); // should we try to parse completionDates (Calendar objects)
+                ArrayList<CumulativeHistoryStruct> historyStruct = parseHistoryStruct(jsonObject, completionCount);
 
-                String vdayStr = (String) jsonObject.get("endDate");
-                int endDay = Integer.parseInt(vdayStr);
+                if (completionCount > 0) { // there are completion dates stored in this task if completionCount is greater than zero
+                    // parse out the completion date fields and instantiate them for this CumulativeHistoryStruct
 
-                Calendar endDate = new GregorianCalendar();
-                endDate.set(endYear, endMonth, endDay);
 
-                // instantiate a CumulativeTask object and add to ArrayList
-                userTasks.add(new CumulativeTask(taskName, taskId, startDate,
-                        isCompleted, endDate));
+                    // instantiate a CumulativeTask object and add to ArrayList
+                    userTasks.add(new CumulativeTask(taskName, taskId, startDate, isCompleted, notes, endDate, goalToReach, goalUnits, historyStruct));
+                } else {
+                    // instantiate a CumulativeTask object and add to ArrayList
+                    userTasks.add(new CumulativeTask(taskName, taskId, startDate, isCompleted, notes, endDate, goalToReach, goalUnits));
+                }
                 break;
         } //end switch statement
-
     } //end method parseCreateAndAddTaskToList()
+
+
+    /*
+     * Parse completionDates (Calendar objects) for the Daily/Weekly/Custom Task subclasses
+     * {{{{This method CANNOT be used for CumulativeTask objects}}}}
+     */
+    private ArrayList<Calendar> parseCompletionDates(JSONObject jsonObject, ArrayList<Calendar> jsonDatesCompleted, long completionCount) {
+        int completionYear, completionMonth, completionDate;
+
+        for (int i = 1; i <= completionCount; i++) { // completionCount should be in range 1, 2, 3,...N  (zeros are not desirable)
+            // for each completionDate (JSONArray) labeled as "completionDate" + i e.g. completionDate1, completionDate2, ...
+            String jsonArrayName = "completionDate" + i; // determine the next Array name in the JSON file
+
+            JSONArray completionDateFields = (JSONArray)(jsonObject.get(jsonArrayName));
+            Iterator<Long> dateFieldsIterator = completionDateFields.iterator();
+
+            completionYear = convertInt(dateFieldsIterator.next());
+            completionMonth = convertInt(dateFieldsIterator.next());
+            completionDate = convertInt(dateFieldsIterator.next());
+
+            // create the new Calendar object to represent the completion date
+            // that was stored in JSON, with the correct Year, Month, Day
+            jsonDatesCompleted.add(new GregorianCalendar(completionYear, completionMonth, completionDate));
+        } //end for loop
+
+        return jsonDatesCompleted;
+    }
+
+
+    private ArrayList<CumulativeHistoryStruct> parseHistoryStruct(JSONObject jsonObject, long completionCount) {
+        ArrayList<CumulativeHistoryStruct> cumulativeHistoryStructArrayList = new ArrayList<>();
+        String jsonStructName;
+        int completionYear, completionMonth, completionDate;
+        double progress;
+
+        for (int i = 1; i <= completionCount; i++) {
+            jsonStructName = "completionDate" + i;
+
+            JSONArray structFields = (JSONArray)(jsonObject.get(jsonStructName));
+            Iterator<String> structFieldIterator = structFields.iterator(); // using String since a struct has int and double values
+
+            completionYear = Integer.parseInt(structFieldIterator.next());
+            completionMonth = Integer.parseInt(structFieldIterator.next());
+            completionDate = Integer.parseInt(structFieldIterator.next());
+            progress = Double.parseDouble(structFieldIterator.next());
+
+            Calendar nextCalendar = new GregorianCalendar(completionYear, completionMonth, completionDate);
+            CumulativeHistoryStruct newStruct = new CumulativeHistoryStruct(nextCalendar, progress);
+            cumulativeHistoryStructArrayList.add( newStruct);
+        }
+        return cumulativeHistoryStructArrayList;
+    }
+
+
+    /*
+     * Legal JSON places numeric values into the file without quotes
+     * As a result Java interprets the value returned by JSONParse.get()
+     * methods as a long value.
+     * This method (casts to primitive int values) long values returned by JSON Object 'get' method
+     * to simplify code throughout the parse methods and significantly reduce
+     * the number of variables that must be created
+     */
+    private static int convertInt(long numeric) {
+        return (int) numeric;
+    } //end method convertInt()
 
 }

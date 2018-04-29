@@ -3,7 +3,7 @@
  * File Name: UserProfile.java
  * Package: src/llamasoft/skillblazer
  * Team: Team B
- * Date: 4/16/2018
+ * Date: 4/24/2018
  * 
  * Description:
  * 
@@ -18,14 +18,17 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import javafx.scene.control.Label;
 
 public class UserProfile {
 
     private final String type = "userProfile"; //type of file
     private String preferredSaveLocation; //custom preferred save location if user wants
-	private String userName = ""; //username for user
-    private Calendar userStartDate; //start date that user began using skillblazer
-    public long taskNumber = 0; //increment number for task ID available
+    private String userName = ""; //username for user
+    Calendar userStartDate = new GregorianCalendar(); //start date that user began using skillblazer
+    long taskNumber; //increment number for task ID available
 
     /*
      * Default Class Constructor
@@ -58,6 +61,17 @@ public class UserProfile {
         this.userStartDate = userStartDate;
         this.taskNumber = taskNumber;
     } //end UserProfile constructor
+
+    public void setUserName(String newName) {
+        this.userName = newName;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfile info is: \nUserName: " + this.userName +
+                "\nLast Task Number created: " + this.taskNumber +
+                "\nCalender info is as follows: \n" + this.userStartDate.toString();
+    } //end method toString()
 
     /*
      * Calculates the current date and places in a mm/dd/yyyy format
@@ -101,7 +115,49 @@ public class UserProfile {
     	//the OS they are using cannot use this application
     	return storageFolderPath; 
     } //end determineOSFilePath method
+
+    /*
+     * Increments taskNumber by one to provide
+     * correct file names for JSON data files.
+     */
+    public long incrementTaskNumber(long taskNum) {
+    	
+        long taskNumber = taskNum;
+    	
+    	taskNumber = taskNumber + 1;
+    	
+    	return taskNumber;
+    }
+
+    /*
+     * Overloaded version with no parameter
+     */
+    public long incrementTaskNumber() {
+        return ++taskNumber;
+    }
     
+    /*
+     * Determines username of user accessing skillblazer
+     * application and presents it.
+     */
+    public Label determineUsername() {
+       	Label userNameLabel;
+    	String userName;		
+    	String homePath = System.getProperty("user.home"); //pulls home directory
+    	String[] arOfKeys = homePath.split(":?\\\\"); //parses folder path
+    	userName = arOfKeys[2]; //takes username from desktop path
+    	userNameLabel = new Label(userName); 
+    	
+    	return userNameLabel; //returns Label with user name 
+    } //end determineOSFilePath method
+    
+    /*
+     * Accessor method - type
+     */
+    public String getType() {
+        return this.type;
+    } //end getType method
+
     /*
      * Accessor Method - userName
      */
@@ -122,7 +178,8 @@ public class UserProfile {
     public long getTaskNumber() {
     	return taskNumber;
     } //end getTaskNumber method
-    
+
+
     /*
      * Mutator Method - taskNumber
      */
