@@ -61,7 +61,7 @@ public class TwitterIntegration {
 	public void display() throws IOException, TwitterException {
 
 		Label instructLabel; // label for "Instructions"
-		Label instructions; // "Instructions"
+		TextArea instructions; // "Instructions"
 		Label urlLabel; // label for "Auth URL"
 		TextArea authURL; // "Auth URL"
 		Label pinLabel; // label for "PIN"
@@ -89,7 +89,7 @@ public class TwitterIntegration {
 			String authorizationURL = requestToken.getAuthorizationURL();
 
 			// hbox for instructions row
-			HBox instructHbox = new HBox(5);
+			HBox instructHbox = new HBox(10);
 			instructHbox.setPadding(new Insets(15, 12, 15, 12));
 			// pulls css styling information
 			instructHbox.getStyleClass().add("progressButtonHboxes");
@@ -99,13 +99,17 @@ public class TwitterIntegration {
 			// sets text for instructLabel
 			instructLabel.setText("Instructions:");
 			// initializes instructions
-			instructions = new Label();
-			instructions.setTextFill(Color.web("#f5fffa"));
+			instructions = new TextArea();
+			// sets preferential size of text area
+			instructions.setPrefSize(350, 150);
+			// sets authURL to non-editable
+			instructions.setEditable(false);
 			// sets text for instructions
-			instructions.setText("Please copy and paste the auth URL provided into a"
-								+ "\nbrowser window. Authorize skillblazer to access your Twitter page."
-								+ "\nCopy and paste the PIN given to you in the PIN text box."
-								+ "\nWrite your Tweet and then click the Submit button.");
+			instructions.setText("Please copy and paste the auth URL provided into a browser window."
+								+ " Authorize skillblazer to access your Twitter page."
+								+ " Copy and paste the PIN given to you in the PIN text box."
+								+ " Write your Tweet and then click the Submit Tweet button.");
+			instructions.setWrapText(true);
 			// adds instructLabel to instructHbox
 			instructHbox.getChildren().add(instructLabel);
 			// adds instructions to instructHbox
@@ -347,11 +351,15 @@ public class TwitterIntegration {
 			// sets text for instructLabel
 			instructLabel.setText("Instructions:");
 			// initializes instructions
-			instructions = new Label();
-			instructions.setTextFill(Color.web("#f5fffa"));
+			instructions = new TextArea();
+			// sets preferential size of text area
+			instructions.setPrefSize(350, 75);
+			// sets authURL to non-editable
+			instructions.setEditable(false);
 			// sets text for instructions
-			instructions.setText("You have already authorized this application to post to your Twitter profile.\n"
-					+ "Write and submit Tweet below.");
+			instructions.setText("You have already authorized this application to post to your Twitter profile."
+					+ " Write and submit Tweet below.");
+			instructions.setWrapText(true);
 			// adds instructLabel to instructHbox
 			instructHbox.getChildren().add(instructLabel);
 			// adds instructions to instructHbox
