@@ -953,7 +953,7 @@ public class SkillBlazer extends Application {
             // instantiates editUsernameStage
             editUsernameStage = new Stage();
             // sets title for editUsernameStage
-            editUsernameStage.setTitle("Lifetime Metrics");
+            editUsernameStage.setTitle("Edit Username");
             // add skillblazer icon to editUsernameStage
             editUsernameStage.getIcons().add(new Image("/llama.jpg"));
             // instantiates editUsernameLabel
@@ -1064,7 +1064,7 @@ public class SkillBlazer extends Application {
             // creates new stage
             editTasksStage = new Stage();
             // sets title of editTasksStage
-            editTasksStage.setTitle("Edit Tasks");
+            editTasksStage.setTitle("Edit, Delete, or End Tasks");
             // add skillblazer icon to editTasksStage
             editTasksStage.getIcons().add(new Image("/llama.jpg"));
             
@@ -1184,6 +1184,8 @@ public class SkillBlazer extends Application {
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         // removes Task object from taskList
                         taskList.remove(mt);
+                        // removes JSON file for Task
+                        JSONWriter.removeFileFromDisk(mt);
                         // draws new calendar
                         drawCalendar();
                         // closes window to edit tasks
