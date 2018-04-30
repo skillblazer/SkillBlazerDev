@@ -61,7 +61,7 @@ public class TwitterIntegration {
 	public void display() throws IOException, TwitterException {
 
 		Label instructLabel; // label for "Instructions"
-		TextArea instructions; // "Instructions"
+		TextArea instructions; // Instructions
 		Label urlLabel; // label for "Auth URL"
 		TextArea authURL; // "Auth URL"
 		Label pinLabel; // label for "PIN"
