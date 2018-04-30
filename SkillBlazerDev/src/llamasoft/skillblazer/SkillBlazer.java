@@ -1747,10 +1747,16 @@ public class SkillBlazer extends Application {
                  } else if  (mt instanceof CustomTask){
                     double totalCompleted = ((CustomTask)mt).getNumCompleted();
                     double maxPossible = ((CustomTask)mt).getMaxPossible(todayDate);
-                    String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
-                    percentCompletedTextField.setText(percentString + "%");
+                    if (maxPossible > 0) {
+                        String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
+                        percentCompletedTextField.setText(percentString + "%");
+                    } else {
+                        percentCompletedTextField.setText("N/A");
+                    }
                     totalCompletedTextField.setText(""+totalCompleted);
                     maxPossibleTextField.setText(""+maxPossible);
+                    currentStreakTextField.setText(""+((CustomTask)mt).getCurrentStreak(todayDate));
+                    bestStreakTextField.setText(""+((CustomTask)mt).getBestStreak());
                     lifetimeMetricsHbox2.setVisible(true);
                     lifetimeMetricsHbox2.setManaged(true);
                     lifetimeMetricsHbox3.setVisible(true);
@@ -1759,15 +1765,19 @@ public class SkillBlazer extends Application {
                     lifetimeMetricsHbox4.setManaged(false);
                     lifetimeMetricsHbox5.setVisible(true);
                     lifetimeMetricsHbox5.setManaged(true);
-                    lifetimeMetricsHbox6.setVisible(false);
-                    lifetimeMetricsHbox6.setManaged(false);
-                    lifetimeMetricsHbox7.setVisible(false);
-                    lifetimeMetricsHbox7.setManaged(false);
+                    lifetimeMetricsHbox6.setVisible(true);
+                    lifetimeMetricsHbox6.setManaged(true);
+                    lifetimeMetricsHbox7.setVisible(true);
+                    lifetimeMetricsHbox7.setManaged(true);
                 } else if  (mt instanceof DailyTask){
                     double totalCompleted = ((DailyTask)mt).getNumCompleted();
                     double maxPossible = ((DailyTask)mt).getMaxPossible(todayDate);
-                    String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
-                    percentCompletedTextField.setText(percentString + "%");
+                    if (maxPossible > 0) {
+                        String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
+                        percentCompletedTextField.setText(percentString + "%");
+                    } else {
+                        percentCompletedTextField.setText("N/A");
+                    }
                     totalCompletedTextField.setText(""+totalCompleted);
                     maxPossibleTextField.setText(""+maxPossible);
                     currentStreakTextField.setText(""+((DailyTask)mt).getCurrentStreak(todayDate));
@@ -1787,8 +1797,12 @@ public class SkillBlazer extends Application {
                 } else if  (mt instanceof WeeklyTask){
                     double totalCompleted = ((WeeklyTask)mt).getNumCompleted();
                     double maxPossible = ((WeeklyTask)mt).getMaxPossible(todayDate);
-                    String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
-                    percentCompletedTextField.setText(percentString + "%");
+                    if (maxPossible > 0) {
+                        String percentString = String.format("%.2f",totalCompleted/maxPossible*100.0);
+                        percentCompletedTextField.setText(percentString + "%");
+                    } else {
+                        percentCompletedTextField.setText("N/A");
+                    }
                     totalCompletedTextField.setText(""+totalCompleted);
                     maxPossibleTextField.setText(""+maxPossible);
                     currentStreakTextField.setText(""+((WeeklyTask)mt).getCurrentStreak(todayDate));

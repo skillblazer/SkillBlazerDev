@@ -27,7 +27,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 
 public class CustomTask extends Task {
 	
@@ -184,6 +186,165 @@ public class CustomTask extends Task {
             int numTaskDays = ((int)numFullWeeksBetween)*daysInTaskInt.length + numAdditionalDays;
             return numTaskDays;
     }
+    
+    
+    
+    
+    // method to get user's current streak; utilizes Collections.sort
+    public int getCurrentStreak(Calendar todaysDate) {
+        int currentStreak=0;
+        if (datesCompleted.size() > 0) {
+            currentStreak = 1;
+        } else {
+            return 0;
+        }
+        
+            // create array to hold integer representation of actualDaysInTask
+            int[] daysInTaskInt = new int[actualDaysInTask.size()];
+            int i = 0;
+            // fill the integer array
+            for (String md : actualDaysInTask) {
+                if (md.equalsIgnoreCase("Sunday")) {
+                    daysInTaskInt[i] = 1;
+                } else if(md.equalsIgnoreCase("Monday")) {
+                    daysInTaskInt[i] = 2;
+                } else if(md.equalsIgnoreCase("Tuesday")) {
+                    daysInTaskInt[i] = 3;
+                } else if(md.equalsIgnoreCase("Wednesday")) {
+                    daysInTaskInt[i] = 4;
+                } else if(md.equalsIgnoreCase("Thursday")) {
+                    daysInTaskInt[i] = 5;
+                } else if(md.equalsIgnoreCase("Friday")) {
+                    daysInTaskInt[i] = 6;
+                } else if(md.equalsIgnoreCase("Saturday")) {
+                    daysInTaskInt[i] = 7;
+                }
+                i++;
+            }
+        
+        
+        int[] dayDiffTasks = new int[7];
+        for (i=0;i<7;i++){
+            dayDiffTasks[i] = 7;
+        }
+        int j;
+        Arrays.sort(daysInTaskInt);
+        if (daysInTaskInt.length>1) {
+         for (i=0;i<daysInTaskInt.length;i++) {
+             int index1 = i%(daysInTaskInt.length);
+             int index2 = ((i-1)%(daysInTaskInt.length)+daysInTaskInt.length)%daysInTaskInt.length;
+             
+             dayDiffTasks[daysInTaskInt[i]-1] = ((daysInTaskInt[index1]-daysInTaskInt[index2])%7+7)%7;
+
+         }
+        }
+        
+        
+        Collections.sort(datesCompleted);
+        for (i=1;i<datesCompleted.size();i++) {
+            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH)+1,datesCompleted.get(i-1).get(Calendar.DATE));
+            long numDaysBetween = DAYS.between(compare2,compare1);
+            int DayOfWeek = datesCompleted.get(i).get(Calendar.DAY_OF_WEEK);
+            
+            
+            if (numDaysBetween==dayDiffTasks[DayOfWeek-1]) {
+                currentStreak += 1;
+            } else {
+                currentStreak = 1;
+            }  
+            // stop once reaching todays date
+            if (todaysDate.compareTo(datesCompleted.get(i)) == 0) {
+                break;
+            } else if (todaysDate.compareTo(datesCompleted.get(i)) < 0) {
+                // passed date without hitting date -- no streak
+                currentStreak = 0;
+            }
+        }
+        if (i>(datesCompleted.size()-1)) {
+            i=datesCompleted.size()-1;
+        }  
+        // Catch for current streak not making it to today or yesterday
+        LocalDate compare1 = LocalDate.of(todaysDate.get(Calendar.YEAR),todaysDate.get(Calendar.MONTH)+1,todaysDate.get(Calendar.DATE));
+        LocalDate compare2 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+        long numDaysBetween = DAYS.between(compare2,compare1);
+        if (numDaysBetween > 7) {
+            currentStreak = 0;
+        }        
+        return currentStreak;
+    } // end getCurrentStreak() method
+    
+    // method to get user's best streak; utilizes Collections.sort
+    public int getBestStreak() {
+        int bestStreak = 0;
+        int currentStreak=0;
+        if (datesCompleted.size() > 0) {
+            currentStreak = 1;
+            bestStreak = 1;
+        } else {
+            return bestStreak;
+        }
+        
+            // create array to hold integer representation of actualDaysInTask
+            int[] daysInTaskInt = new int[actualDaysInTask.size()];
+            int i = 0;
+            // fill the integer array
+            for (String md : actualDaysInTask) {
+                if (md.equalsIgnoreCase("Sunday")) {
+                    daysInTaskInt[i] = 1;
+                } else if(md.equalsIgnoreCase("Monday")) {
+                    daysInTaskInt[i] = 2;
+                } else if(md.equalsIgnoreCase("Tuesday")) {
+                    daysInTaskInt[i] = 3;
+                } else if(md.equalsIgnoreCase("Wednesday")) {
+                    daysInTaskInt[i] = 4;
+                } else if(md.equalsIgnoreCase("Thursday")) {
+                    daysInTaskInt[i] = 5;
+                } else if(md.equalsIgnoreCase("Friday")) {
+                    daysInTaskInt[i] = 6;
+                } else if(md.equalsIgnoreCase("Saturday")) {
+                    daysInTaskInt[i] = 7;
+                }
+                i++;
+            }
+        
+        
+        int[] dayDiffTasks = new int[7];
+        for (i=0;i<7;i++){
+            dayDiffTasks[i] = 7;
+        }
+        int j;
+        Arrays.sort(daysInTaskInt);
+        if (daysInTaskInt.length>1) {
+         for (i=0;i<daysInTaskInt.length;i++) {
+             int index1 = i%(daysInTaskInt.length);
+             int index2 = ((i-1)%(daysInTaskInt.length)+daysInTaskInt.length)%daysInTaskInt.length;
+             
+             dayDiffTasks[daysInTaskInt[i]-1] = ((daysInTaskInt[index1]-daysInTaskInt[index2])%7+7)%7;
+
+         }
+        }
+
+        Collections.sort(datesCompleted);
+        for (i=1;i<datesCompleted.size();i++) {
+            LocalDate compare1 = LocalDate.of(datesCompleted.get(i).get(Calendar.YEAR),datesCompleted.get(i).get(Calendar.MONTH)+1,datesCompleted.get(i).get(Calendar.DATE));
+            LocalDate compare2 = LocalDate.of(datesCompleted.get(i-1).get(Calendar.YEAR),datesCompleted.get(i-1).get(Calendar.MONTH)+1,datesCompleted.get(i-1).get(Calendar.DATE));
+            long numDaysBetween = DAYS.between(compare2,compare1);
+            int DayOfWeek = datesCompleted.get(i).get(Calendar.DAY_OF_WEEK);
+            
+            if (numDaysBetween==dayDiffTasks[DayOfWeek-1]) {
+                currentStreak += 1;
+            } else {
+                currentStreak = 1;
+            }  
+            if (currentStreak>bestStreak) {
+                bestStreak = currentStreak;
+            }
+        }
+        return bestStreak;
+    } // end getBestStreak() method
+    
+    
     
 
     /*
