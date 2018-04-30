@@ -14,9 +14,10 @@
  * will be available to them from the start using the Options
  * menu and selecting the "Submit Tweet" button.
  ***********************************************************/
-
+// package
 package llamasoft.skillblazer;
 
+// imports
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

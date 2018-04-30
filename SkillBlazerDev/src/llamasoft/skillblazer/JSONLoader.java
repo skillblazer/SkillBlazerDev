@@ -1,5 +1,7 @@
+// package
 package llamasoft.skillblazer;
 
+// imports
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,20 +17,28 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONLoader {
+    // member fields
     private JSONParser jsonParser = new JSONParser();
     private ArrayList<Task> userTasks = new ArrayList<>();
     private JSONObject jsonUserObject;
     static SkillBlazerInitializer skillBlazerInit = new SkillBlazerInitializer();
     public static UserProfile userProfile;
 
+    // default, no-argument constructor
     JSONLoader() {}
 
     // Only use this getter during runtime
     // At startup you should be calling loadTasksFromJSON()
-    public ArrayList<Task> getTasks() { return this.userTasks; }
+    public ArrayList<Task> getTasks() { 
+        return this.userTasks; 
+    } // end getTasks() method
 
-    public UserProfile getUserProfile() { return userProfile; }
-
+    // method to get user profile
+    public UserProfile getUserProfile() { 
+        return userProfile; 
+    } // end getUserProfile() method
+    
+    // method to load tasks from JSON
     protected ArrayList<Task> loadTasksFromJSON() {
         String temp;
 
@@ -67,7 +77,7 @@ public class JSONLoader {
             }
         } //end while loop
         return userTasks;
-    }
+    } // end loadTasksFromJSON() method
 
 
     /*
@@ -102,7 +112,7 @@ public class JSONLoader {
 
         // return ArrayList<String> validatedFileNames
         return validatedFileNames;
-    }
+    } // end addActualFileNames() method
 
 
     /*
@@ -152,7 +162,7 @@ public class JSONLoader {
         userProfile.setUserName( getDefaultUsername(userProfile.getUserName()) );
 
         return userProfile;
-    }
+    } // end parseAndReturnUserProfile() method
 
 
     // If the user is running the program for the first time, or the program had to
@@ -281,8 +291,8 @@ public class JSONLoader {
                     userTasks.add(new CumulativeTask(taskName, taskId, startDate, isCompleted, notes, endDate, goalToReach, goalUnits));
                 }
                 break;
-        } //end switch statement
-    } //end method parseCreateAndAddTaskToList()
+        } // end switch statement
+    } // end method parseCreateAndAddTaskToList()
 
 
     /*
@@ -309,9 +319,9 @@ public class JSONLoader {
         } //end for loop
 
         return jsonDatesCompleted;
-    }
+    } // end parseCompletionDates() method
 
-
+    // method to parse CumulativeHistoryStruct objects
     private ArrayList<CumulativeHistoryStruct> parseHistoryStruct(JSONObject jsonObject, long completionCount) {
         ArrayList<CumulativeHistoryStruct> cumulativeHistoryStructArrayList = new ArrayList<>();
         String jsonStructName;
@@ -334,7 +344,7 @@ public class JSONLoader {
             cumulativeHistoryStructArrayList.add( newStruct);
         }
         return cumulativeHistoryStructArrayList;
-    }
+    } // end parseHistoryStruct() method
 
 
     /*
@@ -347,6 +357,6 @@ public class JSONLoader {
      */
     private static int convertInt(long numeric) {
         return (int) numeric;
-    } //end method convertInt()
+    } // end method convertInt()
 
-}
+} // end class JSONLoader

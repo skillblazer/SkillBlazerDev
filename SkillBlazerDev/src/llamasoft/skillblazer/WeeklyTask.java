@@ -1,5 +1,3 @@
-package llamasoft.skillblazer;
-
 /**
  *  The child classes listed above represent the different types of goals that
  *  define these habits/skills.
@@ -12,9 +10,13 @@ package llamasoft.skillblazer;
  * values. However, for the WeeklyTask class, the current and best streak
  * pertains to the number of weeks in a row (as opposed to days in  row).
  */
+// package
+package llamasoft.skillblazer;
 
+// imports
 import java.time.LocalDate;
 import static java.time.temporal.ChronoUnit.DAYS;
+
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -27,34 +29,34 @@ public class WeeklyTask extends Task {
     public WeeklyTask() {
         super();
         this.type = "weekly";
-    }
+    } // end WeeklyTask constructor
     
     // constructor
     public WeeklyTask(String taskName) {
         super(taskName);
         this.type = "weekly";
-    }
+    } // end WeeklyTask constructor
 
     /*
      *  Constructor that does not mention endDates or datesCompleted (needed for creating a new task in GUI)
      */
     public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes) {
         super(taskName, taskId, startDate, isCompleted, "weekly", notes);
-    } //end WeeklyTask constructor
+    } // end WeeklyTask constructor
 
      /*
      *  The constructor formerly known as fully qualified (needed for initializing objects stored on disk
      */
     public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate) {
         super(taskName, taskId, startDate, isCompleted, "weekly", notes, endDate);
-    } //end WeeklyTask constructor
+    } // end WeeklyTask constructor
 
     /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk
      */
     public WeeklyTask(String taskName, long taskId, Calendar startDate, boolean isCompleted, String notes, Calendar endDate, ArrayList<Calendar> datesCompleted) {
         super(taskName, taskId, startDate, isCompleted, "weekly", notes, datesCompleted, endDate);
-    } //end WeeklyTask constructor
+    } // end WeeklyTask constructor
 
     // method to get user's current streak; utilizes Collections.sort
     public int getCurrentStreak(Calendar todaysDate) {
@@ -94,7 +96,7 @@ public class WeeklyTask extends Task {
             currentStreak = 0;
         }        
         return currentStreak;
-    } // end getCurrentStreak() method
+    } // end getCurrentStreak(Calendar todaysDate) method
     
     // method to get user's best streak; utilizes Collections.sort
     public int getBestStreak() {
@@ -147,7 +149,7 @@ public class WeeklyTask extends Task {
             long numSaturdaysBetween = (DAYS.between(compare2,compare1)+(((long)startDayOfWeek)))/7;
             int numSaturdaysInt = (int)numSaturdaysBetween;
             return numSaturdaysInt;
-    }
+    } // end getMaxPossible(Calendar todaysDate) method
     
 
     // method to write a task to JSON
@@ -188,6 +190,6 @@ public class WeeklyTask extends Task {
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
 
-    } // end overloaded method writeTaskToJSON(WeeklyTask task)
+    } // end overloaded writeTaskToJSON(WeeklyTask task) method
 
-}
+} // end class WeeklyTask

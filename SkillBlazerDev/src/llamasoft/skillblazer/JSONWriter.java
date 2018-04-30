@@ -1,13 +1,3 @@
-package llamasoft.skillblazer;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import java.io.PrintWriter;
-import java.util.*;
-
-
 /**
  * JSONWriter.java
  * @Author Jason Engel
@@ -20,10 +10,23 @@ import java.util.*;
  *
  */
 
+// package
+package llamasoft.skillblazer;
+
+// imports
+import java.io.FileWriter;
+import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import java.io.PrintWriter;
+import java.util.*;
+
 public class JSONWriter {
-
+    
+    // default, no-argument constructor
     public JSONWriter() {}
-
+    
+    // method to save files to disk
     public static void saveAllFilesToDisk(UserProfile userProfile, ArrayList<Task> allTasks) {
         // save UserProfile to userProfile.java (will also update SBinit.txt
         saveUser(userProfile);
@@ -33,8 +36,7 @@ public class JSONWriter {
         for (Task task : allTasks) {
             task.writeTaskToJSON();
         } //end for loop
-    } //end method saveAllFilesToDisk
-
+    } //end method saveAllFilesToDisk()
 
     /*
     * Ensure that the SBinit.txt file exists and that userProfile.json
@@ -49,9 +51,9 @@ public class JSONWriter {
 
         // write the UserProfile object to userProfile.json
         writeUserProfileToDisk(userProfile);
-    }
+    } // end method saveUser()
 
-
+    // method to write user profile to disk
     private static void writeUserProfileToDisk(UserProfile userProfile) {
         // save user profile object contents to file
         // filename should be in format userProfile.json
@@ -77,7 +79,7 @@ public class JSONWriter {
         writeJSON(jsonObject, fileName);
     } //end method writeUserProfileToDisk()
 
-
+    // method to write to JSON
      static void writeJSON(JSONObject jsonObject, String fileName) {
         try {
             FileWriter jsonOutput = new FileWriter(SkillBlazerInitializer.getLastJSONFilePath() + fileName);
@@ -89,7 +91,6 @@ public class JSONWriter {
             System.out.println("Could not find or access " + SkillBlazerInitializer.getLastJSONFilePath() + " or " + fileName + "\n");
         }
     } //end method writeJSON()
-
 
     /*
      *  Attempts to delete a file from disk
@@ -122,8 +123,7 @@ public class JSONWriter {
             System.out.println("Failed to delete file: " + SkillBlazerInitializer.getLastJSONFilePath() + fileName);
             e.printStackTrace();
         }
-    }
-
+    } // end method removeFileFromDisk()
 
     /*
      * addFileToInit(String fileName) will be used by all objects
@@ -148,8 +148,7 @@ public class JSONWriter {
             updateInitFile(contents);
         }//end if selection
     } //end method addFileToInit()
-
-
+    
     /*
      * Get the contents of SBinit.txt
      * remove the fileName provided as a parameter
@@ -164,7 +163,6 @@ public class JSONWriter {
 
         }//end if selection
     } //end method removeFileFromInit()
-
 
     /*
      * try-catch block to write an ArrayList<String> to SBinit.txt
@@ -190,7 +188,7 @@ public class JSONWriter {
         }
     } //end method updateInitFile()
 
-
+    // method to get file contents
     static ArrayList<String> getFileContents() {
         ArrayList<String> listOfFiles = new ArrayList<>();
 
@@ -307,6 +305,6 @@ public class JSONWriter {
             jsonCalendarObject.put(structName, structArray);
             indexValue++;
         } //end while loop
-    }
+    } // end method prepareCumulativeHistoryStructForJSONStorage()
 
-}
+} // end class JSONWriter

@@ -1,9 +1,3 @@
-package llamasoft.skillblazer;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
 /**
  * This class is responsible for managing the user's home directory files so
  * that they are available for JSONWriter and JSONLoader when the application
@@ -19,30 +13,43 @@ import java.util.*;
  *  to JSON files
  *
  * */
+// package
+package llamasoft.skillblazer;
+
+// imports
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 class SkillBlazerInitializer {
+    
+    // member fields
     private static final String userHome = System.getProperty("user.home");
     private static final String userFileLocation = userHome + "\\SkillBlazer\\";
     protected static final String initFile = "SBinit.txt";
-
+    
+    // default, no-argument constructor
     SkillBlazerInitializer() {}
-
-    static String getUserDataLocation() { return userHome; }
-
+    
+    // method to get user data location
+    static String getUserDataLocation() { 
+        return userHome; 
+    } // end method getUserDataLocation()
+    
+    // method to get last JSON file path
     static String getLastJSONFilePath() {
         return userFileLocation;
-    } //end method getLastJSONFilePath()
+    } // end method getLastJSONFilePath()
 
+    // method to return a String of form "user.home" + \\SkillBlazer\\SBinit.txt"
     static String getAbsoluteInitFilePath() {
-        // will return a String of form "user.home" + \\SkillBlazer\\SBinit.txt"
         return userFileLocation + initFile;
-    } //end method getAbsoluteFilePath()
+    } // end method getAbsoluteFilePath()
 
-
+    // method to create skillblazer directory
     private static void createSkillBlazerDirectory() {
         boolean newDirectory = new File(userFileLocation).mkdirs();
-    } //end method createSkilBlazerDirectory()
-
+    } // end method createSkilBlazerDirectory()
 
     /*
      * Read the contents of the SBinit.txt file from the disk
@@ -97,6 +104,6 @@ class SkillBlazerInitializer {
         }
         // pass the ArrayList<String> listOfJsonFiles to the caller
         return listOfJsonFiles;
-    } //end method getFileList()
+    } // end method getFileList()
 
-}
+} // end class SkillBlazerInitializer

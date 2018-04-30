@@ -23,21 +23,21 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Optional;
 
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import twitter4j.TwitterException;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
-
-import java.util.GregorianCalendar;
-import java.util.Optional;
 import javafx.scene.control.Alert.AlertType;
+
+import twitter4j.TwitterException;
 
 // main class; extends Application
 public class SkillBlazer extends Application {
@@ -46,7 +46,6 @@ public class SkillBlazer extends Application {
     private Stage window;                                                                               // stage set equal to primaryStage
     private Button optionsButton;                                                                       // options button
     private Label appTitle;                                                                             // application title
-
     private Label usernameLabel;                                                                        // username label
     private Button lifetimeMetricsButton;                                                               // lifetime metrics button
     private Label currentMonthYearLabel;                                                                // label for current month and year

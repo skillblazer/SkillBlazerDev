@@ -11,19 +11,23 @@
  * as obtain the current day when the user accesses the 
  * application.
  ***********************************************************/
-
+// package
 package llamasoft.skillblazer;
 
+// imports
 import java.io.File;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javafx.scene.control.Label;
 
 public class UserProfile {
-
+    
+    // member fields
     private final String type = "userProfile"; //type of file
     private String preferredSaveLocation; //custom preferred save location if user wants
     private String userName = ""; //username for user
@@ -35,14 +39,14 @@ public class UserProfile {
      */
     public UserProfile() {
     	//Default Constructor - no implementation here
-    } //end UserProfile constructor
+    } // end UserProfile constructor
     
     /*
      * Overloaded Class Constructor to instantiate userName
      */
     public UserProfile(String userName) {
     	this.userName = userName;
-    } //end UserProfile constructor
+    } // end UserProfile constructor
     
     /*
      * Overloaded Class Constructor to instantiate userName and userStartDate
@@ -50,7 +54,7 @@ public class UserProfile {
     public UserProfile(String userName, Calendar userStartDate) {
         this.userName = userName;
         this.userStartDate = userStartDate;
-    } //end UserProfile constructor
+    } // end UserProfile constructor
 
     /*
      * Overloaded Class Constructor to instantiate userName and userStartDate and taskNumber
@@ -60,18 +64,20 @@ public class UserProfile {
         this.userName = userName;
         this.userStartDate = userStartDate;
         this.taskNumber = taskNumber;
-    } //end UserProfile constructor
-
+    } // end UserProfile constructor
+    
+    // method to set username
     public void setUserName(String newName) {
         this.userName = newName;
-    }
-
+    } // end setUserName(String newName) method
+    
+    // toString() method
     @Override
     public String toString() {
         return "UserProfile info is: \nUserName: " + this.userName +
                 "\nLast Task Number created: " + this.taskNumber +
                 "\nCalender info is as follows: \n" + this.userStartDate.toString();
-    } //end method toString()
+    } // end toString() method
 
     /*
      * Calculates the current date and places in a mm/dd/yyyy format
@@ -84,7 +90,7 @@ public class UserProfile {
     	String currentDate = currentDateFormat.format(currentCalDate.getTime());
     	
     	return currentDate;
-    } //end calculateCurrentDate method
+    } // end calculateCurrentDate() method
     
     /*
      * Determines if the folder for the skillblazer app has been created
@@ -114,27 +120,24 @@ public class UserProfile {
     	//if path returns empty, then window will need to appear stating that
     	//the OS they are using cannot use this application
     	return storageFolderPath; 
-    } //end determineOSFilePath method
+    } // end determineOSFilePath() method
 
     /*
      * Increments taskNumber by one to provide
      * correct file names for JSON data files.
      */
-    public long incrementTaskNumber(long taskNum) {
-    	
-        long taskNumber = taskNum;
-    	
-    	taskNumber = taskNumber + 1;
-    	
+    public long incrementTaskNumber(long taskNum) { 	
+        long taskNumber = taskNum;  	
+    	taskNumber = taskNumber + 1;   	
     	return taskNumber;
-    }
+    } // end incrementTaskNumber(long taskNum) method
 
     /*
      * Overloaded version with no parameter
      */
     public long incrementTaskNumber() {
         return ++taskNumber;
-    }
+    } // end overloaded incrementTaskNumber() method
     
     /*
      * Determines username of user accessing skillblazer
@@ -149,35 +152,35 @@ public class UserProfile {
     	userNameLabel = new Label(userName); 
     	
     	return userNameLabel; //returns Label with user name 
-    } //end determineOSFilePath method
+    } // end determineUsername() method
     
     /*
      * Accessor method - type
      */
     public String getType() {
         return this.type;
-    } //end getType method
+    } // end getType() method
 
     /*
      * Accessor Method - userName
      */
     public String getUserName() {
         return this.userName;
-    } //end getUserName method
+    } // end getUserName() method
 
     /*
      * Accessor Method - userStartDate
      */
     public Calendar getUserStartDate() {
         return this.userStartDate;
-    } //end getUserStartDate method
+    } // end getUserStartDate() method
     
     /*
      * Accessor Method - taskNumber
      */
     public long getTaskNumber() {
     	return taskNumber;
-    } //end getTaskNumber method
+    } // end getTaskNumber() method
 
 
     /*
@@ -185,19 +188,20 @@ public class UserProfile {
      */
     public void setTaskNumber(long taskNumber) {
     	this.taskNumber = taskNumber;
-    } //end setTaskNumber method
+    } // end setTaskNumber(long taskNumber) method
     
     /*
      * Mutator Method - preferredSaveLocation
      */
     public void setPreferredSaveLocation(String preferredSaveLocation) {
         this.preferredSaveLocation = preferredSaveLocation;
-    } //end setPreferredSaveLocation method
+    } // end setPreferredSaveLocation(String preferredSaveLocation) method
 
     /*
      * Accessor Method - preferredSaveLocation
      */
     public String getPreferredSaveLocation(UserProfile userProfile) {
         return this.preferredSaveLocation;
-    } //end getPreferredSaveLocation method
-} //end UserProfile class
+    } //end getPreferredSaveLocation(UserProfile userProfile) method
+    
+} // end class UserProfile

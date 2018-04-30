@@ -20,16 +20,17 @@
  * check the percentage that a goal has been reached by
  * the user (e.g. 50% of books read of overall goal).
  ***********************************************************/
-
+// package
 package llamasoft.skillblazer;
 
+// imports
 import org.json.simple.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CumulativeTask extends Task {
-
+    
+    // member fields
     private String goalUnits;                                           // string field for goal units (e.g. miles, hours, books, etc.) to be entered by user
     private double goalToReach;                                         // double field to represent numeric amount for goal to reach (e.g. 5 miles); entered by user
     private ArrayList<CumulativeHistoryStruct> cumulativeHistory;       // ArrayList of CumulativeHistoryStruct inner class type - custom data structure
@@ -40,7 +41,7 @@ public class CumulativeTask extends Task {
     public CumulativeTask() {
         super();
         this.type = "cumulative";
-    } //end CumulativeTask constructor
+    } // end CumulativeTask constructor
 
     /*
      * Overloaded Class Constructor - calls parent constructor with taskName
@@ -49,7 +50,7 @@ public class CumulativeTask extends Task {
         super(taskName);
         this.taskName = taskName;
         this.type = "cumulative";
-    } //end CumulativeTask constructor
+    } // end CumulativeTask constructor
 
     /*
      * Overloaded Class Constructor - calls parent constructor with taskName
@@ -60,7 +61,7 @@ public class CumulativeTask extends Task {
         this.type = "cumulative";
         this.goalToReach = 0.0;
         this.cumulativeHistory = new ArrayList<>();
-    } //end CumulativeTask constructor
+    } // end CumulativeTask constructor
 
     /*
      * Overloaded Class Constructor - calls parent constructor with taskName, 
@@ -72,7 +73,7 @@ public class CumulativeTask extends Task {
         this.type = "cumulative";
         this.goalToReach = 0.0;
         this.cumulativeHistory = new ArrayList<>();
-    } //end CumulativeTask constructor
+    } // end CumulativeTask constructor
     
     /*
      * New Fully qualified constructor
@@ -83,7 +84,7 @@ public class CumulativeTask extends Task {
         this.goalToReach = goalToReach;
         this.goalUnits = goalUnits;
         this.cumulativeHistory = new ArrayList<>();
-    } //end CumulativeTask constructor
+    } // end CumulativeTask constructor
 
 
     /*
@@ -96,24 +97,26 @@ public class CumulativeTask extends Task {
         this.goalToReach = goalToReach;
         this.goalUnits = goalUnits;
         this.cumulativeHistory = cumulativeHistory;
-    } //end CumulativeTask constructor
+    } // end CumulativeTask constructor
     
-       @Override
+    // method to print information
+    @Override
     public String infoString() {
         return super.infoString() + "EndDate is: " + endDate;
-    }
+    } // end infoString() method
 
-    
+    // method to get task units
     public String getTaskUnits () {
         return goalUnits;
-    }
+    } // end getTaskUnits() method
     
-    public void setTaskUnits (String goalUnits) {
+    // method to set task units
+    public void setTaskUnits(String goalUnits) {
         this.goalUnits = goalUnits;
-    }
+    } // end setTaskUnits() method
     
 
-        // method to add to the ArrayList cumulativeHistory
+    // method to add to the ArrayList cumulativeHistory
     public void addProgress(Calendar dateCompleted, double progress) {
         CumulativeHistoryStruct newEntry = new CumulativeHistoryStruct(dateCompleted,progress);
         if (cumulativeHistory.contains(newEntry)) {
@@ -162,8 +165,7 @@ public class CumulativeTask extends Task {
     public void setGoalToReach (double goalToReach) {
         this.goalToReach = goalToReach;
     }// end setGoalToReach() method
-    
-    
+   
     // method to write a task to JSON
     @Override
     public void writeTaskToJSON() {
@@ -203,9 +205,8 @@ public class CumulativeTask extends Task {
         // a method in JSONWriter which will prep the Calendar objects and corresponding progress values
         // to be added to the JSON file
         JSONWriter.prepareCumulativeHistoryStructForJSONStorage(jsonObject, cumulativeHistory);
-
         JSONWriter.writeJSON(jsonObject, fileName);
         JSONWriter.addFileToInit(fileName);
     } // end writeTaskToJSON() method
 
-}//end CumulativeTask class
+}// end CumulativeTask class

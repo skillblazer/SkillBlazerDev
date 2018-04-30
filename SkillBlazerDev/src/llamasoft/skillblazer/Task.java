@@ -33,18 +33,18 @@ public class Task {
     
     // default, no-argument constructor
     public Task() {
-    } // end constructor
+    } // end Task constructor
 
     // constructor taking taskName as input parameter
     public Task(String taskName) {
         this.taskName = taskName;
-    } // end constructor
+    } // end Task constructor
 
     // constructor taking taskName and startDate as input parameter
     public Task(String taskName, Calendar startDate) {
         this.taskName = taskName;
         this.startDate = startDate;
-    } // end constructor
+    } // end Task constructor
 
     // fully-qualified constructor
     public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes) {
@@ -55,7 +55,7 @@ public class Task {
         this.type = type;
         this.endDate = null;
         this.notes = notes;
-    } // end constructor
+    } // end Task constructor
 
     // fully-qualified constructor with endDate
     public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes, Calendar endDate) {
@@ -67,7 +67,7 @@ public class Task {
         //this.endDate = null;
         this.notes = notes;
         this.endDate = endDate;
-    } // end constructor
+    } // end Task constructor
 
     // fully-qualified constructor with ArrayList<Calendar> datesCompleted
     public Task(String taskName, long taskId, Calendar startDate, boolean isCompleted, String type, String notes, ArrayList<Calendar> datesCompleted, Calendar endDate) {
@@ -79,7 +79,7 @@ public class Task {
         this.endDate = endDate;
         this.notes = notes;
         this.datesCompleted = datesCompleted;
-    } // end constructor
+    } // end Task constructor
 
     // method to get task ID
     long getTaskId() {
@@ -90,8 +90,7 @@ public class Task {
     public String toString()
     {
         return taskName;
-    }
-    // printString() method
+    } // end toString() method
     
     // replaces old toString() method
     public String infoString() {
@@ -113,7 +112,7 @@ public class Task {
         // method to set task name
     public void setTaskName(String taskName) {
         this.taskName = taskName;
-    } // end setTaskName() method
+    } // end setTaskName(String taskName) method
     
     
     // method to return notes
@@ -121,17 +120,17 @@ public class Task {
         return this.notes;
     } // end getNotes() method
     
-// method to set notes
+    // method to set notes
     public void setNotes(String notes) {
         this.notes = notes;
-    } // end setNotes() method
+    } // end setNotes(String notes) method
     
     
     // method to end a task
     public void endTask(Calendar endDate) {
         this.isCompleted = true;
         this.endDate = endDate;
-    } // end endTask() method
+    } // end endTask(Calendar endDate) method
 
     // method to return whether task is completed
     public boolean getIsCompleted() {
@@ -151,7 +150,7 @@ public class Task {
      */
     public void setEndDate(Calendar endDate) {
     	this.endDate = endDate;
-    } //end setEndDate method
+    } //end setEndDate(Calendar endDate) method
     
 
     /*
@@ -177,17 +176,13 @@ public class Task {
             endValues[2] = taskEndDate.get(Calendar.DATE);
         }
         return endValues;
-    } //end method getEndValues()
+    } // end getEndValues() method
 
     
     // method to get the total amount completed
     public int getNumCompleted() {
         return datesCompleted.size();
-    }
-    // method to delete a record
-    protected void deleteRecord() {
-
-    } // end deleteRecord() method
+    } // end getNumCompleted() method
 
     public void writeTaskToJSON() {
         // placeholder so the individual task subclasses can have their
@@ -199,20 +194,20 @@ public class Task {
         if (!datesCompleted.contains(dateCompleted)) {
             datesCompleted.add(dateCompleted);
         }
-    } // end setDateCompleted() method
+    } // end setDateCompleted(Calendar dateCompleted) method
     
     // method to remove from the ArrayList datesCompleted
     public void removeDateCompleted(Calendar dateRemove) {
         if (datesCompleted.contains(dateRemove)) {
             datesCompleted.remove(dateRemove);
         }
-    } // end setDateCompleted() method
+    } // end setDateCompleted(Calendar dateRemove) method
     
     
     // method to check if a date was completed
     public boolean checkDateCompleted(Calendar dateCheck) {
         return datesCompleted.contains(dateCheck);
-    } // end checkDateCompleted() method
+    } // end checkDateCompleted(Calendar dateCheck) method
     
     
     // method get the ArrayList datesCompleted
