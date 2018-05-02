@@ -1207,8 +1207,8 @@ public class SkillBlazer extends Application {
                         if (editTaskApplyEdits()) {
                             // new GregorianCalendar object
                             GregorianCalendar todaysDate = new GregorianCalendar();
-                            // sets end date in task object
-                            mt.setEndDate(todaysDate);
+                            // sets end date and isCompleted in task object
+                            mt.endTask(todaysDate);
                             // draws new calendar
                             drawCalendar();
                             // closes window for editing tasks
