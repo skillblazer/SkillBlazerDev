@@ -26,7 +26,7 @@ public class CalendarCalculator {
     private Calendar currentMonth;                              // Calendar object holding current month
     private int thisMonth;                                      // int holding current month
     private int thisYear;                                       // int holding current year
-    private Day[] thisMonthsDayObjects = new Day[31];           // Array of Day objects
+    private Day[] thisMonthsDayObjects = new Day[31];           // array of Day objects
 
     // NEVER use this directly outside of this class,
     // as IT DOES NOT ACCOUNT FOR LEAP YEARS!
@@ -129,7 +129,9 @@ public class CalendarCalculator {
      * Message and source code posted to http://stackoverflow.com.
      */
     private boolean isLeapYear(int currentYear) {
+        // Calendar object
         Calendar calendar = Calendar.getInstance();
+        // sets Calendar object
         calendar.set(Calendar.YEAR, currentYear);
         return calendar.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
     } // end isLeapYear(int currentYear) method
