@@ -142,24 +142,20 @@ public class JSONLoader {
 
                 userProfile = (new UserProfile(userName, userStartDate, taskNumber));
             }
-            else if (!profileFile.exists()) { // if the userprofile doesn't exist, create a default one
-                return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
-            }
         } //end try block
         catch (IOException e) {
-            System.out.println("Unable to ACCESS userProfile from: " +
-                    SkillBlazerInitializer.getLastJSONFilePath() +
-                    " \nPlease check your file and folder permissions!");
+            // File does not exist.  Instantiate a new (default valued) userProfile object in memory
             return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
         }
         catch (ParseException e) {
             System.out.println("Unable to PARSE json file: " +
-                    SkillBlazerInitializer.getLastJSONFilePath() + " userProfile.json");
+                    SkillBlazerInitializer.getLastJSONFilePath() + " userProfile.json\n" +
+                    " Please check your Folder and File permissions!");
             return (new UserProfile(getDefaultUsername("New User"), (new GregorianCalendar()), 0));
         }
 
         // ensure that the userName is not set to a meaningless Default value
-        userProfile.setUserName( getDefaultUsername(userProfile.getUserName()) );
+        //userProfile.setUserName( getDefaultUsername(userProfile.getUserName()) );
 
         return userProfile;
     } // end parseAndReturnUserProfile() method
@@ -174,8 +170,15 @@ public class JSONLoader {
     private String getDefaultUsername(String userNameFromJSON) {
         if (userNameFromJSON.equals(("New User"))) {
             String homePath = System.getProperty("user.home"); //pulls home directory
-            String[] arOfKeys = homePath.split(":?\\\\"); //parses folder path
-            return arOfKeys[2]; //returns username from desktop path
+            if (homePath.contains("/")) { // *nix filesystem detected
+                String[] arOfKeys = homePath.split("/");
+                return arOfKeys[2]; // e.g. /home/userName/
+            }
+            else {
+                // Windows filesystem
+                String[] arOfKeys = homePath.split(":?\\\\"); //parses folder path
+                return arOfKeys[2]; //returns username from desktop path
+            }
         }
         return userNameFromJSON;
     }

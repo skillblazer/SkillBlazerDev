@@ -92,35 +92,6 @@ public class UserProfile {
     	return currentDate;
     } // end calculateCurrentDate() method
     
-    /*
-     * Determines if the folder for the skillblazer app has been created
-     * and records the folder path for where to create new JSON files
-     * for persistence of data.
-     */
-    public String determineOSFilePath() {
-    	
-    	String storageFolderPath = ""; //default initialization - path to send json data
-    	File file = new File(""); //default initialization - will become directory to store data
-    	
-    	String osName = System.getProperty("os.name"); //pulls OS name
-    	String homePath = System.getProperty("user.home"); //pulls home directory
-    	
-    	if (osName.contains("Windows") || osName.contains("Mac") || osName.contains("Linux") || 
-    			osName.contains("Unix")) {
-    		
-    		file = new File(homePath + "\\Skillblazer");
-    		//if folder doesn't exist, create skillblazerApp directory
-            if (!file.exists()) {
-                file.mkdir();
-            }
-            
-    		storageFolderPath = (homePath + "\\Skillblazer");
-    	}
-    	
-    	//if path returns empty, then window will need to appear stating that
-    	//the OS they are using cannot use this application
-    	return storageFolderPath; 
-    } // end determineOSFilePath() method
 
     /*
      * Increments taskNumber by one to provide
