@@ -229,16 +229,36 @@ public class TwitterIntegration {
 						String aToken = accessToken.getToken();
 						String aSToken = accessToken.getTokenSecret();
 						// records user home directory
+						String osName = System.getProperty("os.name");
 						String homePath = System.getProperty("user.home");
+						
 						// writes user's access token and access secret token to twitterAccessFile.txt
-						// for later use
-						BufferedWriter writeKeys = new BufferedWriter(
-								new FileWriter(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
+						// for later use by determining OS and writing to appropriate path
+						BufferedWriter writeKeys = null;
+						
+						if (osName.contains("Windows")) {
+
+							writeKeys = new BufferedWriter(
+									new FileWriter(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
+				        }
+				        else if (osName.contains("Mac") || osName.contains("Linux") ||
+				                osName.contains("Unix")) {
+				            
+				        	writeKeys = new BufferedWriter(
+									new FileWriter(homePath + "/Skillblazer/twitterAccessFile.txt"));
+				        }
+						
 						writeKeys.write(aToken + "," + aSToken);
 						
 						// closes BufferedWriter
 						writeKeys.close();
 					} catch (TwitterException e) {
+						
+						/*
+						 * Displays error window acknowleding Twitter error and asks
+						 * the user to try again.
+						 */
+						
 						Stage window = new Stage();
 						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
 						
@@ -263,6 +283,12 @@ public class TwitterIntegration {
 						window.setScene(scene);
 						window.show();
 					} catch (FileNotFoundException e) {
+						
+						/*
+						 * Displays error window that file does not exist in the 
+						 * Skillblazer directory.
+						 */
+						
 						Stage window = new Stage();
 						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
 						
@@ -287,6 +313,12 @@ public class TwitterIntegration {
 						window.setScene(scene);
 						window.show();
 					} catch (IOException e) {
+						
+						/*
+						 * This error window reports that it cannot write or 
+						 * read the tokens from or to the twitterAccessFile.txt file.
+						 */
+						
 						Stage window = new Stage();
 						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
 						
@@ -403,16 +435,30 @@ public class TwitterIntegration {
 			submitButton.setOnAction(new EventHandler() {
 				@Override
 				public void handle(Event event) {
-
+								
 					try {
 						
-						// records user home directory
+						// records user home directory and OS
+						String osName = System.getProperty("os.name");
 						String homePath = System.getProperty("user.home");
+						BufferedReader readKeys = null;
 						
 						// reads user access keys from twitterAccessFile.txt to authenticate to Twitter
-						BufferedReader readKeys = new BufferedReader(
-								new FileReader(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
+						// by determining OS and then reading the file from the correct path
+						if (osName.contains("Windows")) {
+
+							readKeys = new BufferedReader(
+									new FileReader(homePath + "\\Skillblazer\\twitterAccessFile.txt"));
+				        }
+				        else if (osName.contains("Mac") || osName.contains("Linux") ||
+				                osName.contains("Unix")) {
+				            
+				        	readKeys = new BufferedReader(
+									new FileReader(homePath + "/Skillblazer/twitterAccessFile.txt"));
+				        }
+						
 						String keys = readKeys.readLine();
+						
 						// splits string pulled from file to separate both keys
 						String[] arOfKeys = keys.split(",");
 
@@ -432,6 +478,12 @@ public class TwitterIntegration {
 						// close BufferedReader
 						readKeys.close();
 					} catch (IOException e) {
+						
+						/*
+						 * Displays error window that indicates that the program
+						 * cannot read the tokens from the twitterAccessFile.txt file.
+						 */
+						
 						Stage window = new Stage();
 						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
 						
@@ -456,6 +508,12 @@ public class TwitterIntegration {
 						window.setScene(scene);
 						window.show();
 					} catch (TwitterException e) {
+						
+						/*
+						 * Displays error window that tells the user that the 
+						 * tweet did not go through and to please try again.
+						 */
+						
 						Stage window = new Stage();
 						window.getIcons().add(new Image("/Exclamation-mark-icon.jpg"));
 						
@@ -511,15 +569,33 @@ public class TwitterIntegration {
 	} // end of display method
 
 	private static boolean determineFileExists() throws IOException {
-		// read user tokens from designated file
+		// determines OS of current user
+		String osName = System.getProperty("os.name");
+		//determines home directory of current user
 		String homePath = System.getProperty("user.home");
-		File tmpFile = new File(homePath + "\\Skillblazer\\twitterAccessFile.txt");
-		boolean exists = tmpFile.exists();
+		//temp file
+		File tmpFile = null;
+		
+		//determines correct file path depending on which OS is being used
+		if (osName.contains("Windows")) {
 
+			tmpFile = new File(homePath + "\\Skillblazer\\twitterAccessFile.txt");
+        }
+        else if (osName.contains("Mac") || osName.contains("Linux") ||
+                osName.contains("Unix")) {
+            
+        	tmpFile = new File(homePath + "/Skillblazer/twitterAccessFile.txt");
+        }
+		
+		//determines if file exists at the folder path above
+		boolean exists = tmpFile.exists();
+		
+		//if file doesn't exist, create that file in the Skillblazer directory
 		if (exists == false) {
 			tmpFile.createNewFile();
 		}
 
 		return exists;
+
 	} // end of determineFileExists method
 } // end of TwitterIntegration class
