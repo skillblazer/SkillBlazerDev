@@ -1,14 +1,3 @@
-package llamasoft.skillblazer;
-
-import java.time.LocalDate;
-import static java.time.temporal.ChronoUnit.DAYS;
-
-import org.json.simple.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-
 /**
  * The child classes listed above represent the different types of goals that
  * define these habits/skills.
@@ -22,18 +11,33 @@ import java.util.Collections;
  * method to set a task as being completed for a given day and a method to get
  * that value.
  */
+
+//package
+package llamasoft.skillblazer;
+
+// imports
+import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
+
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+
 public class DailyTask extends Task {
 
-    
+    // default, no-argument constructor
     public DailyTask() {
         super();
         this.type = "daily";
-    }
-
+    } // end DailyTask constructor
+    
+    // constructor
     public DailyTask(String taskName) {
         super(taskName);
         this.type = "daily";
-    }
+    } // end DailyTask constructor
    
      /*
      *  The constructor formerly known as fully qualified
@@ -41,7 +45,6 @@ public class DailyTask extends Task {
     public DailyTask(String taskName, long taskId, Calendar startDate,
                      boolean isCompleted, String notes) {
         super(taskName, taskId, startDate, isCompleted, "daily", notes);
-
     } //end DailyTask constructor
 
     /*
@@ -51,7 +54,7 @@ public class DailyTask extends Task {
                      boolean isCompleted, String notes, Calendar endDate) {
         super(taskName, taskId, startDate, isCompleted, "daily", notes);
         this.endDate = endDate;
-    } //end DailyTask constructor
+    } // end DailyTask constructor
 
     /*
      *  New Fully qualified constructor (needed for initializing objects stored on disk
@@ -61,7 +64,7 @@ public class DailyTask extends Task {
                      boolean isCompleted, String notes, Calendar endDate, ArrayList<Calendar> datesCompleted) {
         super(taskName, taskId, startDate, isCompleted, "daily", notes, datesCompleted, endDate);
         this.endDate = endDate;
-    } //end DailyTask constructor
+    } // end DailyTask constructor
 
     // method to get the user's current streak; utilizes Collections.sort
     public int getCurrentStreak(Calendar todaysDate) {
@@ -152,7 +155,7 @@ public class DailyTask extends Task {
         long numDaysBetween = DAYS.between(compare2,compare1)+1;
         int numDaysInt = (int)numDaysBetween;
         return numDaysInt;
-    }
+    } // end getMaxPossible() method
     
     // method to write a task to JSON
     @Override
@@ -193,4 +196,4 @@ public class DailyTask extends Task {
         JSONWriter.addFileToInit(fileName);
     } // end method writeTaskToJSON()
 
-}
+} // end class DailyTask

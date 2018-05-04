@@ -17,7 +17,7 @@
 // package
 package llamasoft.skillblazer;
 
-// imports
+// import
 import java.util.*;
 
 public class CalendarCalculator {
@@ -26,7 +26,7 @@ public class CalendarCalculator {
     private Calendar currentMonth;                              // Calendar object holding current month
     private int thisMonth;                                      // int holding current month
     private int thisYear;                                       // int holding current year
-    private Day[] thisMonthsDayObjects = new Day[31];           // Array of Day objects
+    private Day[] thisMonthsDayObjects = new Day[31];           // array of Day objects
 
     // NEVER use this directly outside of this class,
     // as IT DOES NOT ACCOUNT FOR LEAP YEARS!
@@ -37,7 +37,7 @@ public class CalendarCalculator {
     // default, no-argument constructor
     public CalendarCalculator() {
         this.currentMonth = new GregorianCalendar();
-    } // end constructor
+    } // end CalendarCalculator constructor
 
     // method to get the first day of the week of the current month
     public int getFirstDayOfWeekCurrentMonth() {
@@ -95,30 +95,13 @@ public class CalendarCalculator {
         for (int dates = 0; dates < daysThisMonth; dates++) {
             GregorianCalendar thisDate = new GregorianCalendar(getCurrentYearInt(), getCurrentMonthInt(), dates+1);
             thisMonthsDayObjects[dates] = new Day(thisDate);                    // ****TO DO: finish this constructor call (JSON)
-//            for (int i = 0; i < (dates + 1); i++) {
-//                DailyTask testTask = new DailyTask("Test " + dates + " " + i, i, thisDate, false, 0, 0);
-//                thisMonthsDayObjects[dates].addTask(testTask);
-//            }
-            // end TEST code
-
-//           for(int dates = 0; dates<daysThisMonth; dates++) {
-//           Day newDay = new Day();
-//            // create a Day object
-//            // add tasks to the day object
-//            // generate GUI element for the Day object
-//            addDayToCalendarTile(newDay);
         }
     } // end instantiateCalendar() method
-
-    // method to add the Day object to calendar
-    private void addDayToCalendarTile(Day day) {
-
-    } // end addDayToCalendarTile() method
 
     // method to get the current month's Day objects
     public Day getDayObject(int dayOfMonth) {
         return thisMonthsDayObjects[dayOfMonth];
-    } // end getDayObject() method
+    } // end getDayObject(int dayOfMonth) method
 
     // method to get the number of days in a calendar month
     protected int getDaysInThisCalendarMonth(int year, int month) {
@@ -127,7 +110,7 @@ public class CalendarCalculator {
         } else {
             return daysOfMonth[month];
         }
-    } // end method getDaysInThisCalendarMonth()
+    } // end getDaysInThisCalendarMonth(int year, int month) method
 
     // overloaded version - just pass in a Calendar object!
     protected int getDaysInThisCalendarMonth(GregorianCalendar calendar) {
@@ -137,7 +120,7 @@ public class CalendarCalculator {
         } else {
             return daysOfMonth[month];
         }
-    } // end method getDaysInThisCalendarMonth()
+    } // end getDaysInThisCalendarMonth(GregorianCalendar calendar) method
 
     // method that determines leap year so February is correctly created!
     /*
@@ -146,9 +129,11 @@ public class CalendarCalculator {
      * Message and source code posted to http://stackoverflow.com.
      */
     private boolean isLeapYear(int currentYear) {
+        // Calendar object
         Calendar calendar = Calendar.getInstance();
+        // sets Calendar object
         calendar.set(Calendar.YEAR, currentYear);
         return calendar.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
-    } // end isLeapYear() method
+    } // end isLeapYear(int currentYear) method
 
 } // end class CalendarCalculator
