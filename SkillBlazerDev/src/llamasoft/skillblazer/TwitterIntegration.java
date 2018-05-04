@@ -579,12 +579,12 @@ public class TwitterIntegration {
 		//determines correct file path depending on which OS is being used
 		if (osName.contains("Windows")) {
 
-			tmpFile = new File(homePath + "\\Skillblazer\\twitterAccessFile.txt");
+			tmpFile = new File(homePath + "\\SkillBlazer\\twitterAccessFile.txt");
         }
         else if (osName.contains("Mac") || osName.contains("Linux") ||
                 osName.contains("Unix")) {
             
-        	tmpFile = new File(homePath + "/Skillblazer/twitterAccessFile.txt");
+        	tmpFile = new File(homePath + "/SkillBlazer/twitterAccessFile.txt");
         }
 		
 		//determines if file exists at the folder path above
